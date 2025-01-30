@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 export default function TeruminPage() {
   return (
     <div className="container max-w-4xl py-6 lg:py-10">
-      <h1 className="text-3xl font-black text-center mb-6">Terumin「テルミン」</h1>
+      <h1 className="text-3xl font-black text-center mb-6">Terumin<br />「テルミン」</h1>
       
-      <p className="m-4 text-center text-lg">Introducing Namma Bengaluru Techie and Bengaluru Anime Club (BAC) Mascot: Terumin</p>
+      <p className="m-4 text-center text-lg">Introducing Bengaluru Anime Club (BAC) mascot: Terumin</p>
       <div className="flex justify-center my-6">
         <Image 
           src="/images/terumin/terumin-poster.webp" 
@@ -51,8 +51,7 @@ export default function TeruminPage() {
       <p className="text-lg mt-4"><strong>Artist:</strong> Pratya Kashyap</p>
       <p className="text-lg"><strong>Instagram:</strong> <a href="https://www.instagram.com/inkspratt/" target="_blank" rel="noopener noreferrer">@inkspratt</a></p>
 
-      <h2 className="text-2xl font-bold mt-6 mb-4">Iterations</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+      <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
         {[...Array(4)].map((_, index) => (
           <Image 
             key={index} 
@@ -64,6 +63,7 @@ export default function TeruminPage() {
           />
         ))}
       </div>
+      <p className="mt-2 text-center text-lg">Iterations</p>
     </div>
   );
 }
