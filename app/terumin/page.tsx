@@ -48,6 +48,9 @@ export default function TeruminPage() {
         />
       </div>
 
+      <p className="text-lg mt-4"><strong>Artist:</strong> Pratya Kashyap</p>
+      <p className="text-lg"><strong>Instagram:</strong> <a href="https://www.instagram.com/inkspratt/" target="_blank" rel="noopener noreferrer">@inkspratt</a></p>
+
       <h2 className="text-2xl font-bold mt-6 mb-4">Iterations</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
         {[...Array(4)].map((_, index) => (
