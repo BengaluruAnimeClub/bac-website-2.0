@@ -51,7 +51,7 @@ export default function TeruminPage() {
       <p className="text-lg mt-4"><strong>Artist:</strong> Pratya Kashyap</p>
       <p className="text-lg"><strong>Instagram:</strong> <a href="https://www.instagram.com/inkspratt/" target="_blank" rel="noopener noreferrer">@inkspratt</a></p>
 
-      <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4 place-items-center">
         {[...Array(4)].map((_, index) => (
           <Image 
             key={index} 
