@@ -31,7 +31,7 @@ export default function TeruminPage() {
         <li><strong>Favourite media:</strong> Mr. Robot, XKCD</li>
         <li><strong>Favourite food:</strong> Unpopped kernels of popcorn</li>
         <li><strong>Hobby:</strong> Terumin-ally online, bash-ing, patching KDE2 under FreeBSD</li>
-        <li><strong>Origin:</strong> Twitch e-girl who got isekai-ed into her own computer</li>
+        <li><strong>Origin:</strong> Twitch e-girl who became so brainrotted that she got isekai-ed trying to write a business enquiry e-mail in formal English and transmigrated into her own computer</li>
         <li><strong>Catchphrase:</strong> “Hmm, you don’t know me? Tehe-min &gt; _ \\\  テルミン ある! よろしく”</li>
       </ul>
 
