@@ -32,12 +32,12 @@ export default function TeruminPage() {
         <li><strong>Favourite food:</strong> Unpopped kernels of popcorn</li>
         <li><strong>Hobby:</strong> Terumin-ally online, bash-ing, patching KDE2 under FreeBSD</li>
         <li><strong>Origin:</strong> Twitch e-girl who became so brainrotted that she got isekai-ed trying to write a business enquiry e-mail in formal English and transmigrated into her own computer</li>
-        <li><strong>Catchphrase:</strong> “Hmm, you don’t know me? Tehe-min &gt; _ \\\  テルミン ある! よろしく”</li>
+        <li><strong>Catchphrase:</strong> “Hmm, you don&apos;t know me? Tehe-min &gt; _ \\\  テルミン ある! よろしく”</li>
       </ul>
 
       <div className="flex flex-col md:flex-row items-center gap-6 mt-4">
         <p className="text-lg text-justify">
-        Terumin's design is a tribute to the city, reflecting two of its core aspects: its gardens and its role as an IT hub. As such, her design features a consistent pink theme across all iterations, which also aligns with the BAC branding, and is inspired by Bangalore’s cherry blossom (Tabebuia rosea).  My favourite details on her are her lashes and blush marks made of pink petals. Her yellow highlights are in honour of my good friend Dixi, who painstakingly got me through this project. Teru's beanie and asymmetric haircut reference Lain from Serial Experiments Lain, as a nod to her "terminally online" persona. Her jumper and oversized jacket are taken from techwear. Last and most importantly, I wanted her to look like an actual resident of the south. Her skin tone was inspired by my best friend Ila's own representations of brown girls in their art. 
+        Terumin&apos;s design is a tribute to the city, reflecting two of its core aspects: its gardens and its role as an IT hub. As such, her design features a consistent pink theme across all iterations, which also aligns with the BAC branding, and is inspired by Bangalore&apos;s cherry blossom (Tabebuia rosea).  My favourite details on her are her lashes and blush marks made of pink petals. Her yellow highlights are in honour of my good friend Dixi, who painstakingly got me through this project. Teru&apos;s beanie and asymmetric haircut reference Lain from Serial Experiments Lain, as a nod to her &ldquo;terminally online&rdquo; persona. Her jumper and oversized jacket are taken from techwear. Last and most importantly, I wanted her to look like an actual resident of the south. Her skin tone was inspired by my best friend Ila&apos;s own representations of brown girls in their art. 
         </p>
         <Image 
           src="/images/terumin/terumin.webp" 
