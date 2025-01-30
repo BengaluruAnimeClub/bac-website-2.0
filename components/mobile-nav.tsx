@@ -45,6 +45,9 @@ export function MobileNav() {
           <MobileLink className={cn("text-2xl font-normal")} onOpenChange={setOpen} href="/gallery">
             Gallery <sup>new</sup>
           </MobileLink>
+          <MobileLink className={cn("text-2xl font-normal")} onOpenChange={setOpen} href="/terumin">
+            Terumin <sup>new</sup>
+          </MobileLink>
           <MobileLink className={cn("text-2xl font-normal")} onOpenChange={setOpen} href="/socials">
             Socials
           </MobileLink>

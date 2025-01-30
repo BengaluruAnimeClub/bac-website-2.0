@@ -69,6 +69,15 @@ export function MainNav() {
         Gallery <sup>new</sup>
       </Link>
       <Link
+        href="/terumin"
+        className={cn(
+          "text-sm font-medium transition-colors hover:text-primary hidden sm:inline-block",
+          pathname === "/terumin" ? "text-foreground" : "text-foreground/60"
+        )}
+      >
+        Terumin <sup>new</sup>
+      </Link>
+      <Link
         href="/socials"
         className={cn(
           "text-sm font-medium transition-colors hover:text-primary hidden sm:inline-block",
