@@ -40,7 +40,7 @@ export default function TeruminPage() {
       <p className="mt-4">Terumin&apos;s design takes inspiration from two motifs connecting Bengaluru and Japan — the cherry blossom and computer technology. Her clothes use shades of pink and brown, and have prominent cherry flowers. Her face is based on the appearance of a blank terminal ( &gt;_ &nbsp;), and her clothes contain the hash-bang ( #! ) sequence that starts a script file.</p>
 
       <div className="flex flex-col md:flex-row items-center gap-6 my-4">
-        <div className="p-3 border shadow dark:bg-[#191919] border-[#C83A77]">
+        <div className="p-3 border rounded-xl shadow dark:bg-[#191919] border-[#C83A77]">
           <p className="text-xl text-center"><strong>Artist Comment</strong></p>
           <p className="mt-4 text-justify">
           Terumin&apos;s design is a tribute to the city, reflecting two of its core aspects: its gardens and its role as an IT hub. As such, her design features a consistent pink theme across all iterations, which also aligns with the BAC branding, and is inspired by Bangalore&apos;s cherry blossom <em>(Tabebuia rosea)</em>.  My favourite details on her are her lashes and blush marks made of pink petals. Her yellow highlights are in honour of my good friend Dixi, who painstakingly got me through this project. Teru&apos;s beanie and asymmetric haircut reference Lain from Serial Experiments Lain, as a nod to her &ldquo;terminally online&rdquo; persona. Her jumper and oversized jacket are taken from techwear. Last and most importantly, I wanted her to look like an actual resident of the south. Her skin tone was inspired by my best friend Ila&apos;s own representations of brown girls in their art. 
