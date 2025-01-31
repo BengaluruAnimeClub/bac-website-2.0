@@ -52,18 +52,32 @@ export default function TeruminPage() {
       <p className="text-lg"><strong>Instagram:</strong> <a href="https://www.instagram.com/inkspratt/" target="_blank" rel="noopener noreferrer">@inkspratt</a></p>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4 place-items-center">
-        {[...Array(4)].map((_, index) => (
-          <Image 
-            key={index} 
-            src="/images/terumin/terumin.webp" 
-            alt={`Terumin Iteration ${index + 1}`} 
-            width={128} 
-            height={256} 
-            className="rounded-xl"
-          />
-        ))}
+        <Image 
+          src="/images/terumin/terumin-iteration1.webp" 
+          alt={`Terumin Iteration 1`} 
+          width={128} 
+          height={256}
+        />
+        <Image 
+          src="/images/terumin/terumin-iteration2.webp" 
+          alt={`Terumin Iteration 2`} 
+          width={164} 
+          height={256}
+        />
+        <Image 
+          src="/images/terumin/terumin-iteration3.webp" 
+          alt={`Terumin Iteration 3`} 
+          width={150} 
+          height={256}
+        />
+        <Image 
+          src="/images/terumin/terumin.webp" 
+          alt={`Terumin`} 
+          width={140} 
+          height={256}
+        />
       </div>
-      <p className="mt-2 text-center text-lg">Iterations</p>
+      <p className="mt-2 text-center text-lg">Iterations of Terumin&apos;s design</p>
     </div>
   );
 }
