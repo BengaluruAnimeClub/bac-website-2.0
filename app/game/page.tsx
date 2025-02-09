@@ -29,52 +29,23 @@ export default function Game() {
         
       </div>
       
-      <div className="game-container">
-      <div className="text-area">
-        <p>{currentNode.text}</p>
+      <div className="flex flex-col mx-auto p-5 border border-gray-300">
+        <div className="flex-1 overflow-y-auto mb-2">
+          <p>{currentNode.text}</p>
+        </div>
+        <div className="flex flex-col gap-2">
+          {currentNode.options.map((option: Option) => (
+            <button
+              key={option.nextText}
+              onClick={() => handleOptionSelect(option.nextText)}
+              className="px-4 py-2 bg-green-500 text-white text-center text-base cursor-pointer"
+            >
+              {option.text}
+            </button>
+          ))}
+          {currentNode.options.length === 0 && <p>Game Over</p>}
+        </div>
       </div>
-      <div className="options-area">
-        {currentNode.options.map((option: Option) => (
-          <button key={option.nextText} onClick={() => handleOptionSelect(option.nextText)}>
-            {option.text}
-          </button>
-        ))}
-        {currentNode.options.length === 0 && <p>Game Over</p>}
-      </div>
-       <style jsx>{`
-        .game-container {
-          display: flex;
-          flex-direction: column;
-          margin: auto;
-          padding: 20px;
-          border: 1px solid #ccc; /* Add a border for visual separation */
-        }
-
-        .text-area {
-          flex: 1; /* Allow text area to expand */
-          overflow-y: auto; /* Add scroll if text overflows */
-          margin-bottom: 10px;
-        }
-
-        .options-area {
-          display: flex;
-          flex-direction: column; /* Stack buttons vertically */
-          gap: 10px; /* Space between buttons */
-        }
-        button {
-          padding: 10px 20px;
-          background-color: #4CAF50; /* Green */
-          border: none;
-          color: white;
-          text-align: center;
-          text-decoration: none;
-          display: inline-block;
-          font-size: 16px;
-          cursor: pointer;
-        }
-      `}</style>
     </div>
-
-  </div>
   );
 }
