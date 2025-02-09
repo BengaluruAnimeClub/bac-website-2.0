@@ -29,16 +29,16 @@ export default function Game() {
         
       </div>
       
-      <div className="flex flex-col mx-auto p-5 border border-gray-300">
+      <div className="flex flex-col mx-auto p-5 border border-gray-300 rounded-lg">
         <div className="flex-1 overflow-y-auto mb-2">
           <p>{currentNode.text}</p>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col lg:flex-row gap-2 justify-center">
           {currentNode.options.map((option: Option) => (
             <button
               key={option.nextText}
               onClick={() => handleOptionSelect(option.nextText)}
-              className="px-4 py-2 bg-green-500 text-white text-center text-base cursor-pointer"
+              className="px-4 py-2 bg-[#ea4167] text-white text-center text-base cursor-pointer rounded-md"
             >
               {option.text}
             </button>
