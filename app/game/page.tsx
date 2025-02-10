@@ -49,7 +49,7 @@ export default function Game() {
               <center>
                 <b>Scene #{currentNode.id}</b>
                 {previousOptionText && (
-                  <p><i>Chosen option: {previousOptionText}</i></p>
+                  <p><i>Previously selected: {previousOptionText}</i></p>
                 )}
               </center>
               <p>{currentNode.text}</p>
