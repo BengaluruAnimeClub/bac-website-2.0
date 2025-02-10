@@ -77,7 +77,10 @@ export default function Game() {
           )}
 
         </div>
-        <div className="flex flex-col lg:flex-row gap-2 justify-center">
+        <div 
+          className={`flex flex-col lg:flex-row gap-2 justify-center transition-opacity ${fade}`} 
+          style={{ transitionDuration: `${fadeDuration}ms` }}
+        >
           {currentNode.options.map((option: Option, index) => (
             <button
               key={`${currentNode.id}-${index}`}
