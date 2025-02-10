@@ -19,7 +19,8 @@ export const Scenes: Scene[] = [
   },
   {
     id: 1,
-    text: `Passage`, 
+    text: `Welcome to the game.
+    Choose your path wisely.`,
     options: [
       { text: `Option 1`, nextScene: 3 },
       { text: `Option 2`, nextScene: 4 },

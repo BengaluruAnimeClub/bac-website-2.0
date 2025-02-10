@@ -52,7 +52,7 @@ export default function Game() {
                   <p><i>Previously selected: {previousOptionText}</i></p>
                 )}
               </center>
-              <p>{currentNode.text}</p>
+              <p style={{ whiteSpace: 'pre-line' }}>{currentNode.text}</p>
             </>
           )}
 
