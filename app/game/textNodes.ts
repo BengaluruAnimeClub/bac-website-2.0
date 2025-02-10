@@ -11,6 +11,13 @@ export interface Scene {
 
 export const Scenes: Scene[] = [
   {
+    id: 0,
+    text: `Title Screen`, 
+    options: [
+      { text: `Start Game`, nextScene: 1 },
+    ],
+  },
+  {
     id: 1,
     text: `Passage`, 
     options: [

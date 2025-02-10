@@ -6,7 +6,7 @@ import { Scenes, Scene, Option } from "./textNodes";
 
 export default function Game() {
 
-  const [currentScene, setCurrentScene] = useState<number>(1);
+  const [currentScene, setCurrentScene] = useState<number>(0);
 
   const currentNode: Scene | undefined = Scenes.find(
     (node) => node.id === currentScene
