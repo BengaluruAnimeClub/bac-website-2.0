@@ -17,6 +17,7 @@ export default function Game() {
 
   const [currentScene, setCurrentScene] = useState<number>(0);
   const [previousOptionText, setPreviousOptionText] = useState<string>('');
+  const [fade, setFade] = useState("opacity-100 transition-opacity duration-500");
 
   const currentNode: Scene | undefined = Scenes.find(
     (node) => node.id === currentScene
@@ -27,8 +28,12 @@ export default function Game() {
   }
 
   const handleOptionSelect = (nextScene: number, optionText: string) => {
-    setPreviousOptionText(optionText);
-    setCurrentScene(nextScene);
+    setFade("opacity-0 transition-opacity duration-500");
+    setTimeout(() => {
+      setPreviousOptionText(optionText);
+      setCurrentScene(nextScene);
+      setFade("opacity-100 transition-opacity duration-500");
+    }, 500); // match duration with transition
   };
 
   return (
@@ -38,7 +43,7 @@ export default function Game() {
       </h1>
       
       <div className="flex flex-col mx-auto p-5 border border-gray-300 rounded-lg lg:w-3/4">
-        <div className="flex-1 overflow-y-auto mb-2">
+        <div className={`flex-1 overflow-y-auto mb-2 ${fade}`}>
 
           {currentNode.id === 0 && (
             <center><b>Title Screen</b></center>
