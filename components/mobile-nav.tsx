@@ -23,35 +23,38 @@ export function MobileNav() {
         </Button>
       </SheetTrigger>
       <SheetContent side="right">
-        <div className="flex flex-col gap-8 mt-3">
-          <MobileLink className={("text-2xl font-bold")} onOpenChange={setOpen} href="/">
+        <div className="flex flex-col gap-4 mt-3">
+          <MobileLink className={("text-xl font-bold")} onOpenChange={setOpen} href="/">
             Home
           </MobileLink>
-          <MobileLink className={cn("text-2xl font-normal")} onOpenChange={setOpen} href="/about">
+          <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/about">
             About
           </MobileLink>
-          <MobileLink className={cn("text-2xl font-normal")} onOpenChange={setOpen} href="/blog">
+          <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/blog">
             Blog
           </MobileLink>
-          <MobileLink className={cn("text-2xl font-normal")} onOpenChange={setOpen} href="/past-events">
+          <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/past-events">
             Looking BAC
           </MobileLink>
-          <MobileLink className={cn("text-2xl font-normal")} onOpenChange={setOpen} href="/upcoming-events">
+          <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/upcoming-events">
             Events
           </MobileLink>
-          <MobileLink className={cn("text-2xl font-normal")} onOpenChange={setOpen} href="/art">
-            Art <sup>new</sup>
+          <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/art">
+            Art
           </MobileLink>
-          <MobileLink className={cn("text-2xl font-normal")} onOpenChange={setOpen} href="/gallery">
-            Gallery <sup>new</sup>
+          <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/gallery">
+            Gallery
           </MobileLink>
-          <MobileLink className={cn("text-2xl font-normal")} onOpenChange={setOpen} href="/terumin">
-            Terumin <sup>new</sup>
+          <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/terumin">
+            Terumin
           </MobileLink>
-          <MobileLink className={cn("text-2xl font-normal")} onOpenChange={setOpen} href="/socials">
+          <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/game">
+            Love Story (Game)
+          </MobileLink>
+          <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/socials">
             Socials
           </MobileLink>
-          <MobileLink className={cn("text-2xl font-normal")} onOpenChange={setOpen} href="/contact-us">
+          <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/contact-us">
             Contact Us
           </MobileLink>
         </div>
