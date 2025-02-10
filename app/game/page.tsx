@@ -2,6 +2,7 @@
 
 import { Metadata } from "next";
 import { useState, useEffect } from "react";
+import Image from 'next/image';
 import { Scenes, Scene, Option } from "./textNodes"; 
 
 export default function Game() {
@@ -28,8 +29,27 @@ export default function Game() {
       
       <div className="flex flex-col mx-auto p-5 border border-gray-300 rounded-lg">
         <div className="flex-1 overflow-y-auto mb-2">
-          <b>Scene #{currentNode.id}</b>
-          <p>{currentNode.text}</p>
+
+          {currentNode.id > 0 && (
+            <>
+              <center><b>Scene #{currentNode.id}</b></center>
+              <p>{currentNode.text}</p>
+            </>
+          )}
+
+          {currentNode.id === 0 && (
+            <>
+              <center><b>Title Screen</b></center>
+              <Image 
+                src="/images/game/placeholder.jpeg" 
+                alt="Scene Image" 
+                width={500}
+                height={300}
+                className="mt-4 mb-4 mx-auto w-full lg:w-1/2" 
+              />
+            </>
+          )}
+
         </div>
         <div className="flex flex-col lg:flex-row gap-2 justify-center">
           {currentNode.options.map((option: Option, index) => (
