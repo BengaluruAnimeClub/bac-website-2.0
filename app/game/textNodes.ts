@@ -248,21 +248,29 @@ export const Scenes: Scene[] = [
   {
     id: 101,
     text: `Happy ending (medha): “A Love Fulfilled”`,
-    options: [],
+    options: [
+      { text: `Play Again`, nextScene: 0 },
+    ],
   },
   {
     id: 102,
     text: `Awkward ending (medha): “A Love Unspoken” `,
-    options: [],
+    options: [
+      { text: `Play Again`, nextScene: 0 },
+    ],
   },
   {
     id: 103,
     text: `Twist ending (Manas): “An Unexpected Love” `,
-    options: [],
+    options: [
+      { text: `Play Again`, nextScene: 0 },
+    ],
   },
   {
     id: 104,
     text: `Rival ending (Manas): “A Love That Got Away”`,
-    options: [],
+    options: [
+      { text: `Play Again`, nextScene: 0 },
+    ],
   },
 ];
