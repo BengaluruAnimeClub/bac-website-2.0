@@ -38,6 +38,7 @@ export default function Game() {
     if (!audioRef.current) {
       audioRef.current = new Audio('/music/game/to_zanarkand_64.mp3'); 
       audioRef.current.loop = true;
+      audioRef.current.volume = 0.05; // set lower volume
       audioRef.current.play().catch((error) => console.error("Audio play error:", error));
     }
     
