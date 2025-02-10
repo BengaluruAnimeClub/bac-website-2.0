@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Scenes, Scene, Option } from "./textNodes"; 
 
 const imagePaths: { [key: number]: string } = {
-  0: "/images/game/placeholder.jpeg",
+  0: "/images/game/placeholder-title.jpeg",
   101: "/images/game/placeholder.jpeg",
   102: "/images/game/placeholder.jpeg",
   103: "/images/game/placeholder.jpeg",
@@ -35,7 +35,7 @@ export default function Game() {
         BAC Love Story
       </h1>
       
-      <div className="flex flex-col mx-auto p-5 border border-gray-300 rounded-lg">
+      <div className="flex flex-col mx-auto p-5 border border-gray-300 rounded-lg lg:w-3/4">
         <div className="flex-1 overflow-y-auto mb-2">
 
           {currentNode.id === 0 && (
