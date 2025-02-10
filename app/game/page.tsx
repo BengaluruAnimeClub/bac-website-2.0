@@ -41,9 +41,9 @@ export default function Game() {
 
   return (
     <div className="container max-w-6xl py-6 lg:py-10">
-      <h1 className="block font-black text-4xl lg:text-5xl text-center mb-10">
+      {/* <h1 className="block font-black text-4xl lg:text-5xl text-center mb-10">
         BAC Love Story
-      </h1>
+      </h1> */}
       
       <div className="flex flex-col mx-auto p-5 border border-gray-300 rounded-lg lg:w-3/4">
         <div 
