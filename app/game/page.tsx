@@ -1,7 +1,7 @@
 'use client';
 
 import { Metadata } from "next";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from 'next/image';
 import { Scenes, Scene, Option } from "./textNodes"; 
 
@@ -22,6 +22,9 @@ export default function Game() {
   // Only store opacity state; transition properties are defined inline
   const [fade, setFade] = useState("opacity-100");
 
+  // Add a ref for background audio
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
   const currentNode: Scene | undefined = Scenes.find(
     (node) => node.id === currentScene
   );
@@ -31,6 +34,13 @@ export default function Game() {
   }
 
   const handleOptionSelect = (nextScene: number, optionText: string) => {
+    // Start background MP3 on first click if not already playing
+    if (!audioRef.current) {
+      audioRef.current = new Audio('/music/game/to_zanarkand_64.mp3'); 
+      audioRef.current.loop = true;
+      audioRef.current.play().catch((error) => console.error("Audio play error:", error));
+    }
+    
     setFade("opacity-0");
     setTimeout(() => {
       setPreviousOptionText(optionText);
