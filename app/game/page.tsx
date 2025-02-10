@@ -77,7 +77,7 @@ export default function Game() {
             <button
               key={`${currentNode.id}-${index}`}
               onClick={() => handleOptionSelect(option.nextScene, option.text)}
-              className="px-4 py-2 bg-[#ea4167] text-white text-center text-base cursor-pointer rounded-md"
+              className="px-4 py-2 bg-[#ea4167] text-white text-center text-base cursor-pointer rounded-md transition-colors hover:bg-[#d03457]"
             >
               {option.text}
             </button>
