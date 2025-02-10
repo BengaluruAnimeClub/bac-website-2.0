@@ -16,6 +16,7 @@ const imagePaths: { [key: number]: string } = {
 export default function Game() {
 
   const [currentScene, setCurrentScene] = useState<number>(0);
+  const [previousOptionText, setPreviousOptionText] = useState<string>('');
 
   const currentNode: Scene | undefined = Scenes.find(
     (node) => node.id === currentScene
@@ -25,7 +26,8 @@ export default function Game() {
     return <div>Error: Scene not found</div>; 
   }
 
-  const handleOptionSelect = (nextScene: number) => {
+  const handleOptionSelect = (nextScene: number, optionText: string) => {
+    setPreviousOptionText(optionText);
     setCurrentScene(nextScene);
   };
 
@@ -44,7 +46,12 @@ export default function Game() {
 
           {currentNode.id > 0 && (
             <>
-              <center><b>Scene #{currentNode.id}</b></center>
+              <center>
+                <b>Scene #{currentNode.id}</b>
+                {previousOptionText && (
+                  <p><i>Chosen option: {previousOptionText}</i></p>
+                )}
+              </center>
               <p>{currentNode.text}</p>
             </>
           )}
@@ -64,7 +71,7 @@ export default function Game() {
           {currentNode.options.map((option: Option, index) => (
             <button
               key={`${currentNode.id}-${index}`}
-              onClick={() => handleOptionSelect(option.nextScene)}
+              onClick={() => handleOptionSelect(option.nextScene, option.text)}
               className="px-4 py-2 bg-[#ea4167] text-white text-center text-base cursor-pointer rounded-md"
             >
               {option.text}
