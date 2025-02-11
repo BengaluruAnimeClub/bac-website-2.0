@@ -51,12 +51,12 @@ export default function Game() {
   };
 
   return (
-    <div className="container max-w-6xl py-6 lg:py-10">
+    <div className="container px-4 max-w-5xl py-6 lg:py-10">
       {/* <h1 className="block font-black text-4xl lg:text-5xl text-center mb-10">
         BAC Love Story
       </h1> */}
       
-      <div className="flex flex-col mx-auto p-5 border border-gray-300 rounded-lg lg:w-3/4">
+      <div className="flex flex-col mx-auto p-4 border-4 border-solid border-[#f05a78] rounded-xl lg:w-3/4">
         <div 
           className={`flex-1 overflow-y-auto mb-2 transition-opacity ${fade}`} 
           style={{ transitionDuration: `${fadeDuration}ms` }}
@@ -83,7 +83,7 @@ export default function Game() {
                 alt="Scene Image" 
                 width={500}
                 height={300}
-                className="mt-4 mb-4 mx-auto w-full lg:w-1/2" 
+                className="mt-4 mb-4 rounded-xl mx-auto w-full lg:w-1/2" 
               />
           )}
 
