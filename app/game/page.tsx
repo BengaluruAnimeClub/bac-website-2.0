@@ -21,6 +21,8 @@ export default function Game() {
   const [previousOptionText, setPreviousOptionText] = useState<string>('');
   // Only store opacity state; transition properties are defined inline
   const [fade, setFade] = useState("opacity-100");
+  // New state to track mute status
+  const [isMuted, setIsMuted] = useState(false);
 
   // Add a ref for background audio
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -92,6 +94,7 @@ export default function Game() {
           className={`flex flex-col lg:flex-row gap-2 justify-center transition-opacity ${fade}`} 
           style={{ transitionDuration: `${fadeDuration}ms` }}
         >
+
           {currentNode.options.map((option: Option, index) => (
             <button
               key={`${currentNode.id}-${index}`}
@@ -101,6 +104,22 @@ export default function Game() {
               {option.text}
             </button>
           ))}
+
+          {currentNode.id > 0 && (
+            <button
+              onClick={() => {
+                const newMuted = !isMuted;
+                setIsMuted(newMuted);
+                if (audioRef.current) {
+                  audioRef.current.muted = newMuted;
+                }
+              }}
+              className="px-4 py-2 bg-gray-600 text-white text-center text-base cursor-pointer rounded-md transition-colors hover:bg-gray-700 active:scale-90"
+            >
+              {`Music: ${isMuted ? "OFF" : "ON"}`}
+            </button>
+          )}
+          
           {currentNode.options.length === 0 && <p>Game Over</p>}
         </div>
       </div>
