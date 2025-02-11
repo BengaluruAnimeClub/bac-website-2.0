@@ -119,7 +119,18 @@ export default function Game() {
               {`Music: ${isMuted ? "OFF" : "ON"}`}
             </button>
           )}
-          
+
+          {[101, 102, 103, 104].includes(currentNode.id) && (
+            <a
+              href="https://example.com/credits"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-purple-600 text-white text-center text-base cursor-pointer rounded-md transition-colors hover:bg-purple-700 active:scale-90"
+            >
+              Game Credits
+            </a>
+          )}
+
           {currentNode.options.length === 0 && <p>Game Over</p>}
         </div>
       </div>
