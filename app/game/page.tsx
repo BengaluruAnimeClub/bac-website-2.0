@@ -34,6 +34,16 @@ export default function Game() {
   // Add a ref for background audio
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Add a cleanup effect to stop music when leaving the webpage
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
   const currentNode: Scene | undefined = Scenes.find(
     (node) => node.id === currentScene
   );
