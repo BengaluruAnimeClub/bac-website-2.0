@@ -13,6 +13,12 @@ const imagePaths: { [key: number]: string } = {
   104: "/images/game/placeholder.jpeg",
 };
 
+const musicPaths = [
+  "/music/game/take-me-anywhere.mp3",
+  "/music/game/to_the_moon.mp3",
+  "/music/game/to_zanarkand_64.mp3",
+];
+
 export default function Game() {
   // Single variable for fade duration in ms
   const fadeDuration = 700;
@@ -23,6 +29,7 @@ export default function Game() {
   const [fade, setFade] = useState("opacity-100");
   // New state to track mute status
   const [isMuted, setIsMuted] = useState(false);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
 
   // Add a ref for background audio
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -36,14 +43,26 @@ export default function Game() {
   }
 
   const handleOptionSelect = (nextScene: number, optionText: string) => {
-    // Start background MP3 on first click if not already playing
-    if (!audioRef.current) {
-      audioRef.current = new Audio('/music/game/to_zanarkand_64.mp3'); 
+    if (optionText === "Play Again") {
+      // Cycle to next song on "Play Again"
+      const newIndex = (currentSongIndex + 1) % musicPaths.length;
+      setCurrentSongIndex(newIndex);
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      audioRef.current = new Audio(musicPaths[newIndex]);
       audioRef.current.loop = true;
       audioRef.current.volume = 0.05; // set lower volume
+      audioRef.current.muted = isMuted;
+      audioRef.current.play().catch((error) => console.error("Audio play error:", error));
+    } else if (!audioRef.current) {
+      // Initialize audio if not already set
+      audioRef.current = new Audio(musicPaths[currentSongIndex]);
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.05;
+      audioRef.current.muted = isMuted;
       audioRef.current.play().catch((error) => console.error("Audio play error:", error));
     }
-    
     setFade("opacity-0");
     setTimeout(() => {
       setPreviousOptionText(optionText);
