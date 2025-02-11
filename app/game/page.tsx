@@ -134,7 +134,7 @@ export default function Game() {
             </button>
           ))}
 
-          {currentNode.id > 0 && (
+          {currentNode.id === 0 && (
             <button
               onClick={() => {
                 const newMuted = !isMuted;
