@@ -15,17 +15,17 @@ export interface Scene {
 export const Scenes: Scene[] = [
   {
     id: 0,
-    prefix: "",
+    prefix: ``,
     text: `Title Screen`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Start Game`, nextScene: 1 },
     ],
   },
   {
     id: 1,
-    prefix: "",
+    prefix: ``,
     text: `
 Jun had never particularly liked cherry blossoms.
 
@@ -86,8 +86,8 @@ Reina’s smile only deepened. *Kill me now, already.* “You don’t seem to li
 
 Hana looked for an out. This conversation was getting derailed, and more importantly so was her plan to confess to Jun. She certainly did not have a way with words, and would only blurt out more defensive silliness the longer she remained under siege.
     `,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Reina leaves Hana feeling unsure of herself; Hana turns back the way she came.`, nextScene: 3 },
       { text: `Hana walks past Reina`, nextScene: 4 },
@@ -96,7 +96,7 @@ Hana looked for an out. This conversation was getting derailed, and more importa
   },
   {
     id: 2,
-    prefix: "",
+    prefix: ``,
     text: `
 Jun waved at an approaching Hana. He stood beneath the old cherry tree, shifting his weight from one foot to the other. His palms were sweaty, and he kept glancing at his watch, though he already knew the time. Hana had called him out here—but why? Had he done something wrong? Did she need a favor? Or worse… was this some kind of prank?
 
@@ -142,7 +142,7 @@ He looked up and saw that Hana had
   },
   {
     id: 3,
-    prefix: "Hana hightails and runs. Reina shouts after her, “Oi!-” But whatever she was saying is lost in the wind. Hana slows her sprint into a jog and then finally comes to a stop.",
+    prefix: `Hana hightails and runs. Reina shouts after her, “Oi!-” But whatever she was saying is lost in the wind. Hana slows her sprint into a jog and then finally comes to a stop.`,
     text: `
 Hana kicked a stray pebble, the click echoing through the empty schoolyard. Lost. Utterly, hopelessly lost. Why did Reina always have to be so… Reina? Always there, a glint in her eye and a barbed comment on her tongue. "Hana, still struggling with basic equations?" Or, "That skirt's a little short, don't you think?" It wasn't the words themselves, but the way Reina's lips curved when she said them, like she was privy to some inside joke Hana wasn't in on.
 
@@ -150,7 +150,7 @@ Hana scowled, shoving her hands deeper into her pockets. She was supposed to be 
 
 Hana rounded the corner of the building and bumped straight into something… soft?
 `,
-    suffix: "Hana stumbles back slightly. “Ah! Hana, I’m so sorry! Are you okay?” Hana looks up to see Jun’s worried face staring at her.",
+    suffix: `Hana stumbles back slightly. “Ah! Hana, I’m so sorry! Are you okay?” Hana looks up to see Jun’s worried face staring at her.`,
     author: "Echo",
     options: [
       { text: `Hana gets nervous.`, nextScene: 7 },
@@ -159,10 +159,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 4,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 9 },
       { text: `Option 2`, nextScene: 2 },
@@ -170,10 +170,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 5,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 28 },
       { text: `Option 2`, nextScene: 3 },
@@ -181,10 +181,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 6,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 102 },
       { text: `Option 2`, nextScene: 101 },
@@ -192,10 +192,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 7,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 102 },
       { text: `Option 2`, nextScene: 11 },
@@ -203,10 +203,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 8,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 10 },
       { text: `Option 2`, nextScene: 101 },
@@ -214,10 +214,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 9,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 12 },
       { text: `Option 2`, nextScene: 10 },
@@ -226,10 +226,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 10,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 11 },
       { text: `Option 2`, nextScene: 27 },
@@ -238,10 +238,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 11,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 104 },
       { text: `Option 2`, nextScene: 103 },
@@ -249,10 +249,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 12,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 13 },
       { text: `Option 2`, nextScene: 14 },
@@ -260,10 +260,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 13,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 2 },
       { text: `Option 2`, nextScene: 6 },
@@ -271,10 +271,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 14,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 15 },
       { text: `Option 2`, nextScene: 16 },
@@ -282,10 +282,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 15,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 16 },
       { text: `Option 2`, nextScene: 17 },
@@ -293,10 +293,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 16,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 104 },
       { text: `Option 2`, nextScene: 18 },
@@ -304,10 +304,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 17,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 18 },
       { text: `Option 2`, nextScene: 20 },
@@ -315,10 +315,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 18,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 19 },
       { text: `Option 2`, nextScene: 20 },
@@ -326,10 +326,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 19,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 21 },
       { text: `Option 2`, nextScene: 22 },
@@ -337,10 +337,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 20,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 23 },
       { text: `Option 2`, nextScene: 24 },
@@ -348,10 +348,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 21,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 102 },
       { text: `Option 2`, nextScene: 25 },
@@ -359,10 +359,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 22,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 26 },
       { text: `Option 2`, nextScene: 101 },
@@ -370,10 +370,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 23,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 102 },
       { text: `Option 2`, nextScene: 101 },
@@ -381,10 +381,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 24,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 102 },
       { text: `Option 2`, nextScene: 22 },
@@ -392,10 +392,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 25,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 104 },
       { text: `Option 2`, nextScene: 103 },
@@ -403,10 +403,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 26,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 101 },
       { text: `Option 2`, nextScene: 102 },
@@ -414,10 +414,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 27,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 102 },
       { text: `Option 2`, nextScene: 101 },
@@ -425,10 +425,10 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 28,
-    prefix: "",
+    prefix: ``,
     text: `Passage`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Option 1`, nextScene: 17 },
       { text: `Option 2`, nextScene: 104 },
@@ -436,40 +436,40 @@ Hana rounded the corner of the building and bumped straight into something… so
   },
   {
     id: 101,
-    prefix: "",
+    prefix: ``,
     text: `Happy ending (medha): “A Love Fulfilled”`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Play Again`, nextScene: 0 },
     ],
   },
   {
     id: 102,
-    prefix: "",
+    prefix: ``,
     text: `Awkward ending (medha): “A Love Unspoken” `,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Play Again`, nextScene: 0 },
     ],
   },
   {
     id: 103,
-    prefix: "",
+    prefix: ``,
     text: `Twist ending (Manas): “An Unexpected Love” `,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Play Again`, nextScene: 0 },
     ],
   },
   {
     id: 104,
-    prefix: "",
+    prefix: ``,
     text: `Rival ending (Manas): “A Love That Got Away”`,
-    suffix: "",
-    author: "",
+    suffix: ``,
+    author: ``,
     options: [
       { text: `Play Again`, nextScene: 0 },
     ],
