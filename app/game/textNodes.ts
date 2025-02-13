@@ -470,12 +470,10 @@ Jun held her hands. "But I feel so weak."
 
 "How indeed." Reina pulled her hands away and looked down. "It's not something that bothers me anymore. Because I have more confidence now." She faced him again, smiling warmly. "If your heart breaks from yearning, I will be there to mend it."
 
-"What?"
-
--Can't wait for them to tone down the random encounter rate a second time and still have it be too damn high    
+"What?"    
     `,
     suffix: `Reina giggled.`,
-    author: ``,
+    author: `Can't wait for them to tone down the random encounter rate a second time and still have it be too damn high`,
     options: [
       { text: `Reina teases Jun about waiting`, nextScene: 15 },
       { text: `Reina offers Jun some unexpected advice`, nextScene: 16 },
@@ -625,95 +623,252 @@ For a breathless moment, the air around the cherry blossom tree feels charged wi
   {
     id: 21,
     prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    text: `The wind flows gently, providing the perfect romantic atmosphere. Jun stands there, deep in thought about what he’s going to witness in the next few moments. “Is she going to do it?” he thinks, while Hana is fiddling with her hand. Her face is as red as an apple, blushing like a heroine in a romcom anime, at least that’s what Jun thinks. She starts muttering something, “W-Will you..”. Jun barely hears her. “Will you g-go..”. Jun immediately realizes what’s about to happen. “Oh lord, is this it? Is this the moment of my popularity? I feel like the main character in a romcom anime!” Jun thinks to himself. “Ahh screw it, this isn’t like me. I’m just going to come out and say it. Will you go watch the new superhero movie with me?” Hana blurts it out. “Eh?” Jun stares at Hana, trying to understand what just happened. “Phew I finally said it. I didn’t want to come off as childish you know? I am so embarrassed to admit this but I still love superheroes” Hana says while chuckling shyly. Jun continues to stare like he’s a Buddha statue. A long awkward silence sets in. “Hellooo.. Earth to Jun! Are you listening?” Jun quickly snaps out of it, smiling awkwardly “O-Oh. Yes, s-sure heh heh”. “Wait a second, did you expect me to say something else?” Hana asks. “Huh? N-No, of course not!” Jun starts blushing. “Hehhh, is that so?” Hana playfully teases him.`,
+    suffix: `Hana and Jun stare at each other after what Hana just said. At this point`,
+    author: `Nanashibi`,
     options: [
-      { text: `Option 1`, nextScene: 102 },
-      { text: `Option 2`, nextScene: 25 },
+      { text: `Jun forces a laugh at what Hana just said`, nextScene: 102 },
+      { text: `Hana covers her face and runs away`, nextScene: 25 },
     ],
   },
   {
     id: 22,
-    prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    prefix: `Hana manages to speak, but her words are shaky. Jun listens intently, his face unreadable.`,
+    text: `
+The weather outside seems perfect for almost any activity. Jun has a tiny hint of excitement on his face as he remembered Hana had asked him to meet her by the ethereal cherry blossoms. He looks at Hana but it seems like she was fidgeting as though she was nervous to talk to him. 
+"How typical of her!", he thought to himself as he had a warm smile on the inside. Seeing her nervous to talk to him always made him feel serene, he believed she was the only one around who he could be himself. 
+Hana realised his presence, she couldn't keep her composure. She was never good at communicating her feelings to him, she could never understand the emotion behind his stoic face, which always flustered her. Hana was at a loss for words, she always felt cozy around Jun but Hana relied on understanding the facial expressions and body language of others while talking to others. Jun just nodded with a blank expression on his face.
+Hana had to muster up some courage to talk to him. She had to think quick. She brought herself back to the present, to see Jun still there. Hana turns red.    
+    `,
+    suffix: `In this awkward emotional standoff, who acts first?`,
+    author: `Aryan`,
     options: [
-      { text: `Option 1`, nextScene: 26 },
-      { text: `Option 2`, nextScene: 101 },
+      { text: `Jun`, nextScene: 26 },
+      { text: `Hana`, nextScene: 101 },
     ],
   },
   {
     id: 23,
     prefix: ``,
-    text: `Passage`,
+    text: `
+Hana smirks and waves her phone at Jun. "Did you really mean to send this to me?" she teases. “You’re so clumsy, Jun! But I guess that’s part of your appeal!” 
+Jun’s face reddens. “I’m sorry! That message was meant for someone else! I didn’t mean to send it to you, so can you please ignore it?” 
+“Oh… so are you saying I’m not your friend?” Hana pretends to be offended. Jun adjusts his collar nervously, wondering how he could have been so careless in who he sent the text to!
+ “Of course you’re my friend too! I just…” he tries to cover up. “I meant that it was meant for another friend, so…” 
+Hana laughs aloud. “I’m just kidding, Jun! Why are you so flustered?”
+She walks up to him and pats him on the back in a familiar manner. But a pat from Hana’s strong arms knocks the wind out of a normal person. Jun staggers forward from the impact of the hit. “Hana… you have no control over your own strength…” 
+“Sorry! Sorry!” Hana laughs louder and rubs the back of her head.
+“Anyway…Hana… about the text… please forget about it! I’m really sorry!” Jun is fixated on his mistake. He seems extra awkward around Hana. 
+Hana finds his behaviour extremely cute. She struggles to keep her heart under control as she observes Jun’s expressions and reactions. 
+“Wow Jun! It’s really not a big deal!” She reassures him. “You’re acting like you made a mistake in front of a girl you like!” 
+Hana says this lightheartedly, but her body feels like it is in a free fall. How will Jun react…?    
+    `,
     suffix: ``,
-    author: ``,
+    author: `Ila`,
     options: [
-      { text: `Option 1`, nextScene: 102 },
-      { text: `Option 2`, nextScene: 101 },
+      { text: `Jun says nothing, nervous`, nextScene: 102 },
+      { text: `Jun blushes, shy`, nextScene: 101 },
     ],
   },
   {
     id: 24,
-    prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    prefix: `Hana tries to pretend like everything is fine but she’s too much of an open book. She clutches her phone tightly and stares at the ground, unable to look Jun in the eye. The tension thickens.`,
+    text: `
+Hana stops abruptly, her breath catching, fingers nervously twisting the hem of her sleeve. Everything feels too quiet.
+
+Jun swallows, shifting anxiously. His lips part, hesitant, before he finally speaks. “Uh… Hana?” His voice is quiet, unsure, yet impossibly gentle.
+
+She exhales sharply, heat rising to her cheeks. “What?” The word slips out harsher than she means, but she doesn’t know how to take it back.
+
+The silence between them thickens, charged with something unspoken, something fragile yet overwhelming. She should tease him, roll her eyes, pretend this is nothing—but her hands won’t stop shaking.
+
+In the heavy silence that follows, every unspoken word hangs between them    
+    `,
+    suffix: `
+Jun took a deep breath and dove into a deep bow. "I’m so sorry! This must be so disappointing for you! I’m an absolute failure. I can’t do anything right. I’m always awkward and weird, and there’s just so much wrong with me as a person!"
+
+Hana stared at Jun, bowed before her, anxiety rising in her chest.
+    `,
+    author: `Rajesh`,
     options: [
-      { text: `Option 1`, nextScene: 102 },
-      { text: `Option 2`, nextScene: 22 },
+      { text: `Neither speak`, nextScene: 102 },
+      { text: `Jun remains silent`, nextScene: 22 },
     ],
   },
   {
     id: 25,
-    prefix: ``,
-    text: `Passage`,
+    prefix: `Hana runs with her hands covering her face. Not being able to see where she’s going, she bumps into someone. Reina watches as Hana stumbles into her, clearly flustered. "You again?" Reina sighs.`,
+    text: `
+Hana's eyes narrowed into a glare “What’s it to you?”
+
+Reina’s hand clenched into a fist. It wasn’t enough for this girl to storm into her life and take away the person she cared about the most. She had to be insufferable about it.
+
+Reina took a deep breath. Hana wasn’t the only one who could play that game.
+
+“You know you can just ask him to walk home with you, right?” Reina waved her hand in the direction of where Jun was. “Instead of just waiting for him to come out of class and ‘bumping’ into him every day.”
+
+Hana’s face flushed a deep red. “Why would I even want to–”
+
+Reina chuckled. "You’re really bad at this, you know?"
+
+Hana shot her a glare. "Excuse me?"
+
+"You act tough, but you can’t even say what you want to say." Reina smirked at her. "It’s so obvious it’s painful."
+
+She stepped closer, inches from Hana’s face. “If you want to make a move, you’d better do it soon. Otherwise someone else might be very interested in taking your place.”
+
+Hana’s eyes looked into hers for a second before she broke away. “Whatever,” she muttered. “See if I care.” She walked away, her footsteps cloud and angry.
+
+Reina frowned as she turned towards Jun under the cherry blossom tree.. This was supposed to make her feel better–but then why did she feel a knot in her stomach?
+    `,
     suffix: ``,
-    author: ``,
+    author: `wi0lono`,
     options: [
-      { text: `Option 1`, nextScene: 104 },
-      { text: `Option 2`, nextScene: 103 },
+      { text: `Reina runs towards Jun`, nextScene: 104 },
+      { text: `Reina runs towards Hana`, nextScene: 103 },
     ],
   },
   {
     id: 26,
     prefix: ``,
-    text: `Passage`,
+    text: `
+Jun interrupts Hana mid-sentence, his voice shaking. "Hana, before you say anything, I need to tell you something first."
+
+Hana blinked, her words caught in her throat. "What?"
+
+Jun nodded slowly, his eyes darting down to his shoes. His voice came out quieter than he intended. “But… Hana, before you say anything—" he paused, his voice cracking a bit—"I, um, I need to ask… What did you mean by it?”
+
+Hana blinked, caught off guard. “What?”
+
+“The note. You… you just slipped it onto my desk without saying anything. And it wasn’t exactly… clear.” He laughed awkwardly, rubbing the back of his neck. “I thought you were mad at me at first. You always leave notes when you’re mad at me.”
+
+“I do not!” Hana snapped, her cheeks flushing a deeper shade of pink. “And for your information, that was different!”
+
+Jun’s eyes widened. “So you were mad?”
+
+“No! I mean—ugh!” Hana pressed her palm to her forehead, clearly frustrated. “It wasn’t about that! Why would I write something like this just to be mad?”
+
+Jun looked at her, utterly bewildered but somehow determined to piece it together. “So… you weren’t mad. Then… you’re not trying to tell me off for something?”
+
+“No!” Hana’s voice was louder than she intended, and she bit her lip. *Why does he have to make this so difficult?!*
+    `,
     suffix: ``,
     author: ``,
     options: [
-      { text: `Option 1`, nextScene: 101 },
-      { text: `Option 2`, nextScene: 102 },
+      { text: `Jun stands confident`, nextScene: 101 },
+      { text: `Jun stands awkwardly`, nextScene: 102 },
     ],
   },
   {
     id: 27,
-    prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    prefix: `A talking cat suddenly appears near Jun and Hana under the cherry blossom tree. "What is with all this hesitation? Just confess already!" it says in an exasperated voice.`,
+    text: `
+Both Jun and Hana freeze. They turn in sync to look at the cat, and then back at each other.
+
+“C-c-c-confess!!” Hana exclaimed, turning away from Jun, hands covering her face. “W-w-who was going to confess!? Certainly not me!!” 
+
+“T-t-the cat just spoke!” Jun shouted at the same time. “Hana-chan, did you hear that?” 
+
+“Now, now,” the cat interjected, “Don’t speak all at once. It is hard to hear both of you.” It sat down and licked its paw.
+
+Jun took a few deep breaths, trying to calm himself down. After a few moments, he looked up, and saw Hana looking at the cat, her face slightly red. 
+
+“What are you?” Hana asked the cat, “How can you talk?”
+
+“I am Ryuji,” the cat replied, while continuing to groom itself. “And I am here to guide the two of you.”
+
+“Guide us?” Hana asked, puzzled. “Guide us to what?”
+
+“And why did you only show yourself now?” Jun continued. “What made this the correct time?”
+
+“Those are all excellent questions,” Ryuji said, sitting up on its paws. “I will answer them, but not now. What you need to do, Hana, is confess to Jun, like you’ve been planning for the past week. And Jun, you just have to follow your heart.”
+
+“I was going to ask Jun about… homework!” Hana shouted furiously. “I certainly wasn’t going to confess now!”
+
+“Tick tock,” Ryuji said, unphased. “I can’t wait for the two of you forever, you know”
+    `,
+    suffix: `Ryuji snickered, much like a Cheshire Cat, before leaping up and swiftly scaling the cherry blossom tree. The pair tried to follow the feline’s path, but the cat seemed to vanish among the pink petals. They glanced at each other, bewildered.`,
+    author: `Faust`,
     options: [
-      { text: `Option 1`, nextScene: 102 },
-      { text: `Option 2`, nextScene: 101 },
+      { text: `They both are thrown off by the appearance (and disappearance) of a talking cat`, nextScene: 102 },
+      { text: `Hana and Jun burst out laughing, breaking the tension`, nextScene: 101 },
     ],
   },
   {
     id: 28,
-    prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    prefix: `An argument slowly breaks out between the two.`,
+    text: `
+The heated argument between Hana and Reina cut through the quiet evening air. Junko, Hana’s friend, was still lingering near the dugout, flinching at the sharpness in Hana’s voice. She didn’t want to get involved—but the tension was building fast.
+
+Before she knew it, her legs moved on their own.
+
+She sprinted over, her breath catching as she grabbed Reina’s wrist, holding her back with ease. Reina tensed, glaring up at her.
+
+“Junko?” Reina huffed, eyes flashing with annoyance.
+
+Junko swallowed hard. “Stop it. Both of you.”
+
+Hana, arms crossed, shot a glance at Junko. “Stay out of this.”
+
+Junko’s grip tightened. “No. I won’t.” Her voice wavered, but she pushed through. “What’s going on?”
+
+Reina scoffed. “Oh, please. Do you really think Hana will explain?”
+
+Hana’s jaw clenched. Junko could see the frustration in her eyes—maybe even something else, something unspoken.
+
+Junko shifted slightly, standing between them now. “Then someone better start talking.”
+
+A tense silence followed.
+
+Then Hana exhaled, looking away. “It’s… just baseball stuff.”
+
+Reina’s smirk deepened. “Sure, if that’s what you want to call it.”
+
+Junko didn’t understand, not really. But she knew one thing—this fight wasn’t just about baseball. And she was stuck right in the middle of it.
+    `,
+    suffix: `Hana takes a deep breath, why was she fighting with Reina like this? At this point, she should calm herself and think logically. The best course of action would be-`,
+    author: `Vankot`,
     options: [
-      { text: `Option 1`, nextScene: 17 },
-      { text: `Option 2`, nextScene: 104 },
+      { text: `To run away`, nextScene: 17 },
+      { text: `To ask Junko to release Reina`, nextScene: 104 },
     ],
   },
   {
     id: 101,
-    prefix: ``,
-    text: `Happy ending (medha): “A Love Fulfilled”`,
+    prefix: `**“A Love Fulfilled”**`,
+    text: `
+The afternoon sun hung low in the sky, draping everything in gold, as though the world itself held its breath for what was about to unfold. Beneath the familiar tree, Hana and Jun stood, surrounded by the soft hum of cicadas and the whisper of the wind. Petals floated in lazy spirals around them, carried by a breeze that seemed almost sentient, curling between them like a thread tying two hearts together.
+
+Jun’s breath felt heavier in his chest, though the air around him was light and sweet, smelling faintly of cherry blossoms. He couldn’t quite tell if the warmth blooming in his chest was from the Sun or the way Hana was looking at him, her eyes wide and expectant, her lips slightly parted as though holding back words that were too precious to say out loud. He clutched his bag tighter, steadying himself.
+
+“I like you,” Jun said, his voice barely above a whisper, yet strong enough to shift the air between them. “I’ve liked you for a long time. Even if I didn’t know how to say it, even if I’ve probably messed up a hundred times trying to show it… it’s always been you.”
+
+Hana’s breath caught. For a moment, the world felt like it had tilted off its axis, leaving only the two of them suspended in this fragile, perfect moment. The wind wrapped around her like a soft embrace, and her heart ached in the best possible way.
+
+“You’re such an idiot,” she muttered, her voice trembling slightly. She looked down for a second, her fingers brushing against the hem of her skirt. “But… I like you too. I always have.”
+
+The breeze seemed to pick up, twirling around them in delight, scattering pink petals like confetti in celebration. Jun’s eyes lit up, a boyish grin spreading across his face, and for the first time, Hana saw him without his usual hesitations—a version of Jun she hadn’t known she was waiting for.
+
+
+A few steps away, Reina stood in the shadow of the tree, her arms crossed. Her usual calm expression remained, but her eyes betrayed her. The wind tugged at her hair as she watched the scene before her unfold, an ache rising in her chest. She had never put it into words before, but the feeling was unmistakable; sharp and soft all at once. *It was always more than a rivalry, wasn’t it?*
+
+The air carried a mix of bittersweetness and serenity, weaving it through her heart like the last notes of a song that had meant everything. Reina’s lips curled into a faint smile, though it didn’t quite reach her eyes. *This isn’t my ending, she thought, but it is theirs.*
+
+Hana glanced her way, their eyes locking briefly. There was no pity in Hana’s gaze, only a quiet understanding, a shared truth neither needed to speak aloud.
+
+
+Jun moved past Hana, his shoes crunching softly against the fallen petals. He turned at the edge of the path, the wind tossing his hair gently as though urging him forward. For a moment, he stood framed by the light, petals swirling around him, the very air shimmering with possibility.
+
+He smiled. Open, warm, and impossibly bright. His hand stretched out toward Hana, palm up, waiting. “Hana… let’s go.”
+
+The breeze whispered between them as Hana stepped forward, her fingers brushing against his before curling around them. His hand was warm, steady and reassuring, grounding her in a moment that felt both dreamlike and achingly real.
+
+They walked away together, the sunlight casting long shadows behind them, blending into the soft gold of dusk. The petals swirled in their wake like a final blessing, carried by the wind as if it, too, was ready to see them off on this new journey.
+
+Reina stayed under the tree for a little while longer, her heart settling with each breath. With a quiet sigh, she turned and walked in the opposite direction, the wind at her back, gently urging her on. Her story wasn’t over just yet, she was sure of it.
+
+But for Hana and Jun, this was the chapter they had been waiting for. A love fulfilled, carried on the wings of the wind and woven into the fabric of the air around them. Forever.
+    `,
     suffix: ``,
     author: ``,
     options: [
@@ -722,8 +877,42 @@ For a breathless moment, the air around the cherry blossom tree feels charged wi
   },
   {
     id: 102,
-    prefix: ``,
-    text: `Awkward ending (medha): “A Love Unspoken” `,
+    prefix: `**“A Love Unspoken”**`,
+    text: `
+The air hung thick with the scent of blossoms and something unspoken, swirling between them like a ghost of words too heavy to be said. Jun’s heart thrummed in his chest, loud enough that he wondered if Hana could hear it. He shifted his weight from one foot to the other, his eyes flickering between the petals at their feet and the horizon beyond the tree, anywhere but her face.
+
+“So,” Hana began, her voice a little too casual, her arms crossed defensively. “You got my note.” Jun nodded, his throat dry. “Yeah… I got it.” He cleared his throat, paused, eyes glued to his shoes. “Um… thanks?” Hana blinked. “Thanks?” Her brow furrowed as her fingers tightened around the strap of her bag. “It wasn’t- I mean, it wasn’t exactly something you say thanks for.”
+“Right.” Jun cleared his throat, still not looking up. “I… I just thought maybe it was… like, um, you were telling me something important?” His voice cracked slightly, and he winced.
+
+The wind picked up, swirling petals around them in slow spirals, almost as if trying to fill the uncomfortable silence that followed.
+
+Neither moved. 
+
+Neither spoke. 
+
+The air grew heavy, weighted with everything unsaid. Every question, every half-formed sentence they couldn’t bring themselves to finish. “I wasn’t mad,” Hana finally said, her tone softer now, her eyes flickering toward the tree branches above them. “If that’s what you were thinking…” Jun nodded again, his lips pressing into a thin line. “Oh. That’s good, I guess.”
+
+The wind whispered between them, its gentle tug urging them forward, but neither took a step.
+
+
+Not far away, Reina watched from her spot beneath another tree, her arms crossed. She had prepared herself for something dramatic, something she’d regret seeing. But as she stood there, she found herself oddly relieved. No grand confessions. No stolen kisses beneath the sunset. Just awkward silences and darting glances. 
+
+Reina exhaled slowly, her chest lightening with every breath. *‘Hana and Jun,’* she thought with a small, satisfied smile, *‘the most hopeless pair I’ve ever seen.’* Upon staring for a brief moment longer, Reina blinked in disbelief. *‘Wait..they kinda look like… cows,’* she thought, stifling a laugh, *‘two cows waiting to be beamed up into a UFO.’*
+
+
+Jun finally looked up, his eyes meeting Hana’s for a fleeting second before darting away again. “Well,” he said, rubbing the back of his neck. “I guess… I’ll see you in class?” “Yeah.” Hana nodded, her voice steady despite the tangle of emotions in her chest. “See you.” Jun turned and walked away, his steps just a bit too quick. Hana stood there for a moment, watching his retreating figure before letting out a long sigh. The breeze stirred the petals around her feet, and for a split second, she thought of calling out to him. But the moment passed, and the words stayed locked inside her chest.
+
+*‘Yup. Definitely cows,’* Reina thought, biting her lip to keep from laughing. Weird, awkward cows standing in a field, waiting for the aliens to take them home
+
+Reina watched Jun walk away, his pace a little too fast to be casual. Hana stood there, arms still crossed, looking vaguely like she’d just lost a staring contest with a tree.
+
+The wind picked up again, swirling petals between them like it had gotten bored and decided to play mediator. But even the wind couldn’t salvage this train wreck of ‘confession’.
+
+Reina exhaled slowly, shaking her head in disbelief. That was excruciating. But at least she’d gotten a front-row seat to what might have been the most awkward almost-confession in human history. “Cows,” she muttered to herself as she turned to leave, chuckling under her breath. “Weird, awkward cows.”
+
+
+For now, the tree stood as it always had, bearing witness to a love left unspoken—carried off in pieces by the wind, waiting for another day.
+    `,
     suffix: ``,
     author: ``,
     options: [
@@ -732,8 +921,58 @@ For a breathless moment, the air around the cherry blossom tree feels charged wi
   },
   {
     id: 103,
-    prefix: ``,
-    text: `Twist ending (Manas): “An Unexpected Love” `,
+    prefix: `**“An Unexpected Love”**`,
+    text: `
+Cherry blossoms are a symbol of impermanence. Like fondant roses on a cake, they decorate a brief slice of springtime only to scatter in the wind, gone as quickly as they came. They are as ephemeral as life itself; one might say they embody death, if anything. And yet, this stage play called life never closes the curtains for good. As the sakura bows out, other flowers take the stage to keep the show going on. She is the much-vaunted star of the show, yet in her absence one can better appreciate the beauty of these new actors, and the way they ensure the meadow is never devoid of colour and life.
+
+Such were Reina’s musings as she crouched low to the ground. *Why am I even thinking about all this, at a time like this?* She did her best to avert her gaze, unwilling to look Hana in the eye. A spectacular reversal of roles, this. Not one she was accustomed to playing. 
+
+A flash of pink caught her eye: not sakura, but something else, something deeper. She turned in its direction, careful to still keep her eyes away from Hana’s, and spotted a stand of pink lilies. Small and scarce they might have been in the grander scheme of the sakura grove, but inconspicuous they were not. The pink they brought into the mix was a uniquely colourful shade of their own that enriched the blushing landscape.
+
+*Ah, summer is already here, isn’t it?* Reina continued to stare at the lilies, transfixed. “Beautiful.”
+
+“Eh, who are you talking to?”
+
+Reina snapped back to reality instinctively, and before she knew it she was looking into Hana’s inquisitive eyes. *Damn it.* This was dangerous. Her suave demeanour had all but vanished, and she no longer held the upper hand here. She had to escape. Yet all she could do was stare.
+
+“Reina?”
+
+Hana’s eyes were filled with genuine concern. She had always been a genuine person, despite her failed attempts at pretending otherwise. It was what made teasing her fun, but now it felt...different. *This is dangerous. Wait, her eyes...were they always that colour?* The bluish grey was pleasant to rest one’s eyes on. A shade that enriched the landscape of Reina’s heart. *Wait what?!*
+
+“Reina...?”
+
+The opportunity for escape had long since passed. Now, only a painful extrication was possible. If she even wanted that. Reina looked up. *Spring has ended. Summer is here. Summer is...just as beautiful.* Her mind was made up. Seasons change, and so could she. She rose.
+
+“Oh finally, are you o— eh, Reina?”
+
+Hana tilted her head quizzically as Reina walked in the opposite direction. She expected to feel relief, but she was...disappointed?
+
+Reina stopped at one point and bent down to pick something up. She fiddled with the ground, and then something in her bag. Then she turned around.
+
+“Rei...na?”
+
+Three lilies stood in a makeshift paper bouquet. Reina’s expression was inscrutable as she held them and slowly walked towards her. The sight was so striking that everything else faded into the background for Hana — the cherry blossoms, the aghast expression of Jun in the distance, her own feelings of animosity towards Reina.
+
+Reina continued to make her way towards Hana with hesitant footsteps, until the two girls stood face to face, closer to each other than they’d ever been.
+
+Reina looked Hana straight in the eye. “I think...this *hana* is my favourite of them all.”
+
+Hana’s cheeks turned the colour of the lilies. Her mind was racing, but to nowhere in particular. She couldn’t process a single coherent thought. But she knew she had to answer Reina, and she decided to go with her gut.
+
+She gently grasped the bouquet to accept it. The light brush of fingertips surprised Reina, as did the hammering of her heart in response.
+
+Hana smiled. “You have always had a way with words, huh?”
+
+Reina blinked twice, and then returned the smile, albeit weakly. “You’re always kinda direct.”
+
+“Eh? Um, I’m so—”
+
+“I think...that’s a nice thing” Reina’s smile deepened. She stepped closer to Hana. “Want to put these in a vase or something?”
+
+Hana looked up, somehow feeling strangely liberated. “Yes, I think that would be a nice thing, too.”
+
+The lilies rippled in the winds of change, as if they were giggling to themselves about the unexpected love blossoming in front of their all-seeing eyes.
+    `,
     suffix: ``,
     author: ``,
     options: [
@@ -742,8 +981,39 @@ For a breathless moment, the air around the cherry blossom tree feels charged wi
   },
   {
     id: 104,
-    prefix: ``,
-    text: `Rival ending (Manas): “A Love That Got Away”`,
+    prefix: `**“A Love That Got Away”**`,
+    text: `
+Jun looks at his phone and breathes a sigh of relief. Hana had cancelled on him. He was afraid Hana would confess to him, but he had always only seen her as a friend. Just as he gets ready to leave, he hears a familiar voice call out to him! “Jun-Jun!” 
+
+“Reina!” Jun smiles as he watches Reina walk up to him. She moves elegantly, the confident air of a stage performer radiating from her. He appreciates her steady walk and proud face. 
+
+“Jun-Jun!” She reaches him. 
+
+“How did you know I was here, Reina?” Jun asks. 
+
+“I ran into Hana-tan on the way here! She told me you’d be here!” A smirk dances on Reina’s lips. She takes Jun’s hand as if it were the most natural thing in the world for her to do. “Jun-Jun, aren’t the cherry blossoms beautiful in the sunset? I know you don’t like them, but right now, in this moment, doesn’t it feel sublime?” 
+
+Jun looks around at the falling petals. His eyes follow one of them till it lands in the gentle breeze right onto Reina’s head. He raises his hand to brush it off her hair without thinking, but freezes when his fingers reach her. Reina’s is looking up at him with an intensity in her eyes. Her cheeks are flushed. Jun realises she looks beautiful in the setting sun, with the pink petals flowing all around her. His cheeks turn red. 
+
+“Jun-Jun… I like you. I’ve always liked you.. Will you go out with me?” 
+
+“Reina, I…”
+***
+Hana sends a text to Jun: *“Um actually something came up and I can’t make it to our meeting…”* 
+
+The tears start to pool in her eyes. Of course Jun does not like her! Of course Reina is a better match for him! 
+
+Hana struggles to hold her tears in and makes her way to the showers. As she’s entering the showers, her friend from the baseball club, Junko, who had stayed behind late to practice, notices her. “Oh, Hana! I thought you were busy today and didn’t stay back for sports! Why are you here?” 
+
+Hana stays silent. 
+
+“Hana… are you okay…?” Her friend looks at her with concern.
+
+
+Hana is unable to hold in her tears any longer and they start spilling out. She squats down on the floor and holds her head as she starts to weep. “I.. *hic*… I couldn’t confess my feelings to my c..*hic*..crush! It didn’t work out. He has someone else!” 
+
+Hana’s friend rushes to her side to console her. She holds her and rubs her back, waiting patiently as Hana cries her heart out. That’s just what heartbreak is – a love that got away, slipping through trembling fingers, never meant to be held.
+    `,
     suffix: ``,
     author: ``,
     options: [
