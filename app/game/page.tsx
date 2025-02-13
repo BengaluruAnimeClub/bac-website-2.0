@@ -6,10 +6,10 @@ import Image from 'next/image';
 import { Scenes, Scene, Option } from "./textNodes"; 
 
 const imagePaths: { [key: number]: string } = {
-  101: "/images/game/placeholder.jpeg",
-  102: "/images/game/placeholder.jpeg",
-  103: "/images/game/placeholder.jpeg",
-  104: "/images/game/placeholder.jpeg",
+  101: "/images/game/happy.webp",
+  102: "/images/game/awkward.webp",
+  103: "/images/game/twist.webp",
+  104: "/images/game/rival.webp",
 };
 
 const musicPaths = [
