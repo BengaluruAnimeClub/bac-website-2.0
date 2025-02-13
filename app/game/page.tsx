@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { Scenes, Scene, Option } from "./textNodes"; 
 
 const imagePaths: { [key: number]: string } = {
-  0: "/images/game/placeholder-title.jpeg",
   101: "/images/game/placeholder.jpeg",
   102: "/images/game/placeholder.jpeg",
   103: "/images/game/placeholder.jpeg",
@@ -92,9 +91,6 @@ export default function Game() {
           className={`flex-1 overflow-y-auto mb-2 transition-opacity ${fade}`} 
           style={{ transitionDuration: `${fadeDuration}ms` }}
         >
-          {currentNode.id === 0 && (
-            <center><b>Title Screen</b></center>
-          )}
 
           {currentNode.id > 0 && (
             <>
@@ -108,7 +104,14 @@ export default function Game() {
             </>
           )}
 
-          {(currentNode.id === 0 || currentNode.id > 100) && (
+          {currentNode.id === 0 && (
+            <video autoPlay muted loop className="mt-2 mb-2 rounded-xl mx-auto w-full lg:w-3/4">
+              <source src="/images/game/title.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          )}
+
+          {currentNode.id > 100 && (
               <Image 
                 src={imagePaths[currentNode.id]} 
                 alt="Scene Image" 
