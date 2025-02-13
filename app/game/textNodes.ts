@@ -97,13 +97,47 @@ Hana looked for an out. This conversation was getting derailed, and more importa
   {
     id: 2,
     prefix: "",
-    text: `Passage`,
-    suffix: "",
-    author: "",
+    text: `
+Jun waved at an approaching Hana. He stood beneath the old cherry tree, shifting his weight from one foot to the other. His palms were sweaty, and he kept glancing at his watch, though he already knew the time. Hana had called him out here—but why? Had he done something wrong? Did she need a favor? Or worse… was this some kind of prank?
+
+His mind raced through every possible scenario, each one more disastrous than the last. He could already hear her voice calling him an idiot, scolding him for something he didn’t even realize he had done. He tugged at his sleeves, rubbing the fabric between his fingers, trying to steady his nerves.
+
+Hana stormed across the schoolyard, her ponytail swinging behind her like an exclamation mark of rage. Jun immediately straightened up, forcing a shaky smile. He raised a hand to wave — then quickly dropped it when he saw the look on her face.
+
+"Hana?" he asked, voice cautious.
+
+She stopped a few steps away, glaring at him, but not saying a word.
+
+Jun shuffled awkwardly, fidgeting. "Uh… you called me here, right? Did something happen?"
+
+Something happened, all right. She had spent the entire night rehearsing what she wanted to say, only for her brain to betray her the second she saw his face. Stupid, stupid, stupid!
+
+She groaned, running a hand through her hair. "Forget it," she muttered, turning to leave.
+
+"W-wait!" Jun blurted, panicking. "Did I do something wrong? If it's about the lunch incident, I swear I didn’t mean to—"
+
+"Shut up!" she snapped, whirling around. She reached into her pocket, pulled out a crumpled piece of paper, and shoved it into his hand.
+
+Jun blinked down at it. "What’s this?"
+
+"Your problem now," she huffed, before spinning on her heel and marching away, her face burning.
+
+Jun stared at her retreating figure, then at the note in his hand.
+
+It had one word on it.
+
+‘Idiot.’ 
+    `,
+    suffix: `
+Jun stared at the paper. A little perplexed, a little lost. What on Earth?...
+
+He looked up and saw that Hana had
+    `,
+    author: "Raj",
     options: [
-      { text: `Option 1`, nextScene: 6 },
-      { text: `Option 2`, nextScene: 5 },
-      { text: `Option 3`, nextScene: 8 },
+      { text: `Walked away.`, nextScene: 6 },
+      { text: `Ran away.`, nextScene: 5 },
+      { text: `Began to tear up.`, nextScene: 8 },
     ],
   },
   {
@@ -119,8 +153,8 @@ Hana rounded the corner of the building and bumped straight into something… so
     suffix: "Hana stumbles back slightly. “Ah! Hana, I’m so sorry! Are you okay?” Hana looks up to see Jun’s worried face staring at her.",
     author: "Echo",
     options: [
-      { text: `Option 1`, nextScene: 7 },
-      { text: `Option 2`, nextScene: 8 },
+      { text: `Hana gets nervous.`, nextScene: 7 },
+      { text: `Hana gets flustered.`, nextScene: 8 },
     ],
   },
   {
