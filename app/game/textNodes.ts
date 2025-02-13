@@ -269,7 +269,7 @@ She hadn’t meant — she just —
 Her fists clenched.
     `,
     suffix: ``,
-    author: ``,
+    author: `Royale von akraman`,
     options: [
       { text: `Hana tries to push through with her confession despite the tense atmosphere`, nextScene: 102 },
       { text: `Hana runs away`, nextScene: 11 },
@@ -277,147 +277,349 @@ Her fists clenched.
   },
   {
     id: 8,
-    prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    prefix: `Jun could understand Hana was flustered. Something had happened. He knew he had to say something. Do something. Jun could only imagine if he was stronger, more assertive. Maybe things would be a little different. Jun could even envision it now.`,
+    text: `It had been a long day for Jun, he had spent most of it anxiously awaiting the school bell. The moment it rang he bolted towards the Sakura tree behind the school, today was the day Hana chan had asked him to meet her there. He knew that the tree was a well known confession spot in the school. “Hana wouldn’t really be interested in someone like me would she? She must have called me here to ask for a favour or maybe borrow my homework right?” thought Jun, but yet deep inside a part of him yearned to be proven wrong. As he arrived at the tree he found the area deserted. He was thankful that he wouldn’t have an audience to whatever was going to take place. He sat down underneath the tree and decided to wait for her. He kept waiting and waiting and waiting, an hour passed by and then another. He finally got up with a sigh, very sure that he had been stood up. Right as he was about to leave, he saw Hana slowly walking towards him. His heart skipped a beat. Just as he was about to cheerfully call out to her, he noticed her disheveled appearance. Her eyes were puffy as though she had just been crying and she looked exhausted. “You actually waited for me?” said Hana quietly as she looked up and saw Jun. “Of course I did, you asked me to” replied Jun awkwardly. Gathering up his courage and clearly worried for her he said “You don’t look so good is everything ok?”. “Yes….Um actually no” stammered Hana. “I just wanted to give you something I made but I dropped it. I then spent the last 2 hours trying to remake it in the home science classroom but failed at that too. Looks like I can’t do anything right” said Hana gloomily. Jun then noticed the brown batter stains on his uniform. “Did she just try to make me a chocolate cake because I happened to mention that it’s my fav flavour in passing last week?” thought Jun to himself as his heart fluttered. “Never say that about yourself, you are the coolest, most determined and nicest person I’ve ever met” said Jun as he scooped some of the cake batter off of her shirt. “This is delicious! Please tell me you haven’t thrown away whatever u tried to make yet!?” exclaimed Jun as he licked his finger. “My misshapen semi baked cake is still sitting in the home science room….How could u even like it?” exclaimed Hana as her face turned beet red. “No more questions and self doubt, we are going to the home science room to have the rest of your amazing cake!” said Jun assertively as he grabbed Hana’s hand and gently led her towards the classroom. They then spent the next hour eating half baked chocolate cake and just talking about all the funny incidents they had seen in school. When it was time to leave, they bid each other farewell and separated. Jun was surprised at the uncharacteristic confidence he had shown today but was happy for it. He felt he was finally a little closer to Hana.`,
+    suffix: `Jun shook his head. What on Earth? Hana is standing in front of him and what is he imagining in his own world? Jun took a deep breath. Jun should,`,
+    author: `Shreyas`,
     options: [
-      { text: `Option 1`, nextScene: 10 },
-      { text: `Option 2`, nextScene: 101 },
+      { text: `Talk to her`, nextScene: 10 },
+      { text: `Try and hold her hand`, nextScene: 101 },
     ],
   },
   {
     id: 9,
-    prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    prefix: `Reina tugs Hana to the side, glaring.`,
+    text: `
+“You...!” Reina hissed, her voice low but sharp. Her glare could cut glass.
+
+“What is your problem?” Hana snapped, yanking her hand free, defiant despite her flustered expression.
+
+“You’re my problem,” Reina spat. “Watching you trip over yourself like some clueless idiot every time Jun shows up is the most infuriating thing I’ve ever seen.”
+
+Hana’s face darkened. “If you’re so bothered, why don’t you look away?”
+
+“Maybe I would if it weren’t so pathetic,” Reina shot back. “He’s not a mind reader, Hana. Either speak up or stop staring like he’s a limited-edition collectible you can’t afford.”
+
+Silence thickened between them, the air electric.
+
+“Why do you care so much?” Hana demanded, eyes narrowing.
+
+Reina faltered, lips parting without a response. Frustration knotted in her chest.
+
+“…Just forget it,” she muttered, turning on her heel. But the heat in her cheeks betrayed her resolve.
+
+Reina's footsteps echoed as she stormed away, heart thudding louder with every step. Her fingers clenched into fists, nails biting into her palms. Why did Hana have to look at her like that — like she'd just uncovered something Reina herself hadn’t fully figured out?
+
+The crisp air stung her face, but it did nothing to cool the fire burning beneath her skin. It wasn’t just Hana’s cluelessness about Jun that grated on her nerves; it was something deeper, something Reina didn’t want to admit even to herself.
+
+“Wait.”
+
+Hana’s voice, sharp but uncertain, cut through the noise of her thoughts. Reina stopped in her tracks, reluctantly turning halfway.
+
+“What now?” she snapped, her tone harsher than intended.
+
+Hana stood firm, jaw set despite the faint flush on her cheeks. “You don’t get to just say all that and walk away like it’s nothing.”
+
+Reina’s lips curled into a bitter smirk. “What are you gonna do about it?”
+
+Hana crossed her arms, her gaze unwavering. “Maybe nothing. But you’re acting weird, and it’s annoying.”
+
+Reina laughed — short, humorless. “You’re one to talk.”
+
+They stared at each other, the tension crackling between them like static.
+
+For a fleeting moment, Reina considered saying something honest. But instead, she sighs. “Don’t waste my advice, Hana,” she smirks “Even if you’re too stubborn to thank me for it.”    
+    `,
+    suffix: `Hana feels fury boiling in her chest.`,
+    author: `hikari`,
     options: [
-      { text: `Option 1`, nextScene: 12 },
-      { text: `Option 2`, nextScene: 10 },
-      { text: `Option 3`, nextScene: 28 },
+      { text: `Hana decides to try and talk things out with Reina`, nextScene: 28 },
+      { text: `Hana ignores her and goes to Jun`, nextScene: 10 },
     ],
   },
   {
     id: 10,
-    prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    prefix: `Hana stands before Jun at the cherry blossom tree.`,
+    text: `
+The cherry blossoms floated gently in the breeze as Jun stood awkwardly under the tree, fidgeting with his sleeves. Jun’s stomach twisted. He wasn’t prepared for this.
+
+“H-Hana, um… is everything okay?” he asked hesitantly.
+
+She huffed. “Why do you care?”
+
+Jun panicked. “Oh! N-no reason! I mean, obviously I do care, but not in a weird way! Just, you know, in a normal, concerned-friend way!”
+
+Hana’s eye twitched. “Jun. Can you cut to the chase?”
+
+“I, um… I don’t know if it’s okay to ask you this,” he stammered, avoiding her gaze. “You have a lot of friends, so I’m sure you’re already in a group. But I thought I’d ask you anyway, since I don’t think anyone else will join me. It’s totally okay if you say no, though! I won’t mind at all. I just—”
+
+Hana cut him off. “Are you serious? Under the cherry blossom tree of all places, is where you want to ask if I wanted to do the group project with you?!!!!”
+
+“I know this isn’t the best place to ask,” Jun said, scratching the back of his neck, “but I thought it’d be weird to ask in front of your friends in class. So, uh, I figured I’d ask you here as it's generally empty.”
+
+Hana opened her mouth to rebuke him again, but just then, a cherry blossom petal floated down and landed directly on his nose. He tried to hold it in, but he couldn’t stop the sneeze. “Hakushon!”    
+    `,
+    suffix: `Hana looks at Jun with a blank expression. She decides to`,
+    author: `Debarka`,
     options: [
-      { text: `Option 1`, nextScene: 11 },
-      { text: `Option 2`, nextScene: 27 },
-      { text: `Option 3`, nextScene: 21 },
+      { text: `Turn away`, nextScene: 11 },
+      { text: `Stay and continue to listen`, nextScene: 27 },
+      { text: `Try and interrupt him`, nextScene: 21 },
     ],
   },
   {
     id: 11,
-    prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    prefix: `Hana runs with all her might. Just what was she doing? Reina sees Hana rush past.`,
+    text: `
+Reina follows Hana down the hallway and her footsteps are heard very loudly. She catches up to Hana and with a strong voice says. “You just left him there.”
+
+Hana turning around aggressively.... “So what?”
+
+Reina very upset/annoyed and understanding of Jun. “Jun was trying to talk to you. For once, he was being hones....trying to reach you. And you just???” She exhaled sharply. “Do you even know how much that hurt him?”
+
+Hana very annoyed herself, as though she isn't responsible for hurting Jun. “Tch. It’s not my fault if he gets his feelings hurt”
+
+Reina crossing her arms. “You don’t get it at all, do you?”
+
+Hana laughs. “Oh, please. Do you think you understand him better than I do?”
+
+“Obviously I do which is why I am here, don't you think what you did was unfair??” Reina shot back.... “At least I listen”
+
+Hana started to feel a rumble in her chest, but ignoring it she said “I never asked him to....” She stopped herself. The words felt wrong to her
+
+Reina looking at her realised, then sighing said “You’re scared, aren’t you?”
+
+Hana flustered tell her to “Shut up”
+
+Reina nodding her head. “You act tough, but when it actually matters, you don't have what it takes to confront him and what he is saying. Jun deserves better than that.....” making an angry face
+
+Hana clenching her fist. “…I never said he didn’t.” Her voice was quiet, she had nothing more to say
+
+Reina hesitated. But before she could say anything, Hana turned away.    
+    `,
+    suffix: `Hana sighs, her shoulders slumped. She turns to face Reina.`,
+    author: `Rahul`,
     options: [
-      { text: `Option 1`, nextScene: 104 },
-      { text: `Option 2`, nextScene: 103 },
+      { text: `“I guess you understand him better…”`, nextScene: 104 },
+      { text: `“I guess I don’t understand him at all, but... I think I’m starting to understand you.”`, nextScene: 103 },
     ],
   },
   {
     id: 12,
-    prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    prefix: `Unaware of whatever is happening between Hana and Reina, Jun waits alone under the tree. He’s getting nervous. Being hopelessly inexperienced in these matters, he picks up his phone to text someone for advice. But who can he turn to at a time like this?`,
+    text: `
+Jun slowly looked at his phone. Just a home screen. Jun’s thumb finger is resting on the bottom of the home screen as if he is about to touch some of the bottom-row apps there. Jun looked at his surroundings. A cool breeze is touching Jun’s body. Jun continued to look at his surroundings. The place is filled with so many cherry blossom trees. The petals are falling slowly and moving with the wind. It is the start of the new semester. Jun was used to his old school very much, he is about to start his new life here, but Jun isn’t feeling comfortable here. Jun is feeling out of place here, he just needs someone to support him. He opened the recent calls; calls with his sister and his childhood friends are in the top list and filled the entire screen. Jun tried to text his sister about the situation here. The text is still empty. Jun thought in his mind “I don’t think it will work”. Jun pressed back and now the contact list is there. Jun started a text with his childhood friend. Jun typed “I need your help”.    
+    `,
+    suffix: `Jun backspaced again. He stared at his phone, the text box as blank as his mind. In a moment like this, who can he even reach out to?`,
+    author: `vicky vishnu`,
     options: [
-      { text: `Option 1`, nextScene: 13 },
-      { text: `Option 2`, nextScene: 14 },
+      { text: `His friend`, nextScene: 13 },
+      { text: `His older sister`, nextScene: 14 },
     ],
   },
   {
     id: 13,
     prefix: ``,
-    text: `Passage`,
+    text: `
+Jun sat hunched on the edge of a splintering bench, his phone trembling slightly between his fingers. The message glared back at him with sterile reassurance: "Hana isn’t the type to stand you up. You have a chance." Words typed with casual confidence by someone unburdened by the oppressive machinery of doubt, someone oblivious to the churning gears within Jun’s chest.
+
+He inhaled sharply, as though the message contained air, not letters. A fleeting surge of relief rose within him, fragile and artificial, like a paper lantern adrift in a void indifferent to light. Even as he slid his phone into his pocket, the phantom of comfort retreated, leaving behind the residue of gnawing anxiety—an existential rot thriving in the sterile absence of true reassurance. "Man is sometimes extraordinarily, passionately, in love with suffering," Dostoevsky's words flickered uninvited in his mind, a cruel reflection of his own restless turmoil.
+
+And then he saw her.
+
+Hana emerged from the amorphous crowd, her figure distinct yet spectral, as though carved from the very fabric of his own delirium. Jun's heart convulsed with an irregular rhythm, an arrhythmic pulse both intimately his and entirely alien. His thoughts splintered, fragments crashing into each other with cruel precision: Was she smiling out of obligation? Did her steps falter because she regretted coming? The ground beneath him became treacherous, thin ice over an abyss of self-recrimination, threatening to collapse under the weight of his own existence.
+
+His limbs grew heavier with each step she took closer, as if the very air had conspired to betray him, thick and oppressive. The world did not narrow in focus on Hana; instead, it expanded grotesquely, every detail magnified to an unbearable clarity—the scraping of a shoe against concrete, the metallic cough of a distant car, the suffocating awareness of his own inadequacy—all woven into the tapestry of his unraveling composure. Reality itself seemed to mock him, an indifferent stage upon which his frailty was exposed, echoing Kafka's lament: "I am a cage, in search of a bird."
+
+And still, she walked toward him, indifferent to the maelstrom she conjured within the fragile edifice of his mind.    
+    `,
     suffix: ``,
-    author: ``,
+    author: `C`,
     options: [
-      { text: `Option 1`, nextScene: 2 },
-      { text: `Option 2`, nextScene: 6 },
+      { text: `Jun waves casually at Hana`, nextScene: 2 },
+      { text: `Jun walks towards Hana but falls flat on his face`, nextScene: 6 },
     ],
   },
   {
     id: 14,
     prefix: ``,
-    text: `Passage`,
-    suffix: ``,
+    text: `
+Jun walked away from the tree, disappointed. His sister was right. Hana would not have been so late if she really meant to meet him. He walks a few yards before he notices a figure leaning against the school building, Reina was leaning against a wall, deep in thought. She caught sight of him and perked up.
+
+"Oh, Jun-kun!"
+
+"Hey." Jun would normally be happy to see Reina, but he was forlorn over being stood up. Reina sauntered over, studying his expression with a finger on her chin.
+
+"What do we have here? Does the lover boy have troubles?"
+
+"Don't call me that." Jun gave a weak laugh.
+
+Reina put her hands over his cheeks, making him face her directly. Jun flinched at the sudden contact. Her hands were warm. 
+
+"You were waiting for Hana, weren't you?"
+
+Jun nodded solemnly. "Yeah, I was."
+
+Reina spoke while lightly shaking him. "It's fine. Jun-kun is trying his best. Give it your all, and in the end, if you figure out she's not the one? That's still going to strengthen your heart."
+
+Jun held her hands. "But I feel so weak."
+
+"I know what it's like to have an unrequited love. You're being so strong right now."
+
+"You do? How could a popular girl like you ever have an unrequited love?"
+
+"How indeed." Reina pulled her hands away and looked down. "It's not something that bothers me anymore. Because I have more confidence now." She faced him again, smiling warmly. "If your heart breaks from yearning, I will be there to mend it."
+
+"What?"
+
+-Can't wait for them to tone down the random encounter rate a second time and still have it be too damn high    
+    `,
+    suffix: `Reina giggled.`,
     author: ``,
     options: [
-      { text: `Option 1`, nextScene: 15 },
-      { text: `Option 2`, nextScene: 16 },
+      { text: `Reina teases Jun about waiting`, nextScene: 15 },
+      { text: `Reina offers Jun some unexpected advice`, nextScene: 16 },
     ],
   },
   {
     id: 15,
     prefix: ``,
-    text: `Passage`,
+    text: `
+Jun kept checking his watch at regular intervals, and kept adjusting his glasses, as the soft pink petals of cherry blossoms floated around him. He sighed and turned to leave. “I should get going, Reina.”
+
+Reina smirked, “So it finally hit you that she isn't coming.”
+
+“Wha..” Jun corrected his glasses “What do you mean?”
+
+“I mean- obviously she was never gonna come.”
+
+“But Hana's the one who called me.”
+
+“Maybe she forgot. You're just a teeny tiny part of her life.”
+
+“No... Not true. I'm.. I'm important to her.”
+
+“Says who?” Reina laughed.
+
+Jun tried to walk away.
+
+Reina followed behind him “Wait.”
+
+Jun turned back. “You're right. I should wait a bit longer.”
+
+“I meant to wait for me too. Don't just leave me here. Now keep walking dumbass.”
+
+Jun hesitated. “Do you really think Hana would've forgotten?”
+
+Reina sighed “Let me ask you this. Has Hana ever spoken to you during the holidays? No, right?”
+
+Reina continued “She only needs your help for exams. After that, you're forgotten. She has her own life, and you're not a part of it.”
+
+Reina added “She'll pretend you're important when she needs you. Once you're not useful, she throws you away.”
+
+Jun felt a lump in his throat.
+
+Reina moved closer and looked into his eyes with raised eyebrows “Do you want to waste your time waiting for someone like that?”
+
+“No..” he whispered.
+
+Behind him, Reina spotted Hana's blurry figure approaching. To make sure Jun wouldn't see, Reina put her arm around and guided him away.    
+    `,
     suffix: ``,
-    author: ``,
+    author: `Nitesh`,
     options: [
-      { text: `Option 1`, nextScene: 16 },
-      { text: `Option 2`, nextScene: 17 },
+      { text: `Jun listens to Reina’s advice`, nextScene: 16 },
+      { text: `Jun insists on waiting for Hana`, nextScene: 17 },
     ],
   },
   {
     id: 16,
     prefix: ``,
-    text: `Passage`,
+    text: `
+Jun stands there, his eyes distant, like he’s trying to piece together a puzzle with half the pieces missing. Reina watches him, expecting some kind of reaction—confusion, irritation, anything. But, as usual, he just… stands there.
+She clicks her tongue, crossing her arms. “You really are hopeless.”
+Jun blinks at her, his expression unreadable. Maybe he doesn’t even realize she’s insulting him. Maybe he does and just doesn’t care. Either way, the way he just exists—so timid, so awkward—makes something twist in her chest.
+Reina exhales sharply, like she’s trying to push the feeling away before it settles. It doesn’t work. Instead, a small, reluctant smile tugs at her lips.
+“…Maybe Hana isn’t the only idiot today.”
+Her voice is softer than she meant it to be, and that annoys her. But what annoys her more is that, for the first time, she’s starting to understand exactly why Hana acts like such a fool around this clueless guy.    
+    `,
     suffix: ``,
-    author: ``,
+    author: `Aditya Kudre`,
     options: [
-      { text: `Option 1`, nextScene: 104 },
-      { text: `Option 2`, nextScene: 18 },
+      { text: `Jun realizes Reina might have a point`, nextScene: 104 },
+      { text: `Jun realizes Hana isn’t the type to stand him up, he turns and leaves`, nextScene: 18 },
     ],
   },
   {
     id: 17,
-    prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    prefix: `Hana arrived out of breath. But Jun wasn’t there. She paused, her heart sinking. Why did it have to be this way? Why couldn’t it be different? Maybe… just maybe… in another universe, Jun would have called her here. Yes! Hana could see it clearly, as if it were real.`,
+    text: `
+“Haaah… made it finally.” Hana said, panting. But there was no Jun there.
+Her watch ticked 6:08pm. “Late.” She said, annoyed. “The "celebrity" wants something from me and he doesn’t even show up.” She decided to wait.
+Jun had been the moon of the school. Studious, fit, handsome, humble, charismatic, coming from a respected family. He lacked nothing, almost. He was almost too popular, and had seen its consequences. Something bugged him. Noone had ever shown romantic interest in him in his seventeen springs.
+He realized it recently. This "ideal image" had cannibalized his romantic chances. Girls around him always fell into 3 camps. First, the biggest camp: too nervous or captivated. Second: few who wanted the “popular boyfriend”. Third: saw him as a fake.
+"Something has to change." Jun thought. He decided to ask someone for advice. Someone who receives confessions regularly. But that someone apart from being confident, intelligent and social, must not like him. The only person he could think of was someone he "took the spotlight from", as she said, when he arrived in the school two years ago. Hana was the perfect candidate. She gave him the chills.
+Jun arrives moments later, sprinting. "Sorry Hana. The teacher ....". "Shut up. Just tell me why you called me." Hana interrupted. After a long silence, Jun took a deep breath and gathered his courage, which made Hana nervous. "I...I want your advice. Please. I don't know what to do. I...I want to find love."
+Hana was bracing for something big, she was still dumbfounded.    
+    `,
+    suffix: `Hana shook herself out of her delusions. What on Earth was she doing? She cleared her head and`,
+    author: `Ashu`,
     options: [
-      { text: `Option 1`, nextScene: 18 },
-      { text: `Option 2`, nextScene: 20 },
+      { text: `Goes closer to the tree and searches for him`, nextScene: 18 },
+      { text: `Pulls out her phone and goes around the tree`, nextScene: 20 },
     ],
   },
   {
     id: 18,
-    prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    prefix: `Jun is standing behind the tree, flustered and clearly out of breath.`,
+    text: `
+Jun hastily puts his flip phone behind his back, and sees Hana. He waves awkwardly, trying to act as normal as possible, "Hi Hana, did you need something?"
+"Hi... Hi Jun," chimes back a timid Hana. "Y-Yes, why yes. Actually... there is something I wanted to talk to you about." She continued "The thing is, I like, no love --", only to be rudely interrupted by a sudden gust of wind. The wind caused a shower of petals to suddenly fall from the Sakura tree. The two were suddenly blanked in petals. Hana twirls around, shaking off the petals from her sailor uniform. She reached out into her bag, and pulled out a notebook.
+"You... I think you left this behind." she continued, somewhat anxiously. The notebook had "Jun" penciled in rough lettering on the cover. She flipped through a few pages, revealing anime style artwork of a number of different girls, each one carrying what appeared to be a staff and with a stuffed animal. "I... I love... magical girl shows, just like you," continued Hana. "We are now in middle school... and I am scared of being made fun of... I told the others."
+"I'm so glad," she said, as she handed the book back to Jun. "I finally found someone I can talk to about my favorite genre with about". "What's your favorite? Mine is Pretty Cure!! Oh, but I love Madoka Magica too!!"
+Jun breathed a sigh of relief, and his anxiety faded away. "I'm more of a Cardcaptor Sakura fan myself."
+    `,
+    suffix: `Both of them giggle. Still remembering the phone behind his back,`,
+    author: `Nivi`,
     options: [
-      { text: `Option 1`, nextScene: 19 },
-      { text: `Option 2`, nextScene: 20 },
+      { text: `Jun calmly puts away his phone`, nextScene: 19 },
+      { text: `Jun quickly stuffs his phone in his pocket`, nextScene: 20 },
     ],
   },
   {
     id: 19,
     prefix: ``,
-    text: `Passage`,
+    text: `
+Hana’s heart raced. Why today? Her mind scrambled for answers, but the phone in his hand only deepened her uncertainty. Was he texting someone? Why did it make her feel sick?
+She clenched her fists, every small movement of his magnified in her mind. Say something. Anything. But she remained frozen. She couldn’t shake the feeling that things had shifted between them, that something was wrong.
+Jun stepped toward her. “I didn’t expect you today,” he said, his voice unsure.
+“I didn’t plan to come,” Hana replied, the words feeling foreign on her tongue.
+The silence stretched between them, heavy with all that was unsaid. Finally, Jun took a breath and spoke softly, “I’ve been thinking about us.”
+Hana’s heart skipped. She opened her mouth, but her thoughts tangled, unsure if she could trust the fragile hope rising within her.
+She looked at him, searching for truth. After what felt like an eternity wandering an empty mind, she whispered, “Maybe…”    
+    `,
     suffix: ``,
-    author: ``,
+    author: `FireflyAlibi`,
     options: [
-      { text: `Option 1`, nextScene: 21 },
-      { text: `Option 2`, nextScene: 22 },
+      { text: `She decides to trust her gut and speak her heart — she can’t let this moment slip away!`, nextScene: 21 },
+      { text: `She pauses and tries to compose her thoughts — she has to make this moment count!`, nextScene: 22 },
     ],
   },
   {
     id: 20,
     prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    text: `
+Hana beneath the sprawling cherry blossom tree has her gaze fixed expectantly on Jun. In that suspended moment, her phone buzzes—a sudden interruption to her careful observation of the boy. With a reluctant flicker of curiosity, she glances at the screen. A message from Jun, clearly dispatched by accident, reads: “Ugh… totally forgot the meeting details. And—oh, remind me to call Mom later.”
+
+Her cheeks burn a deep crimson, a mix of irritation and unspoken delight stirring within her. The mundane text, so far removed from the intimate exchanges she secretly craved, leaves her caught between scolding him for his carelessness and treasuring his unguarded authenticity. Hana’s tsundere nature rebels at the vulnerability this slip reveals, even as her inner thoughts spin with memories of his endearing awkwardness.
+
+For a breathless moment, the air around the cherry blossom tree feels charged with unsaid words and uncertain intentions. Jun shifts awkwardly, his anxious eyes darting to meet hers, silently pleading for understanding. Yet no confession is uttered—only the fragile tension of two hearts dancing on the edge of revelation, suspended in time and promise, before the scene fades into the twilight. The night air carries a faint hint of distant laughter and soft murmurs, mingling with the rustle of leaves—a reminder that life continues around them even as this moment trembles on the edge of possibility.    
+    `,
+    suffix: `Hana decides she should`,
+    author: `R`,
     options: [
-      { text: `Option 1`, nextScene: 23 },
-      { text: `Option 2`, nextScene: 24 },
+      { text: `Laugh and tease Jun about it`, nextScene: 23 },
+      { text: `Pretend like she doesn’t know a thing`, nextScene: 24 },
     ],
   },
   {
