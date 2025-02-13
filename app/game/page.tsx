@@ -81,6 +81,9 @@ export default function Game() {
     }, fadeDuration);
   };
 
+  // Determine the flex direction based on the current scene id
+  const flexDirection = currentNode.id >= 1 && currentNode.id <= 100 ? "flex-col" : "flex-row";
+
   return (
     <div className="container px-4 max-w-5xl py-6 lg:py-10">
       
@@ -146,8 +149,11 @@ export default function Game() {
           )}
 
         </div>
+        
+        {/* Options logic, for each scene category */} 
+        
         <div 
-          className={`flex flex-col lg:flex-row gap-2 justify-center transition-opacity ${fade}`} 
+          className={`flex flex-col lg:${flexDirection} gap-2 justify-center transition-opacity ${fade}`} 
           style={{ transitionDuration: `${fadeDuration}ms` }}
         >
 
