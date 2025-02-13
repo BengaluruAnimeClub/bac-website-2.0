@@ -160,45 +160,119 @@ Hana rounded the corner of the building and bumped straight into something… so
   {
     id: 4,
     prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    text: `
+Reina stepped in front of Hana just as she was about to slip past herl, arms crossed and a smirk playing on her lips. “Where do you think you’re going?” she asked, voice laced with amusement.  
+
+Hana barely spared her a glance. “None of your business,” she muttered, brushing past.  
+
+Reina easily fell into step beside her. “Oh? Then why are you in such a hurry?”  
+
+Hana’s shoulders tensed. She didn’t have time for this—not now. “I just have things to do.”  
+
+Reina let out a knowing hum. “Things, huh? You wouldn’t happen to be meeting Jun, would you?”  
+
+Hana faltered, her breath hitching for just a second before she scowled. “Why do you care?” she snapped, quickening her pace. “It’s not like it concerns you.”  
+
+Reina’s smirk widened. “Oh, but it does. Watching you squirm is the highlight of my day.”  
+
+Hana’s face burned. “You’re insufferable.”  
+
+“I try,” Reina said breezily, but there was something in her tone—something unreadable. 
+    `,
+    suffix: `Hana took a deep breath and turned to face Reina.`,
+    author: `Kushal Savit Choudhary`,
     options: [
-      { text: `Option 1`, nextScene: 9 },
-      { text: `Option 2`, nextScene: 2 },
+      { text: `“I can’t be even half as insufferable as you are.” Hana turns.`, nextScene: 9 },
+      { text: `“Maybe you’re the real insufferable one.” Hana leaves.`, nextScene: 2 },
     ],
   },
   {
     id: 5,
     prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    text: `
+(Hana walks down the road. Hana is absolutely clueless on what to do and sees a shadow in front)
+
+Hana looks slowly looks up trying to think Sane x
+
+Riena : Hey Hana, How are you (with a slight tremor in her voice)
+
+Hana : Riena hey! I'm fine... How are you ( trying to bring herself back)
+
+Riena : I'm fine. I wanted to talk to you about something..
+
+Hana : About what!? 
+
+Riena : About what happened earlier...
+
+Hana : what Happened? Can we talk later I gotta go
+
+Riena : Come on Hana!! You know what I'm talking about 
+
+Hana : We can talk later, Riena! I'm busy right now
+
+Hana tries to walk away 
+
+Riena holds her hand. Hana Looks up at Riena, surprised and slightly shocked. Riena realising what she has done leaves her hand. 
+    `,
+    suffix: `Hana decides that the best course of action now would be`,
+    author: `Enigma`,
     options: [
-      { text: `Option 1`, nextScene: 28 },
-      { text: `Option 2`, nextScene: 3 },
+      { text: `Fight`, nextScene: 28 },
+      { text: `Flight`, nextScene: 3 },
     ],
   },
   {
     id: 6,
     prefix: ``,
-    text: `Passage`,
-    suffix: ``,
-    author: ``,
+    text: `
+Hana turns and  leaves flustered and perturbed after that botched confession. She wasn't even able to get her feelings across. Jun follows after her. He catches her and steels himself. “Actually, Hana-” he starts, “The truth is… I… I didn’t completely- I mean, but… the thing is….”
+
+Jun, visibly nervous, his palms were sweaty, knees weak, arms are heavy due to the nervous state he’s in. “And? And what? What did you want to say?” Hana asks in a soft, yet grumpy tone, turning around to face him, anxious about his response.
+
+“I am not the best at framing words Hana, though you know that by now. So, I uh… I do not know what to say to you when it comes to something like this either.” Jun replies, his voice breaking due to the overwhelming tension between them. Hana pulls away from him, breaking free from his grip, her eyes swelling up with tears. She turns around and walks away, afraid to hear the next words coming out of Jun out of fear of her imminent rejection.
+
+“Wait hold on…” Jun says, trying to grab her again. “If you’re gonna reject me then don’t!! At least let me prepare myself for it” Hana says in a loud sharp tone, her eyes tearing up. “That’s not what I was going to do Hana” Jun screams at the top of his lungs, shocking Hana. “Then what?” Hana asks, as she stops walking away, “What were you gonna say…..?” 
+    `,
+    suffix: `Jun hesitantly reaches out a hand. Hana doesn’t stop him when their fingers touch. He slowly grasps her hand in his.`,
+    author: `Anemo`,
     options: [
-      { text: `Option 1`, nextScene: 102 },
-      { text: `Option 2`, nextScene: 101 },
+      { text: `Jun leads Hana by the hand to the blossom tree.`, nextScene: 102 },
+      { text: `Hana timidly leads Jun to the blossom tree.`, nextScene: 101 },
     ],
   },
   {
     id: 7,
-    prefix: ``,
-    text: `Passage`,
+    prefix: `Hana stammers out, “It’s not like an idiot like you would get why it-”`,
+    text: `
+The words had barely left her mouth before Hana’s stomach twisted with regret. That wasn’t how she’d meant to say it. That wasn’t how it was supposed to go at all.
+
+A second passed. Then another. Jun just stood there, staring at her with wide, stunned eyes. His fingers twitched at his sides like he wanted to grab onto something. Or maybe — maybe he wanted to grab onto her.
+
+No. No, no, no. She couldn't stand here and watch this moment stretch into something unbearable. Heat crawled up her neck, pooling behind her ears, and before she could think better of it, her feet were already moving. “Forget it,” she muttered, turning on her heel. “Just—forget I said anything.”
+
+She barely made it two steps before a hand shot out, hesitating just before touching her sleeve.
+
+“Hana, wait.”
+
+His voice was quiet. Pleading.
+
+It only made her chest tighten worse.
+
+“Don’t,” she snapped, wrenching her arm away before he could make the mistake of holding on.
+
+Jun flinched, recoiling as if she’d struck him. His gaze flickered downward, shoulders curling in like she’d just confirmed whatever fear had been gnawing at him.
+
+Hana’s throat went dry.
+
+She hadn’t meant — she just —
+
+Her fists clenched.
+    `,
     suffix: ``,
     author: ``,
     options: [
-      { text: `Option 1`, nextScene: 102 },
-      { text: `Option 2`, nextScene: 11 },
+      { text: `Hana tries to push through with her confession despite the tense atmosphere`, nextScene: 102 },
+      { text: `Hana runs away`, nextScene: 11 },
     ],
   },
   {
