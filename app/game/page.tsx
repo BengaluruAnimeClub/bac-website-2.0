@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { useState, useEffect, useRef } from "react";
 import Image from 'next/image';
 import { Scenes, Scene, Option } from "./textNodes"; 
+import ReactMarkdown from "react-markdown";
 
 const imagePaths: { [key: number]: string } = {
   101: "/images/game/happy.webp",
@@ -82,9 +83,6 @@ export default function Game() {
 
   return (
     <div className="container px-4 max-w-5xl py-6 lg:py-10">
-      {/* <h1 className="block font-black text-4xl lg:text-5xl text-center mb-10">
-        BAC Love Story
-      </h1> */}
       
       <div className="flex flex-col mx-auto p-4 border-4 border-solid border-[#f05a78] rounded-xl lg:w-3/4">
         <div 
@@ -94,13 +92,31 @@ export default function Game() {
 
           {currentNode.id > 0 && (
             <>
-              <center>
-                <b>Scene #{currentNode.id}</b>
-                {previousOptionText && (
-                  <p><i>Previously selected: {previousOptionText}</i></p>
-                )}
-              </center>
-              <p style={{ whiteSpace: 'pre-line' }}>{currentNode.text}</p>
+              <div className="mb-2">
+                <center>
+                  <b>Scene #{currentNode.id}</b>
+                  {previousOptionText && (
+                    <p><i>Previously selected: {previousOptionText}</i></p>
+                  )}
+                </center>
+              </div>
+
+              {currentNode.prefix && <ReactMarkdown className="prose" children={currentNode.prefix} />}
+
+              <div id="text-mobile-view" className="block md:hidden">
+                {currentNode.prefix && <hr className="border-[#f05a78] my-4 mt-4 mb-4" />}
+                {currentNode.text && <ReactMarkdown className="prose" children={currentNode.text} />}
+                {currentNode.author && <p style={{ whiteSpace: 'pre-line', textAlign: 'center' }}>— <i>{currentNode.author}</i></p>}
+                {currentNode.text && <hr className="border-[#f05a78] my-4 mt-4 mb-4" />}
+              </div>
+
+              <div id="text-desktop-view" className="p-4 mt-4 mb-4 border-2 border-[#fbd3d6] rounded-xl hidden md:block">
+                {currentNode.text && <ReactMarkdown className="prose" children={currentNode.text} />}
+                {currentNode.author && <p style={{ whiteSpace: 'pre-line', textAlign: 'center' }}>— <i>{currentNode.author}</i></p>}
+              </div>
+
+              {currentNode.suffix && <ReactMarkdown className="prose" children={currentNode.suffix} />}
+
             </>
           )}
 
