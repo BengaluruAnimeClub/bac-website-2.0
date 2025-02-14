@@ -127,7 +127,7 @@ export default function Game() {
                 {currentNode.text && <hr className="border-[#f05a78] my-4 mt-4 mb-4" />}
               </div>
 
-              <div id="text-desktop-view" className="p-4 mt-4 mb-4 border-2 border-[#fbd3d6] rounded-xl hidden md:block">
+              <div id="text-desktop-view" className={currentNode.id > 100 ? "" : "p-4 mt-4 mb-4 border-2 border-[#fbd3d6] rounded-xl hidden md:block"}>
                 {currentNode.text && <ReactMarkdown className="prose" children={currentNode.text} />}
                 {currentNode.author && 
                 <div className="mt-2">
