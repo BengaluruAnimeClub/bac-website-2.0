@@ -98,7 +98,7 @@ export default function Game() {
               <div className="mb-2">
                 <center>
                   <b>Scene #{currentNode.id}</b>
-                  {previousOptionText && (
+                  {previousOptionText && currentNode.id < 100 && (
                     <p><i>Previously selected: {previousOptionText}</i></p>
                   )}
                 </center>
@@ -107,7 +107,9 @@ export default function Game() {
               {currentNode.prefix && (
                 currentNode.id > 100 ? 
                   <div className="flex justify-center">
-                    <ReactMarkdown className="prose text-center" children={currentNode.prefix} />
+                    <b>
+                      <ReactMarkdown className="prose text-center" children={currentNode.prefix} />
+                    </b>
                   </div>
                 :
                   <ReactMarkdown className="prose" children={currentNode.prefix} />
