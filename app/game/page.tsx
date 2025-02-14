@@ -89,6 +89,9 @@ export default function Game() {
   const flexDirection = currentNode.id >= 1 && currentNode.id <= 100 ? "flex-col" : "flex-row";
 
   return (
+    <>
+    <div ref={previousOptionRef}></div>
+
     <div ref={containerRef} className="container px-4 max-w-5xl py-6 md:py-10">
       
       <div className="flex flex-col mx-auto p-4 border-4 border-solid border-[#f05a78] rounded-xl md:w-3/4">
@@ -103,7 +106,7 @@ export default function Game() {
                 <center>
                   {/* <b>Scene #{currentNode.id}</b> */}
                   {previousOptionText && currentNode.id < 100 && currentNode.id > 1 && (
-                    <p ref={previousOptionRef} className="px-2 md:px-8">
+                    <p className="px-2 md:px-8">
                       <b>
                       <i className="text-[#f05a78]">Previously selected: </i>
                       <i>{previousOptionText}</i>
@@ -232,5 +235,6 @@ export default function Game() {
         </div>
       </div>
     </div>
+    </>
   );
 }
