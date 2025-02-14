@@ -240,8 +240,6 @@ export default function Game() {
           {[101, 102, 103, 104].includes(currentNode.id) && (
             <a
               href="/blog/bac-love-story"
-              target="_blank"
-              rel="noopener noreferrer"
               className="px-4 py-2 bg-purple-600 text-white text-center text-base cursor-pointer rounded-md transition-colors hover:bg-purple-700 active:scale-90"
             >
               Game Credits
