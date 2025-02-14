@@ -835,7 +835,7 @@ Junko didn’t understand, not really. But she knew one thing—this fight wasn�
   },
   {
     id: 101,
-    prefix: `**“A Love Fulfilled”**`,
+    prefix: `“A Love Fulfilled”`,
     text: `
 The afternoon sun hung low in the sky, draping everything in gold, as though the world itself held its breath for what was about to unfold. Beneath the familiar tree, Hana and Jun stood, surrounded by the soft hum of cicadas and the whisper of the wind. Petals floated in lazy spirals around them, carried by a breeze that seemed almost sentient, curling between them like a thread tying two hearts together.
 
@@ -877,7 +877,7 @@ But for Hana and Jun, this was the chapter they had been waiting for. A love ful
   },
   {
     id: 102,
-    prefix: `**“A Love Unspoken”**`,
+    prefix: `“A Love Unspoken”`,
     text: `
 The air hung thick with the scent of blossoms and something unspoken, swirling between them like a ghost of words too heavy to be said. Jun’s heart thrummed in his chest, loud enough that he wondered if Hana could hear it. He shifted his weight from one foot to the other, his eyes flickering between the petals at their feet and the horizon beyond the tree, anywhere but her face.
 
@@ -921,7 +921,7 @@ For now, the tree stood as it always had, bearing witness to a love left unspoke
   },
   {
     id: 103,
-    prefix: `**“An Unexpected Love”**`,
+    prefix: `“An Unexpected Love”`,
     text: `
 Cherry blossoms are a symbol of impermanence. Like fondant roses on a cake, they decorate a brief slice of springtime only to scatter in the wind, gone as quickly as they came. They are as ephemeral as life itself; one might say they embody death, if anything. And yet, this stage play called life never closes the curtains for good. As the sakura bows out, other flowers take the stage to keep the show going on. She is the much-vaunted star of the show, yet in her absence one can better appreciate the beauty of these new actors, and the way they ensure the meadow is never devoid of colour and life.
 
@@ -981,7 +981,7 @@ The lilies rippled in the winds of change, as if they were giggling to themselve
   },
   {
     id: 104,
-    prefix: `**“A Love That Got Away”**`,
+    prefix: `“A Love That Got Away”`,
     text: `
 Jun looks at his phone and breathes a sigh of relief. Hana had cancelled on him. He was afraid Hana would confess to him, but he had always only seen her as a friend. Just as he gets ready to leave, he hears a familiar voice call out to him! “Jun-Jun!” 
 
