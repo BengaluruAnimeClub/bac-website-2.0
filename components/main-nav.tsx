@@ -57,7 +57,7 @@ export function MainNav() {
           pathname === "/art" ? "text-foreground" : "text-foreground/60"
         )}
       >
-        Art <sup>new</sup>
+        Art
       </Link>
       <Link
         href="/gallery"
@@ -66,7 +66,7 @@ export function MainNav() {
           pathname === "/gallery" ? "text-foreground" : "text-foreground/60"
         )}
       >
-        Gallery <sup>new</sup>
+        Gallery
       </Link>
       <Link
         href="/terumin"
@@ -75,7 +75,16 @@ export function MainNav() {
           pathname === "/terumin" ? "text-foreground" : "text-foreground/60"
         )}
       >
-        Terumin <sup>new</sup>
+        Terumin
+      </Link>
+      <Link
+        href="/game"
+        className={cn(
+          "text-sm font-medium transition-colors hover:text-primary hidden sm:inline-block",
+          pathname === "/game" ? "text-foreground" : "text-foreground/60"
+        )}
+      >
+        Love Story (Game)
       </Link>
       <Link
         href="/socials"

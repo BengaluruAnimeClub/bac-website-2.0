@@ -40,10 +40,10 @@ export default function Home() {
               Join BAC
             </Link>
             <Link
-                href="/past-events/bac-rewind-2024"
+                href="/game"
                 className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-fit")}
               >
-              BAC Rewind 2024 🎬
+              Love Story (Game)
             </Link>
           </div>
         </div>
@@ -66,10 +66,10 @@ export default function Home() {
 
           <div className="flex flex-row gap-4 justify-center">
             <Link
-                href="/past-events/bac-rewind-2024"
+                href="/game"
                 className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-fit")}
               >
-              BAC Rewind 2024 🎬
+              Love Story (Game)
             </Link>
           </div>
         </div>
