@@ -157,9 +157,9 @@ export default function Game() {
               <Image 
                 src={imagePaths[currentNode.id]} 
                 alt="Scene Image" 
-                width={500}
-                height={300}
-                className="mt-4 mb-4 rounded-xl mx-auto w-full md:w-1/2" 
+                width={600} 
+                height={360}
+                className="mt-4 mb-4 rounded-xl mx-auto w-full md:w-3/4" 
               />
           )}
 
