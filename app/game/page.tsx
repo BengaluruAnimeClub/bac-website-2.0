@@ -113,18 +113,18 @@ export default function Game() {
                 currentNode.id > 100 ? 
                   <div className="flex justify-center">
                     <b>
-                      <ReactMarkdown className="prose text-center text-xl" children={currentNode.prefix} />
+                      <ReactMarkdown className="prose dark:prose-invert text-center text-xl" children={currentNode.prefix} />
                     </b>
                   </div>
                 :
-                  <ReactMarkdown className="prose text-justify" children={currentNode.prefix} />
+                  <ReactMarkdown className="prose dark:prose-invert text-justify" children={currentNode.prefix} />
               )}
               { currentNode.prefix && currentNode.id > 100 && (<br className="hidden md:block" />) }
 
               <div id="text-mobile-view" className="mx-auto block md:hidden px-0">
                 {currentNode.prefix && currentNode.id < 100 && <hr className="border-[#f05a78] my-4 mt-4 mb-4" />}
                 {currentNode.prefix && currentNode.id > 100 && <br/>}
-                {currentNode.text && <ReactMarkdown className="prose text-justify" children={currentNode.text} />}
+                {currentNode.text && <ReactMarkdown className="prose dark:prose-invert text-justify" children={currentNode.text} />}
                 {currentNode.author && 
                 <div className="mt-2">
                 <p style={{ whiteSpace: 'pre-line', textAlign: 'center' }}>— <i>{currentNode.author}</i></p>
@@ -134,7 +134,7 @@ export default function Game() {
               </div>
 
               <div id="text-desktop-view" className={currentNode.id > 100 || (currentNode.prefix === "" && currentNode.suffix === "") ? "mx-auto px-4 py-4" : "mx-auto px-4 p-4 mt-4 mb-4 border-2 border-[#fbd3d6] rounded-xl hidden md:block"}>
-                {currentNode.text && <ReactMarkdown className="prose text-justify" children={currentNode.text} />}
+                {currentNode.text && <ReactMarkdown className="prose dark:prose-invert text-justify" children={currentNode.text} />}
                 {currentNode.author && 
                 <div className="mt-2">
                 <p style={{ whiteSpace: 'pre-line', textAlign: 'center' }}>— <i>{currentNode.author}</i></p>
@@ -142,7 +142,7 @@ export default function Game() {
                 }
               </div>
 
-              {currentNode.suffix && <ReactMarkdown className="prose text-justify" children={currentNode.suffix} />}
+              {currentNode.suffix && <ReactMarkdown className="prose dark:prose-invert text-justify" children={currentNode.suffix} />}
 
             </>
           )}
