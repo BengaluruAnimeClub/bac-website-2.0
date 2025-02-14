@@ -116,7 +116,8 @@ export default function Game() {
               )}
 
               <div id="text-mobile-view" className="block md:hidden">
-                {currentNode.prefix && <hr className="border-[#f05a78] my-4 mt-4 mb-4" />}
+                {currentNode.prefix && currentNode.id < 100 && <hr className="border-[#f05a78] my-4 mt-4 mb-4" />}
+                {currentNode.prefix && currentNode.id > 100 && <br/>}
                 {currentNode.text && <ReactMarkdown className="prose" children={currentNode.text} />}
                 {currentNode.author && 
                 <div className="mt-2">
