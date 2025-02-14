@@ -124,6 +124,16 @@ export default function Game() {
                   </ReactMarkdown>
               )}
 
+              {currentNode.id > 100 && (
+                  <Image 
+                    src={imagePaths[currentNode.id]} 
+                    alt="Scene Image" 
+                    width={600} 
+                    height={360}
+                    className="mt-4 mb-0 rounded-xl mx-auto w-full md:w-3/4" 
+                  />
+              )}
+
               <div id="text-mobile-view" className="mx-auto block md:hidden px-0">
                 {currentNode.prefix && currentNode.id < 100 && <hr className="border-[#f05a78] my-4 mt-4 mb-4" />}
                 {currentNode.prefix && currentNode.id > 100 && <br/>}
@@ -167,16 +177,6 @@ export default function Game() {
               <source src="/images/game/title.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
-          )}
-
-          {currentNode.id > 100 && (
-              <Image 
-                src={imagePaths[currentNode.id]} 
-                alt="Scene Image" 
-                width={600} 
-                height={360}
-                className="mt-4 mb-4 rounded-xl mx-auto w-full md:w-3/4" 
-              />
           )}
 
         </div>
