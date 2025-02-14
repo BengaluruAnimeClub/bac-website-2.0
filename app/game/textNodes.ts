@@ -998,7 +998,7 @@ Jun looks around at the falling petals. His eyes follow one of them till it land
 “Jun-Jun… I like you. I’ve always liked you.. Will you go out with me?” 
 
 “Reina, I…”
-***
+
 Hana sends a text to Jun: *“Um actually something came up and I can’t make it to our meeting…”* 
 
 The tears start to pool in her eyes. Of course Jun does not like her! Of course Reina is a better match for him! 
@@ -1008,7 +1008,6 @@ Hana struggles to hold her tears in and makes her way to the showers. As she’s
 Hana stays silent. 
 
 “Hana… are you okay…?” Her friend looks at her with concern.
-
 
 Hana is unable to hold in her tears any longer and they start spilling out. She squats down on the floor and holds her head as she starts to weep. “I.. *hic*… I couldn’t confess my feelings to my c..*hic*..crush! It didn’t work out. He has someone else!” 
 
