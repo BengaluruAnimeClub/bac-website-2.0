@@ -112,13 +112,13 @@ export default function Game() {
                     </b>
                   </div>
                 :
-                  <ReactMarkdown className="prose" children={currentNode.prefix} />
+                  <ReactMarkdown className="prose text-justify" children={currentNode.prefix} />
               )}
 
               <div id="text-mobile-view" className="block md:hidden">
                 {currentNode.prefix && currentNode.id < 100 && <hr className="border-[#f05a78] my-4 mt-4 mb-4" />}
                 {currentNode.prefix && currentNode.id > 100 && <br/>}
-                {currentNode.text && <ReactMarkdown className="prose" children={currentNode.text} />}
+                {currentNode.text && <ReactMarkdown className="prose text-justify" children={currentNode.text} />}
                 {currentNode.author && 
                 <div className="mt-2">
                 <p style={{ whiteSpace: 'pre-line', textAlign: 'center' }}>— <i>{currentNode.author}</i></p>
@@ -128,7 +128,7 @@ export default function Game() {
               </div>
 
               <div id="text-desktop-view" className={currentNode.id > 100 ? "" : "p-4 mt-4 mb-4 border-2 border-[#fbd3d6] rounded-xl hidden md:block"}>
-                {currentNode.text && <ReactMarkdown className="prose" children={currentNode.text} />}
+                {currentNode.text && <ReactMarkdown className="prose text-justify" children={currentNode.text} />}
                 {currentNode.author && 
                 <div className="mt-2">
                 <p style={{ whiteSpace: 'pre-line', textAlign: 'center' }}>— <i>{currentNode.author}</i></p>
@@ -136,7 +136,7 @@ export default function Game() {
                 }
               </div>
 
-              {currentNode.suffix && <ReactMarkdown className="prose" children={currentNode.suffix} />}
+              {currentNode.suffix && <ReactMarkdown className="prose text-justify" children={currentNode.suffix} />}
 
             </>
           )}
