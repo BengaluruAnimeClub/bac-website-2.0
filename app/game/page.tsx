@@ -106,8 +106,8 @@ export default function Game() {
 
               {currentNode.prefix && (
                 currentNode.id > 100 ? 
-                  <div className="text-center">
-                    <ReactMarkdown className="prose" children={currentNode.prefix} />
+                  <div className="flex justify-center">
+                    <ReactMarkdown className="prose text-center" children={currentNode.prefix} />
                   </div>
                 :
                   <ReactMarkdown className="prose" children={currentNode.prefix} />
