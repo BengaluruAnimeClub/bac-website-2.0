@@ -998,7 +998,7 @@ Jun looks around at the falling petals. His eyes follow one of them till it land
 “Jun-Jun… I like you. I’ve always liked you.. Will you go out with me?” 
 
 “Reina, I…”
-
+***
 Hana sends a text to Jun: *“Um actually something came up and I can’t make it to our meeting…”* 
 
 The tears start to pool in her eyes. Of course Jun does not like her! Of course Reina is a better match for him! 
