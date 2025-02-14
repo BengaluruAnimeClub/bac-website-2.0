@@ -104,7 +104,14 @@ export default function Game() {
                 </center>
               </div>
 
-              {currentNode.prefix && <ReactMarkdown className="prose" children={currentNode.prefix} />}
+              {currentNode.prefix && (
+                currentNode.id > 100 ? 
+                  <div className="text-center">
+                    <ReactMarkdown className="prose" children={currentNode.prefix} />
+                  </div>
+                :
+                  <ReactMarkdown className="prose" children={currentNode.prefix} />
+              )}
 
               <div id="text-mobile-view" className="block md:hidden">
                 {currentNode.prefix && <hr className="border-[#f05a78] my-4 mt-4 mb-4" />}
