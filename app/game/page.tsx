@@ -114,6 +114,7 @@ export default function Game() {
                 :
                   <ReactMarkdown className="prose text-justify" children={currentNode.prefix} />
               )}
+              { currentNode.prefix && currentNode.id > 100 && (<br className="hidden md:block" />) }
 
               <div id="text-mobile-view" className="mx-auto block md:hidden px-0">
                 {currentNode.prefix && currentNode.id < 100 && <hr className="border-[#f05a78] my-4 mt-4 mb-4" />}
