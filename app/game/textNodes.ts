@@ -89,7 +89,7 @@ Hana looked for an out. This conversation was getting derailed, and more importa
     suffix: ``,
     author: ``,
     options: [
-      { text: `Reina leaves Hana feeling unsure of herself; Hana turns back the way she came.`, nextScene: 3 },
+      { text: `Reina leaves Hana feeling unsure of herself; Hana turns back the way she came`, nextScene: 3 },
       { text: `Hana walks past Reina`, nextScene: 4 },
       { text: `Hana decides to confront Reina over it`, nextScene: 12 },
     ],
@@ -135,9 +135,9 @@ He looked up and saw that Hana had
     `,
     author: "Raj",
     options: [
-      { text: `Walked away.`, nextScene: 6 },
-      { text: `Ran away.`, nextScene: 5 },
-      { text: `Began to tear up.`, nextScene: 8 },
+      { text: `Walked away`, nextScene: 6 },
+      { text: `Ran away`, nextScene: 5 },
+      { text: `Began to tear up`, nextScene: 8 },
     ],
   },
   {
@@ -153,8 +153,8 @@ Hana rounded the corner of the building and bumped straight into something… so
     suffix: `Hana stumbles back slightly. “Ah! Hana, I’m so sorry! Are you okay?” Hana looks up to see Jun’s worried face staring at her.`,
     author: "Echo",
     options: [
-      { text: `Hana gets nervous.`, nextScene: 7 },
-      { text: `Hana gets flustered.`, nextScene: 8 },
+      { text: `Hana gets nervous`, nextScene: 7 },
+      { text: `Hana gets flustered`, nextScene: 8 },
     ],
   },
   {
@@ -182,8 +182,8 @@ Hana’s face burned. “You’re insufferable.”
     suffix: `Hana took a deep breath and turned to face Reina.`,
     author: `Kushal Savit Choudhary`,
     options: [
-      { text: `“I can’t be even half as insufferable as you are.” Hana turns.`, nextScene: 9 },
-      { text: `“Maybe you’re the real insufferable one.” Hana leaves.`, nextScene: 2 },
+      { text: `“I can’t be even half as insufferable as you are.” Hana turns`, nextScene: 9 },
+      { text: `“Maybe you’re the real insufferable one.” Hana leaves`, nextScene: 2 },
     ],
   },
   {
@@ -236,8 +236,8 @@ Jun, visibly nervous, his palms were sweaty, knees weak, arms are heavy due to t
     suffix: `Jun hesitantly reaches out a hand. Hana doesn’t stop him when their fingers touch. He slowly grasps her hand in his.`,
     author: `Anemo`,
     options: [
-      { text: `Jun leads Hana by the hand to the blossom tree.`, nextScene: 102 },
-      { text: `Hana timidly leads Jun to the blossom tree.`, nextScene: 101 },
+      { text: `Jun leads Hana by the hand to the blossom tree`, nextScene: 102 },
+      { text: `Hana timidly leads Jun to the blossom tree`, nextScene: 101 },
     ],
   },
   {
@@ -401,7 +401,7 @@ Reina hesitated. But before she could say anything, Hana turned away.
     author: `Rahul`,
     options: [
       { text: `“I guess you understand him better…”`, nextScene: 104 },
-      { text: `“I guess I don’t understand him at all, but... I think I’m starting to understand you.”`, nextScene: 103 },
+      { text: `“I guess I don’t understand him at all, but... I think I’m starting to understand you”`, nextScene: 103 },
     ],
   },
   {
