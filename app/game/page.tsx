@@ -14,9 +14,14 @@ const imagePaths: { [key: number]: string } = {
 };
 
 const musicPaths = [
-  "/music/game/take-me-anywhere.mp3",
-  "/music/game/to_the_moon.mp3",
-  "/music/game/to_zanarkand_64.mp3",
+  "/music/game/title.mp3",
+];
+
+const endingMusicPaths = [
+  "/music/game/101.mp3",
+  "/music/game/102.mp3",
+  "/music/game/103.mp3",
+  "/music/game/104.mp3",
 ];
 
 export default function Game() {
@@ -56,19 +61,31 @@ export default function Game() {
 
   const handleOptionSelect = (nextScene: number, optionText: string) => {
     if (optionText === "Play Again") {
-      // Cycle to next song on "Play Again"
-      const newIndex = (currentSongIndex + 1) % musicPaths.length;
-      setCurrentSongIndex(newIndex);
+      // Pause any current audio, including ending music
       if (audioRef.current) {
         audioRef.current.pause();
       }
+      // Cycle to next regular song
+      const newIndex = (currentSongIndex + 1) % musicPaths.length;
+      setCurrentSongIndex(newIndex);
       audioRef.current = new Audio(musicPaths[newIndex]);
       audioRef.current.loop = true;
-      audioRef.current.volume = 0.05; // set lower volume
+      audioRef.current.volume = 0.05;
+      audioRef.current.muted = isMuted;
+      audioRef.current.play().catch((error) => console.error("Audio play error:", error));
+    } else if ([101, 102, 103, 104].includes(nextScene)) {
+      // Ending scene reached: pause regular music and play ending track
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      const endingIndex = nextScene - 101;
+      audioRef.current = new Audio(endingMusicPaths[endingIndex]);
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.05;
       audioRef.current.muted = isMuted;
       audioRef.current.play().catch((error) => console.error("Audio play error:", error));
     } else if (!audioRef.current) {
-      // Initialize audio if not already set
+      // Initialize regular music if not already set
       audioRef.current = new Audio(musicPaths[currentSongIndex]);
       audioRef.current.loop = true;
       audioRef.current.volume = 0.05;
