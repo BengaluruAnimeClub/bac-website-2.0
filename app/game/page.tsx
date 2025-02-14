@@ -191,7 +191,7 @@ export default function Game() {
         {/* Options logic, for each scene category */} 
         
         <div 
-          className={`flex flex-col md:${flexDirection} gap-2 justify-center transition-opacity ${fade}`} 
+          className={`flex flex-col md:${flexDirection} gap-4 mt-2 justify-center transition-opacity ${fade}`} 
           style={{ transitionDuration: `${fadeDuration}ms` }}
         >
 
