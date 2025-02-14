@@ -70,7 +70,7 @@ export default function Game() {
       setCurrentSongIndex(newIndex);
       audioRef.current = new Audio(musicPaths[newIndex]);
       audioRef.current.loop = true;
-      audioRef.current.volume = 0.05;
+      audioRef.current.volume = 0.9;
       audioRef.current.muted = isMuted;
       audioRef.current.play().catch((error) => console.error("Audio play error:", error));
     } else if ([101, 102, 103, 104].includes(nextScene)) {
@@ -81,14 +81,14 @@ export default function Game() {
       const endingIndex = nextScene - 101;
       audioRef.current = new Audio(endingMusicPaths[endingIndex]);
       audioRef.current.loop = true;
-      audioRef.current.volume = 0.05;
+      audioRef.current.volume = 0.9;
       audioRef.current.muted = isMuted;
       audioRef.current.play().catch((error) => console.error("Audio play error:", error));
     } else if (!audioRef.current) {
       // Initialize regular music if not already set
       audioRef.current = new Audio(musicPaths[currentSongIndex]);
       audioRef.current.loop = true;
-      audioRef.current.volume = 0.05;
+      audioRef.current.volume = 0.9;
       audioRef.current.muted = isMuted;
       audioRef.current.play().catch((error) => console.error("Audio play error:", error));
     }
