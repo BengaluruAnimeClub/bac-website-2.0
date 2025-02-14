@@ -108,7 +108,7 @@ export default function Game() {
                 currentNode.id > 100 ? 
                   <div className="flex justify-center">
                     <b>
-                      <ReactMarkdown className="prose text-center" children={currentNode.prefix} />
+                      <ReactMarkdown className="prose text-center text-xl" children={currentNode.prefix} />
                     </b>
                   </div>
                 :
@@ -128,7 +128,7 @@ export default function Game() {
                 {currentNode.text && <hr className="border-[#f05a78] my-4 mt-4 mb-4" />}
               </div>
 
-              <div id="text-desktop-view" className={currentNode.id > 100 ? "mx-auto px-4" : "mx-auto px-4 p-4 mt-4 mb-4 border-2 border-[#fbd3d6] rounded-xl hidden md:block"}>
+              <div id="text-desktop-view" className={currentNode.id > 100 || (currentNode.prefix === "" && currentNode.suffix === "") ? "mx-auto px-4 py-4" : "mx-auto px-4 p-4 mt-4 mb-4 border-2 border-[#fbd3d6] rounded-xl hidden md:block"}>
                 {currentNode.text && <ReactMarkdown className="prose text-justify" children={currentNode.text} />}
                 {currentNode.author && 
                 <div className="mt-2">
