@@ -33,6 +33,8 @@ export default function Game() {
 
   // Add a ref for background audio
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const previousOptionRef = useRef<HTMLParagraphElement>(null);
 
   // Add a cleanup effect to stop music when leaving the webpage
   useEffect(() => {
@@ -76,7 +78,9 @@ export default function Game() {
     setFade("opacity-0");
     setTimeout(() => {
       setPreviousOptionText(optionText);
+      previousOptionRef.current?.scrollIntoView({ behavior: 'smooth' });
       setCurrentScene(nextScene);
+      containerRef.current?.scrollIntoView({ behavior: 'smooth' });
       setFade("opacity-100");
     }, fadeDuration);
   };
@@ -85,7 +89,7 @@ export default function Game() {
   const flexDirection = currentNode.id >= 1 && currentNode.id <= 100 ? "flex-col" : "flex-row";
 
   return (
-    <div className="container px-4 max-w-5xl py-6 md:py-10">
+    <div ref={containerRef} className="container px-4 max-w-5xl py-6 md:py-10">
       
       <div className="flex flex-col mx-auto p-4 border-4 border-solid border-[#f05a78] rounded-xl md:w-3/4">
         <div 
@@ -99,7 +103,7 @@ export default function Game() {
                 <center>
                   {/* <b>Scene #{currentNode.id}</b> */}
                   {previousOptionText && currentNode.id < 100 && currentNode.id > 1 && (
-                    <p className="px-2 md:px-8">
+                    <p ref={previousOptionRef} className="px-2 md:px-8">
                       <b>
                       <i className="text-[#f05a78]">Previously selected: </i>
                       <i>{previousOptionText}</i>
