@@ -99,7 +99,7 @@ export default function Game() {
                 <center>
                   {/* <b>Scene #{currentNode.id}</b> */}
                   {previousOptionText && currentNode.id < 100 && currentNode.id > 1 && (
-                    <p>
+                    <p className="px-2 md:px-8">
                       <b>
                       <i className="text-[#f05a78]">Previously selected: </i>
                       <i>{previousOptionText}</i>
