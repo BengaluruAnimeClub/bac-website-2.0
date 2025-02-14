@@ -180,7 +180,7 @@ export default function Game() {
           )}
 
           {currentNode.id === 0 && (
-            <video autoPlay muted loop className="mt-2 mb-2 rounded-xl mx-auto w-full md:w-3/4">
+            <video autoPlay muted loop playsInline className="mt-2 mb-2 rounded-xl mx-auto w-full md:w-3/4">
               <source src="/images/game/title.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
