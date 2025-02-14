@@ -97,9 +97,14 @@ export default function Game() {
             <>
               <div className="mb-2">
                 <center>
-                  <b>Scene #{currentNode.id}</b>
-                  {previousOptionText && currentNode.id < 100 && (
-                    <p><i>Previously selected: {previousOptionText}</i></p>
+                  {/* <b>Scene #{currentNode.id}</b> */}
+                  {previousOptionText && currentNode.id < 100 && currentNode.id > 1 && (
+                    <p>
+                      <b>
+                      <i className="text-[#f05a78]">Previously selected: </i>
+                      <i>{previousOptionText}</i>
+                      </b>
+                    </p>
                   )}
                 </center>
               </div>
