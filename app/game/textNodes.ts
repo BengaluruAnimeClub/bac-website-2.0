@@ -830,7 +830,7 @@ Junko didn’t understand, not really. But she knew one thing—this fight wasn�
     author: `Vankot`,
     options: [
       { text: `To run away`, nextScene: 17 },
-      { text: `To ask Junko to release Reina`, nextScene: 104 },
+      { text: `To ask Junko to release Reina`, nextScene: 103 },
     ],
   },
   {
