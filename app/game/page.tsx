@@ -80,7 +80,7 @@ export default function Game() {
       setPreviousOptionText(optionText);
       previousOptionRef.current?.scrollIntoView({ behavior: 'smooth' });
       setCurrentScene(nextScene);
-      containerRef.current?.scrollIntoView({ behavior: 'smooth' });
+      // containerRef.current?.scrollIntoView({ behavior: 'smooth' });
       setFade("opacity-100");
     }, fadeDuration);
   };
