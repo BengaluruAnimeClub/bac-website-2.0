@@ -85,9 +85,9 @@ export default function Game() {
   const flexDirection = currentNode.id >= 1 && currentNode.id <= 100 ? "flex-col" : "flex-row";
 
   return (
-    <div className="container px-4 max-w-5xl py-6 lg:py-10">
+    <div className="container px-4 max-w-5xl py-6 md:py-10">
       
-      <div className="flex flex-col mx-auto p-4 border-4 border-solid border-[#f05a78] rounded-xl lg:w-3/4">
+      <div className="flex flex-col mx-auto p-4 border-4 border-solid border-[#f05a78] rounded-xl md:w-3/4">
         <div 
           className={`flex-1 overflow-y-auto mb-2 transition-opacity ${fade}`} 
           style={{ transitionDuration: `${fadeDuration}ms` }}
@@ -115,7 +115,7 @@ export default function Game() {
                   <ReactMarkdown className="prose text-justify" children={currentNode.prefix} />
               )}
 
-              <div id="text-mobile-view" className="block md:hidden">
+              <div id="text-mobile-view" className="mx-auto block md:hidden px-0">
                 {currentNode.prefix && currentNode.id < 100 && <hr className="border-[#f05a78] my-4 mt-4 mb-4" />}
                 {currentNode.prefix && currentNode.id > 100 && <br/>}
                 {currentNode.text && <ReactMarkdown className="prose text-justify" children={currentNode.text} />}
@@ -127,7 +127,7 @@ export default function Game() {
                 {currentNode.text && <hr className="border-[#f05a78] my-4 mt-4 mb-4" />}
               </div>
 
-              <div id="text-desktop-view" className={currentNode.id > 100 ? "" : "p-4 mt-4 mb-4 border-2 border-[#fbd3d6] rounded-xl hidden md:block"}>
+              <div id="text-desktop-view" className={currentNode.id > 100 ? "mx-auto px-4" : "mx-auto px-4 p-4 mt-4 mb-4 border-2 border-[#fbd3d6] rounded-xl hidden md:block"}>
                 {currentNode.text && <ReactMarkdown className="prose text-justify" children={currentNode.text} />}
                 {currentNode.author && 
                 <div className="mt-2">
@@ -142,7 +142,7 @@ export default function Game() {
           )}
 
           {currentNode.id === 0 && (
-            <video autoPlay muted loop className="mt-2 mb-2 rounded-xl mx-auto w-full lg:w-3/4">
+            <video autoPlay muted loop className="mt-2 mb-2 rounded-xl mx-auto w-full md:w-3/4">
               <source src="/images/game/title.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
@@ -154,7 +154,7 @@ export default function Game() {
                 alt="Scene Image" 
                 width={500}
                 height={300}
-                className="mt-4 mb-4 rounded-xl mx-auto w-full lg:w-1/2" 
+                className="mt-4 mb-4 rounded-xl mx-auto w-full md:w-1/2" 
               />
           )}
 
@@ -163,7 +163,7 @@ export default function Game() {
         {/* Options logic, for each scene category */} 
         
         <div 
-          className={`flex flex-col lg:${flexDirection} gap-2 justify-center transition-opacity ${fade}`} 
+          className={`flex flex-col md:${flexDirection} gap-2 justify-center transition-opacity ${fade}`} 
           style={{ transitionDuration: `${fadeDuration}ms` }}
         >
 
