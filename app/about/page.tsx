@@ -56,7 +56,7 @@ const profiles = [
     name: "Aravind",
     designation: "Web/Archival",
     imageSrc: "/images/pfps/aravind.webp",
-    bio: "Enjoyer of classy isekai/fantasy and trashy romance anime. Rediscovering my love for art and fiction.", 
+    bio: "I'm not a bad slime", 
   },
   {
     name: "Atharva",
