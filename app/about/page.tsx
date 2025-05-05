@@ -11,12 +11,6 @@ export const metadata: Metadata = {
 
 const profiles = [
   {
-    name: "medha/ᐠ.ꞈ.ᐟ\\",
-    designation: "Support/Moderation/Online",
-    imageSrc: "/images/pfps/medha.webp",
-    bio: "Cat enthusiast, purrveyor of all things cute 🌸", 
-  },
-  {
     name: "dittu (HKS)",
     designation: "Advisor/Yapologist",
     imageSrc: "/images/pfps/hks.webp",
@@ -24,7 +18,7 @@ const profiles = [
   },
   {
     name: "Dx",
-    designation: "Events/Meetups/Screenings",
+    designation: "Events/Meetups",
     imageSrc: "/images/pfps/wolf.webp",
     bio: "ZERO CHILL",
   },
@@ -36,15 +30,9 @@ const profiles = [
   },
   {
     name: "Steve",
-    designation: "Publikitty",
+    designation: "Design/Publicity",
     imageSrc: "/images/pfps/steve.webp",
     bio: "Joined BAC for the love of anime, stayed for the amazing community. I like all things tech and design.",
-  },
-  {
-    name: "Rohit",
-    designation: "Meetups",
-    imageSrc: "/images/pfps/rohit.webp",
-    bio: "Trying to adult, but mostly just leveling up in games and life",
   },
   {
     name: "Sakaido",
@@ -71,34 +59,22 @@ const profiles = [
     bio: "When everything feels like the movies. Yeah you bleed, just to know you’re alive.",
   },
   {
-    name: "EnigmaDB",
-    designation: "Publikitty",
-    imageSrc: "/images/pfps/harish.webp",
-    bio: "Have fun people.",
+    name: "Ding Dong",
+    designation: "Meetups",
+    imageSrc: "/images/pfps/dingdong.webp",
+    bio: "Biggest barbie fanboy!!",
   },
   {
-    name: "Rutu (ルトゥ)",
-    designation: "Archival",
-    imageSrc: "/images/pfps/rutu.webp",
-    bio: "Initially joined BAC to spread the Haikyuu!!/Chihayafuru propaganda, but was later revealed to be a generic sports/romance fan. You can find me lurking on the BAC Manga WhatsApp group giving random romance recommendations for all demographics (I also throw in some wack ones from time to time). Drop on by to chat! My favourite quote obviously comes from Haikyuu!! - 村人 B も 戦えます。Check it out if you haven't already (and do it again if you already have).",
+    name: "Debarka",
+    designation: "Moderation/Meetups",
+    imageSrc: "/images/pfps/debarka.webp",
+    bio: "Long time BAC member here! Avid figurine and manga collector. Ocassionally active, generally lurking in the anime, manga, cinema and collectibles groups. Hit me up if you wanna talk about anything anime.",
   },
   {
-    name: "Viraj",
-    designation: "Web",
-    imageSrc: "/images/pfps/viraj.webp",
-    bio: "I like computers, music & night skies",
-  },
-  {
-    name: "Keerthana",
-    designation: "Media/Moderation",
-    imageSrc: "/images/pfps/keerthana.webp",
-    bio: "Part of the support team and moderation. Respond to queries related to any event, moderate the groups.",
-  },
-  {
-    name: "Pranav Nayak",
-    designation: "Moderation",
-    imageSrc: "/images/pfps/pranav.webp",
-    bio: "When all you have is a hammer, find more tools dammit",
+    name: "Christy",
+    designation: ".-.",
+    imageSrc: "/images/pfps/christy.webp",
+    bio: "Member since 2013, cosplayer by passion, foodie and music buff by obsession, and now your friendly neighborhood admin! Whether it's anime marathons, music jams, or cosplay chaos — I’m always in for the ride. Catch me where the fandoms collide! There's no trash 'cannot', only trash CAN!!!",
   },
   {
     name: "Shreyas",
@@ -140,14 +116,6 @@ const affiliated = [
 export default async function AboutPage() {
   return (
     <div className="container max-w-5xl py-6 lg:py-10">
-      {/* <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between md:gap-8">
-        <div className="flex-1 space-x-4">
-          <h1 className="inline-block font-black text-4xl lg:text-5xl">
-            About Us
-          </h1>
-        </div>
-      </div> */}
-      {/* <hr className="my-4" /> */}
       <div className="flex flex-col md:flex-row gap-8 items-center md:items-start pb-5">
         <p className="text-muted-foreground text-lg py-4">
         <b>Bengaluru Anime Club (BAC)</b> is a community of anime enthusiasts based in the city of Bengaluru. Whether you’re a seasoned otaku or new to the world of anime and manga, this club offers a welcoming space to connect with fellow fans, share your love for Japanese animation, and explore diverse genres and series.
