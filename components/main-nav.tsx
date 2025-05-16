@@ -5,9 +5,11 @@ import { Icons } from "./icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export function MainNav() {
   const pathname = usePathname();
+  const { data: session } = useSession();
   return (
     <nav className="flex items-center space-x-4 lg:space-x-8">
       <Link href="/" className="mr-10 flex items-center space-x-2">
@@ -104,6 +106,23 @@ export function MainNav() {
       >
         Contact Us
       </Link>
+      <div className="ml-4">
+        {session ? (
+          <button
+            onClick={() => signOut()}
+            className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          >
+            {session.user?.name || "Logout"} (Logout)
+          </button>
+        ) : (
+          <button
+            onClick={() => signIn()}
+            className="px-3 py-1 rounded bg-primary text-white text-sm font-medium hover:bg-primary/80 transition-colors"
+          >
+            Login
+          </button>
+        )}
+      </div>
     </nav>
   );
 }
