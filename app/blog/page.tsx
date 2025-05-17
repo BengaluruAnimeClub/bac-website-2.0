@@ -84,7 +84,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
             className="mt-4"
           />
         </div>
-        <Card className="col-span-12 row-start-3 h-fit sm:col-span-4 sm:col-start-9 sm:row-start-1">
+        <Card className="col-span-12 row-start-3 h-fit sm:col-span-4 sm:col-start-9 sm:row-start-1 hidden sm:block">
           <CardHeader>
             <CardTitle>Tags</CardTitle>
           </CardHeader>
