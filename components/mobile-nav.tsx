@@ -11,10 +11,12 @@ import { siteConfig } from "@/config/site";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useUI } from "@/context/ui-context"; // Import useUI hook
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
   const { data: session } = useSession();
+  const { openLoginModal } = useUI(); // Get openLoginModal function from context
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -77,7 +79,7 @@ export function MobileNav() {
                 className="w-full"
                 onClick={() => {
                   setOpen(false);
-                  window.location.href = '/login';
+                  openLoginModal(); // Call openLoginModal instead of redirecting
                 }}
               >
                 Login
