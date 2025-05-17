@@ -70,7 +70,7 @@ export function MainNav() {
       >
         Gallery
       </Link>
-      <Link
+      {/* <Link
         href="/terumin"
         className={cn(
           "text-sm font-medium transition-colors hover:text-primary hidden sm:inline-block",
@@ -78,7 +78,7 @@ export function MainNav() {
         )}
       >
         Terumin
-      </Link>
+      </Link> */}
       <Link
         href="/game"
         className={cn(
