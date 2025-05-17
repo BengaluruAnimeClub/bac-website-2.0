@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prebuild": "node scripts/generate-blog-search-index.js"
   },
   "dependencies": {
     "@auth/core": "^0.39.1",

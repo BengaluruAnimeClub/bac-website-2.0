@@ -7,14 +7,18 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useUI } from "@/context/ui-context"; // Import useUI
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export function MainNav() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const { openLoginModal } = useUI(); // Get openLoginModal function
+  const router = useRouter();
+  const [search, setSearch] = useState("");
 
   return (
-    <nav className="flex items-center space-x-4 lg:space-x-8">
+    <nav className="flex items-center space-x-4 lg:space-x-5">
       <Link href="/" className="mr-1 flex items-center space-x-2">
         <Icons.logo className="h-8 w-8" />
         <span className="font-bold">{siteConfig.name}</span>
@@ -107,20 +111,39 @@ export function MainNav() {
           pathname === "/contact-us" ? "text-foreground" : "text-foreground/60"
         )}
       >
-        Contact Us
+        Contact
       </Link>
+      {/* Search bar with search params */}
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          if (search.trim()) {
+            router.push(`/blog?search=${encodeURIComponent(search)}`);
+            setSearch("");
+          }
+        }}
+        className="relative hidden sm:block"
+      >
+        <input
+          type="text"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Search blog..."
+          className="px-2 py-1 rounded border border-gray-300 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+          style={{ minWidth: 180 }}
+        />
+      </form>
       <div className="ml-4 hidden sm:block">
         {session ? (
           <button
             onClick={() => signOut()}
             className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
           >
-            <span className="hidden sm:inline">{session.user?.name || "Logout"} (Logout)</span>
-            <span className="inline sm:hidden">Logout</span>
+            Logout
           </button>
         ) : (
           <button
-            onClick={openLoginModal} // Call openLoginModal onClick
+            onClick={openLoginModal}
             className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-sm font-medium hover:bg-primary/80 transition-colors"
           >
             Login
