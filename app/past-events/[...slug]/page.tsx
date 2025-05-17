@@ -6,6 +6,7 @@ import "@/styles/mdx.css";
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import { sortPosts } from "@/lib/utils";
+import { CommentSection } from "@/components/comment-section";
 
 interface PostPageProps {
   params: {
@@ -80,6 +81,7 @@ export default async function PostPage({ params }: PostPageProps) {
       </div>
       <hr className="my-4 mt-2 mb-4" />
       <MDXContent code={post.body} />
+      <CommentSection slug={post.slug} />
     </article>
   );
 }
