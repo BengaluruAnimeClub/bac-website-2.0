@@ -18,7 +18,7 @@ export function MainNav() {
   const [search, setSearch] = useState("");
 
   return (
-    <nav className="flex items-center space-x-4 lg:space-x-8">
+    <nav className="flex items-center space-x-4 lg:space-x-5">
       <Link href="/" className="mr-1 flex items-center space-x-2">
         <Icons.logo className="h-8 w-8" />
         <span className="font-bold">{siteConfig.name}</span>
@@ -111,7 +111,7 @@ export function MainNav() {
           pathname === "/contact-us" ? "text-foreground" : "text-foreground/60"
         )}
       >
-        Contact Us
+        Contact
       </Link>
       {/* Search bar with search params */}
       <form
@@ -139,8 +139,7 @@ export function MainNav() {
             onClick={() => signOut()}
             className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
           >
-            <span className="hidden sm:inline">{session.user?.name || "Logout"} (Logout)</span>
-            <span className="inline sm:hidden">Logout</span>
+            Logout
           </button>
         ) : (
           <button

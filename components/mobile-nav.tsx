@@ -59,7 +59,7 @@ export function MobileNav() {
             Socials
           </MobileLink>
           <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/contact-us">
-            Contact Us
+            Contact
           </MobileLink>
           <div className="mt-4">
             {session ? (
@@ -71,7 +71,7 @@ export function MobileNav() {
                   setOpen(false);
                 }}
               >
-                Logout ({session.user?.name})
+                Logout
               </Button>
             ) : (
               <Button
