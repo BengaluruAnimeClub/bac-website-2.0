@@ -109,7 +109,7 @@ export function MainNav() {
       >
         Contact Us
       </Link>
-      <div className="ml-4">
+      <div className="ml-4 hidden sm:block">
         {session ? (
           <button
             onClick={() => signOut()}
