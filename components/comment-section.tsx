@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react"; // Removed signIn from here
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useUI } from "@/context/ui-context"; // Import useUI hook
 
 interface Comment {
   id: string;
@@ -17,6 +18,7 @@ export function CommentSection({ slug }: { slug: string }) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { openLoginModal } = useUI(); // Get openLoginModal function
 
   useEffect(() => {
     fetch(`/api/comments?slug=${encodeURIComponent(slug)}`)
@@ -70,7 +72,7 @@ export function CommentSection({ slug }: { slug: string }) {
         <div className="mb-6">
           <button
             className="bg-[#ea4167] text-white px-4 py-2 rounded"
-            onClick={() => signIn()}
+            onClick={openLoginModal} // Use openLoginModal here
           >
             Login to comment
           </button>
