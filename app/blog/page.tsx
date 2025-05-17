@@ -5,6 +5,8 @@ import { Tag } from "@/components/tag";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllTags, sortPosts, sortTagsByCount } from "@/lib/utils";
 import { Metadata } from "next";
+import { blogSearchIndex } from "@/components/blog-search-index";
+import { useSearchParams } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "BAC · Blog",
@@ -16,15 +18,30 @@ const POSTS_PER_PAGE = 10;
 interface BlogPageProps {
   searchParams: {
     page?: string;
+    search?: string;
   };
 }
 
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   const currentPage = Number(searchParams?.page) || 1;
-  const sortedPosts = sortPosts(posts.filter((post) => post.published));
-  const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
+  const search = searchParams?.search?.toLowerCase() || "";
+  let filteredPosts = sortPosts(posts.filter((post) => post.published));
 
-  const displayPosts = sortedPosts.slice(
+  if (search) {
+    // Use the static index to match slugs
+    const matchingSlugs = blogSearchIndex
+      .filter(
+        (b) =>
+          b.title.toLowerCase().includes(search) ||
+          b.headers.some((h) => h.toLowerCase().includes(search))
+      )
+      .map((b) => b.slug);
+    // posts use slugAsParams, not slug
+    filteredPosts = filteredPosts.filter((post) => matchingSlugs.includes(post.slugAsParams));
+  }
+
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+  const displayPosts = filteredPosts.slice(
     POSTS_PER_PAGE * (currentPage - 1),
     POSTS_PER_PAGE * currentPage
   );
@@ -60,7 +77,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               })}
             </ul>
           ) : (
-            <p>Nothing to see here yet!</p>
+            <p>{search ? `No results for "${search}"` : "Nothing to see here yet!"}</p>
           )}
           <QueryPagination
             totalPages={totalPages}
