@@ -6,10 +6,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useUI } from "@/context/ui-context"; // Import useUI
 
 export function MainNav() {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const { openLoginModal } = useUI(); // Get openLoginModal function
+
   return (
     <nav className="flex items-center space-x-4 lg:space-x-8">
       <Link href="/" className="mr-10 flex items-center space-x-2">
@@ -117,7 +120,7 @@ export function MainNav() {
           </button>
         ) : (
           <button
-            onClick={() => signIn()}
+            onClick={openLoginModal} // Call openLoginModal onClick
             className="px-3 py-1 rounded bg-primary text-white text-sm font-medium hover:bg-primary/80 transition-colors"
           >
             Login

@@ -1,23 +1,11 @@
 type IconProps = React.HTMLAttributes<SVGElement>;
+// Define a specific type for ImgIconProps to avoid affecting other icons
+type ImgIconProps = React.ImgHTMLAttributes<HTMLImageElement>;
 
 export const Icons = {
-  logo: (props: IconProps) => (
-    <img src="/images/icon.svg" alt="My Logo" />
+  logo: (props: ImgIconProps) => (
+    <img src="/images/icon.svg" alt="My Logo" {...props} />
   ),
-  //   twitter: (props: IconProps) => (
-  //   <svg
-  //     {...props}
-  //     height="23"
-  //     viewBox="0 0 1200 1227"
-  //     width="23"
-  //     xmlns="http://www.w3.org/2000/svg"
-  //   >
-  //     <path
-  //       fill="currentColor"
-  //       d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z"
-  //     />
-  //   </svg>
-  // ),
   instagram: (props: IconProps) => (
 <svg xmlns="http://www.w3.org/2000/svg" 
     {...props}

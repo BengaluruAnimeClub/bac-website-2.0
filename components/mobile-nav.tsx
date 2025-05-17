@@ -10,9 +10,11 @@ import { Icons } from "./icons";
 import { siteConfig } from "@/config/site";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -57,6 +59,31 @@ export function MobileNav() {
           <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/contact-us">
             Contact Us
           </MobileLink>
+          <div className="mt-4">
+            {session ? (
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  signOut();
+                  setOpen(false);
+                }}
+              >
+                Logout ({session.user?.name})
+              </Button>
+            ) : (
+              <Button
+                variant="default"
+                className="w-full"
+                onClick={() => {
+                  setOpen(false);
+                  window.location.href = '/login';
+                }}
+              >
+                Login
+              </Button>
+            )}
+          </div>
         </div>
       </SheetContent>
     </Sheet>

@@ -3,6 +3,7 @@
 import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
+import { UIProvider } from "@/context/ui-context"; // Import UIProvider
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
@@ -13,7 +14,9 @@ export function Providers({ children }: { children: ReactNode }) {
         enableSystem
         disableTransitionOnChange
       >
-        {children}
+        <UIProvider>{/* Wrap with UIProvider */}
+          {children}
+        </UIProvider>
       </ThemeProvider>
     </SessionProvider>
   );
