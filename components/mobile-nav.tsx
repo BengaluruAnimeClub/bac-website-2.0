@@ -49,7 +49,7 @@ export function MobileNav() {
             Terumin
           </MobileLink>
           <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/game">
-            Love Story (Game)
+            Love Story
           </MobileLink>
           <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/socials">
             Socials

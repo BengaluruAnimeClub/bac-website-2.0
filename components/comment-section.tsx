@@ -72,7 +72,7 @@ export function CommentSection({ slug }: { slug: string }) {
             className="bg-[#ea4167] text-white px-4 py-2 rounded"
             onClick={() => signIn()}
           >
-            Login with GitHub to comment
+            Login to comment
           </button>
         </div>
       ) : (

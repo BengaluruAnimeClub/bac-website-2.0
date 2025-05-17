@@ -86,7 +86,7 @@ export function MainNav() {
           pathname === "/game" ? "text-foreground" : "text-foreground/60"
         )}
       >
-        Love Story (Game)
+        Love Story
       </Link>
       <Link
         href="/socials"

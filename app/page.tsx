@@ -43,7 +43,7 @@ export default function Home() {
                 href="/game"
                 className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-fit")}
               >
-              Love Story (Game)
+              Love Story
             </Link>
           </div>
         </div>
@@ -69,7 +69,7 @@ export default function Home() {
                 href="/game"
                 className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-fit")}
               >
-              Love Story (Game)
+              Love Story
             </Link>
           </div>
         </div>
