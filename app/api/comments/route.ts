@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const { slug, name, message } = await req.json();
+  const { slug, name, message, image } = await req.json();
   if (!slug || !message || typeof message !== "string" || message.length > 500) {
     return NextResponse.json({ error: "Invalid input." }, { status: 400 });
   }
@@ -77,6 +77,7 @@ export async function POST(req: NextRequest) {
     name: name?.trim().slice(0, 32) || "",
     message: message.trim(),
     createdAt: new Date().toISOString(),
+    image: image || null,
   };
   const key = `${COMMENTS_PREFIX}${slug}`;
   // Push to Redis list
