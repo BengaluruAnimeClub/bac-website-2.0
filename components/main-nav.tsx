@@ -112,7 +112,8 @@ export function MainNav() {
             onClick={() => signOut()}
             className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
           >
-            {session.user?.name || "Logout"} (Logout)
+            <span className="hidden sm:inline">{session.user?.name || "Logout"} (Logout)</span>
+            <span className="inline sm:hidden">Logout</span>
           </button>
         ) : (
           <button
