@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import { NextRequest, NextResponse } from "next/server";
 
 const handler = NextAuth({
@@ -7,6 +8,10 @@ const handler = NextAuth({
     GitHubProvider({
       clientId: process.env.GITHUB_ID!,
       clientSecret: process.env.GITHUB_SECRET!,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
     // Add more providers here
   ],
@@ -19,9 +24,13 @@ const handler = NextAuth({
       return session;
     },
     async jwt({ token, profile }) {
-      // Persist the GitHub profile picture in the token
-      if (profile && typeof profile === "object" && "avatar_url" in profile && typeof profile.avatar_url === "string") {
-        token.picture = profile.avatar_url;
+      // Persist the GitHub or Google profile picture in the token
+      if (profile && typeof profile === "object") {
+        if ("avatar_url" in profile && typeof profile.avatar_url === "string") {
+          token.picture = profile.avatar_url;
+        } else if ("picture" in profile && typeof profile.picture === "string") {
+          token.picture = profile.picture;
+        }
       }
       return token;
     },
