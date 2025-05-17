@@ -28,10 +28,10 @@ export default function Home() {
           </p>
           <div className="flex flex-col gap-4 justify-center sm:flex-row max-sm:hidden">
             <Link
-              href="/upcoming-events"
+              href="/blog"
               className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "w-full sm:w-fit")}
             >
-              Events
+              Blog
             </Link>
             <Link
               href={siteConfig.links.linktree}
@@ -43,7 +43,7 @@ export default function Home() {
                 href="/game"
                 className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-fit")}
               >
-              Love Story (Game)
+              Love Story
             </Link>
           </div>
         </div>
@@ -51,10 +51,10 @@ export default function Home() {
         <div className="container flex flex-col gap-4 text-center sm:hidden">
           <div className="flex flex-row gap-4 justify-center">
             <Link
-              href="/upcoming-events"
+              href="/blog"
               className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "w-full sm:w-fit")}
             >
-              Events
+              Blog
             </Link>
             <Link
               href={siteConfig.links.linktree}
@@ -69,7 +69,7 @@ export default function Home() {
                 href="/game"
                 className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-fit")}
               >
-              Love Story (Game)
+              Love Story
             </Link>
           </div>
         </div>

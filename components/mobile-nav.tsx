@@ -10,9 +10,13 @@ import { Icons } from "./icons";
 import { siteConfig } from "@/config/site";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useUI } from "@/context/ui-context"; // Import useUI hook
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+  const { data: session } = useSession();
+  const { openLoginModal } = useUI(); // Get openLoginModal function from context
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -45,11 +49,11 @@ export function MobileNav() {
           <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/gallery">
             Gallery
           </MobileLink>
-          <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/terumin">
+          {/* <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/terumin">
             Terumin
-          </MobileLink>
+          </MobileLink> */}
           <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/game">
-            Love Story (Game)
+            Love Story
           </MobileLink>
           <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/socials">
             Socials
@@ -57,6 +61,31 @@ export function MobileNav() {
           <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpen} href="/contact-us">
             Contact Us
           </MobileLink>
+          <div className="mt-4">
+            {session ? (
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  signOut();
+                  setOpen(false);
+                }}
+              >
+                Logout ({session.user?.name})
+              </Button>
+            ) : (
+              <Button
+                variant="default"
+                className="w-full"
+                onClick={() => {
+                  setOpen(false);
+                  openLoginModal(); // Call openLoginModal instead of redirecting
+                }}
+              >
+                Login
+              </Button>
+            )}
+          </div>
         </div>
       </SheetContent>
     </Sheet>

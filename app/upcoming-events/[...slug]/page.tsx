@@ -1,6 +1,7 @@
 import { upcomingEventsPosts } from "#site/content";
 import { MDXContent } from "@/components/mdx-components";
 import { notFound } from "next/navigation";
+import { CommentSection } from "@/components/comment-section"; // Import CommentSection
 
 import "@/styles/mdx.css";
 import { Metadata } from "next";
@@ -80,6 +81,7 @@ export default async function PostPage({ params }: PostPageProps) {
       </div>
       <hr className="my-4 mt-2 mb-4" />
       <MDXContent code={post.body} />
+      <CommentSection slug={post.slugAsParams} /> {/* Add CommentSection */}
     </article>
   );
 }

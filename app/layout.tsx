@@ -6,7 +6,8 @@ import { SiteHeader } from "@/components/site-header";
 import { Providers } from "@/components/providers";
 import { siteConfig } from "@/config/site";
 import { SiteFooter } from "@/components/site-footer";
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics } from '@next/third-parties/google';
+import LoginModal from "@/components/login-modal"; // Import LoginModal
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -53,6 +54,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en" className="scroll-pt-[3.5rem]">
       <GoogleAnalytics gaId="G-L2DW4HE25G" />
@@ -67,6 +69,7 @@ export default function RootLayout({
             <SiteHeader />
             <main className="flex-1">{children}</main>
             <SiteFooter />
+            <LoginModal /> {/* Add LoginModal here */}
           </div>
         </Providers>
       </body>
