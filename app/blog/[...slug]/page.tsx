@@ -79,7 +79,6 @@ const contentfulRenderOptions = {
             alt={title || description || ''}
             style={{ maxWidth: '100%', borderRadius: '0.5rem', margin: '0 auto' }}
           />
-          {title && <div style={{ fontSize: '0.95em', color: '#888' }}>{title}</div>}
         </div>
       );
     },

@@ -31,3 +31,30 @@ export async function fetchBlogPostBySlugWithEntries(slug: string) {
   });
   return entries.items[0] || null;
 }
+
+export async function fetchAnnouncementPosts() {
+  const entries = await contentfulClient.getEntries({
+    content_type: 'announcementPost',
+    order: ['-fields.date'],
+  });
+  return entries.items;
+}
+
+export async function fetchAnnouncementPostBySlug(slug: string) {
+  const entries = await contentfulClient.getEntries({
+    content_type: 'announcementPost',
+    'fields.slug': slug,
+    limit: 1,
+  });
+  return entries.items[0] || null;
+}
+
+export async function fetchAnnouncementPostBySlugWithEntries(slug: string) {
+  const entries = await contentfulClient.getEntries({
+    content_type: 'announcementPost',
+    'fields.slug': slug,
+    include: 2, // fetch linked authors, etc.
+    limit: 1,
+  });
+  return entries.items[0] || null;
+}
