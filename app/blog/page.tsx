@@ -28,13 +28,17 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   let filteredPosts = sortPosts(posts.filter((post) => post.published));
 
   if (search) {
-    // Use the static index to match slugs
+    // Split search into words
+    const searchWords = search.split(/\s+/).filter(Boolean);
     const matchingSlugs = blogSearchIndex
-      .filter(
-        (b) =>
-          b.title.toLowerCase().includes(search) ||
-          b.headers.some((h) => h.toLowerCase().includes(search))
-      )
+      .filter((b) => {
+        const title = b.title.toLowerCase();
+        const headers = b.headers.map((h) => h.toLowerCase());
+        // Check if every search word is in title or any header
+        return searchWords.every(word =>
+          title.includes(word) || headers.some(h => h.includes(word))
+        );
+      })
       .map((b) => b.slug);
     // posts use slugAsParams, not slug
     filteredPosts = filteredPosts.filter((post) => matchingSlugs.includes(post.slugAsParams));
