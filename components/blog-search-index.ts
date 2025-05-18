@@ -3,11 +3,6 @@
 
 export const blogSearchIndex = [
   {
-    "title": "Spring 2025 Season Recommendations",
-    "slug": "Spring2025-recommendations-mar25",
-    "headers": []
-  },
-  {
     "title": "Predict the release date of your favourite anime!",
     "slug": "anime-industry-insight-feb25",
     "headers": []
@@ -100,7 +95,14 @@ export const blogSearchIndex = [
   },
   {
     "title": "Naoko Yamada Spotlight: Heikemonogatari",
-    "slug": "heike_story",
+    "slug": "heike-story",
+    "headers": [
+      "Today's Question"
+    ]
+  },
+  {
+    "title": "Naoko Yamada Spotlight: K-On!",
+    "slug": "k-on",
     "headers": [
       "Today's Question"
     ]
@@ -112,7 +114,7 @@ export const blogSearchIndex = [
   },
   {
     "title": "Naoko Yamada Spotlight: Liz and the Blue Bird",
-    "slug": "liz_and_blue_bird",
+    "slug": "liz-and-blue-bird",
     "headers": [
       "First disjoint, then joint",
       "Today's Question"
@@ -209,13 +211,6 @@ export const blogSearchIndex = [
     "headers": []
   },
   {
-    "title": "Naoko Yamada Spotlight: K-On!",
-    "slug": "naoko-yamada-k-on",
-    "headers": [
-      "Today's Question"
-    ]
-  },
-  {
     "title": "BAC Online Secret Santa: Part-I",
     "slug": "secret-santa-2024-part-1",
     "headers": []
@@ -227,14 +222,19 @@ export const blogSearchIndex = [
   },
   {
     "title": "Naoko Yamada Spotlight: A Silent Voice",
-    "slug": "silent_voice",
+    "slug": "silent-voice",
     "headers": [
       "Today's Question"
     ]
   },
   {
+    "title": "Spring 2025 Season Recommendations",
+    "slug": "spring-2025",
+    "headers": []
+  },
+  {
     "title": "Naoko Yamada Spotlight: Tamako Love Story",
-    "slug": "tamako_love_story",
+    "slug": "tamako-love-story",
     "headers": [
       "Today's Question"
     ]
