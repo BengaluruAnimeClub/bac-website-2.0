@@ -20,11 +20,20 @@ export function PostItem({
   tags,
   basePath = "/blog/",
 }: PostItemProps & { basePath?: string }) {
+  // Remove leading "/blog/", "/upcoming-events/", or "/past-events/" from slug if present to avoid double segments in URL
+  let normalizedSlug = slug;
+  if (basePath === "/blog/" && slug.startsWith("blog/")) {
+    normalizedSlug = slug.replace(/^blog\//, "");
+  } else if (basePath === "/upcoming-events/" && slug.startsWith("upcoming-events/")) {
+    normalizedSlug = slug.replace(/^upcoming-events\//, "");
+  } else if (basePath === "/past-events/" && slug.startsWith("past-events/")) {
+    normalizedSlug = slug.replace(/^past-events\//, "");
+  }
   return (
     <article className="flex flex-col gap-2 border-border border-b py-3">
       <div>
         <h2 className="text-2xl font-bold">
-          <Link href={basePath + slug}>{title}</Link>
+          <Link href={basePath + normalizedSlug}>{title}</Link>
         </h2>
       </div>
       <div className="flex gap-2">
@@ -44,7 +53,7 @@ export function PostItem({
           </dl>
         )}
         <Link
-          href={basePath + slug}
+          href={basePath + normalizedSlug}
           className={cn(buttonVariants({ variant: "link" }), "py-0")}
         >
           Read more →
