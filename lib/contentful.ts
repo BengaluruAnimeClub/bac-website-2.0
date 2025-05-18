@@ -58,3 +58,21 @@ export async function fetchAnnouncementPostBySlugWithEntries(slug: string) {
   });
   return entries.items[0] || null;
 }
+
+export async function fetchEventReportPosts() {
+  const entries = await contentfulClient.getEntries({
+    content_type: 'eventReportPost',
+    order: ['-fields.date'],
+  });
+  return entries.items;
+}
+
+export async function fetchEventReportPostBySlugWithEntries(slug: string) {
+  const entries = await contentfulClient.getEntries({
+    content_type: 'eventReportPost',
+    'fields.slug': slug,
+    include: 2, // fetch linked authors, etc.
+    limit: 1,
+  });
+  return entries.items[0] || null;
+}
