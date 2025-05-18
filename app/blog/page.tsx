@@ -42,7 +42,15 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   }));
 
   // Combine local and Contentful posts
-  let allPosts = [...posts, ...contentfulPosts];
+  let allPosts = [
+    ...posts.map(post => ({
+      ...post,
+      // Remove leading 'blog/' from slug if present
+      slug: post.slug.replace(/^blog\//, ''),
+      slugAsParams: post.slugAsParams.replace(/^blog\//, ''),
+    })),
+    ...contentfulPosts
+  ];
   allPosts = sortPosts(allPosts.filter((post) => post.published));
 
   let filteredPosts = allPosts;

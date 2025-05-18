@@ -85,12 +85,17 @@ const contentfulRenderOptions = {
     },
     'hr': () => <hr className="my-4 mt-8 mb-8 border-t-2" />,
     'paragraph': (node: any, children: any) => {
-      // If the paragraph only contains a single line break, render <br />
       if (node.content.length === 1 && node.content[0].value === '\n') {
         return <br />;
       }
       return <p>{children}</p>;
     },
+  },
+  renderText: (text: string) => {
+    return text.split('\n').reduce((acc, segment, i) => {
+      if (i === 0) return [segment];
+      return [...acc, <br key={i} />, segment];
+    }, [] as (string | JSX.Element)[]);
   },
 };
 
@@ -143,9 +148,6 @@ export default async function PostPage({ params }: PostPageProps) {
   return (
     <article className="container py-6 prose dark:prose-invert max-w-3xl px-4">
       <h1 className="mb-2 text-3xl lg:text-4xl">{String(post.title)}</h1>
-      <div className="text-base text-muted-foreground mb-2">
-        📅 <b>Last Updated:</b> {post.date && (new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-      </div>
       <div className="flex gap-2 mb-2">
         {Array.isArray(post.tags) && post.tags.map((tag) =>
           typeof tag === "string" ? <Tag tag={tag} key={tag} /> : null
@@ -171,6 +173,14 @@ export default async function PostPage({ params }: PostPageProps) {
         )}
       </div>
       <hr className="my-4 mt-2 mb-4" />
+      {/* Show date as first element inside the first spotlight entry */}
+
+      {post.date && (
+        <div className="text-base text-muted-foreground mb-4 mt-4">
+          📅 <b>Date:</b> {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+        </div>
+      )}
+
       {post.source === "contentful" && Array.isArray(post.spotlightEntries) && post.spotlightEntries.length > 0 ? (
         <div>
           {post.spotlightEntries.map((entry, idx) => (
@@ -178,6 +188,7 @@ export default async function PostPage({ params }: PostPageProps) {
               <div style={{marginBottom: '-10px', marginTop: '0px'}}>
                 <h1 className="text-3xl font-extrabold">{entry.title}</h1>
               </div>
+              
               {entry.content && isContentfulDocument(entry.content) && (
                 <div className="mb-2">
                   {documentToReactComponents(entry.content, contentfulRenderOptions)}
@@ -193,9 +204,17 @@ export default async function PostPage({ params }: PostPageProps) {
           ))}
         </div>
       ) : null}
-      {post.source === "contentful" && isContentfulDocument(post.body) && (!post.spotlightEntries || post.spotlightEntries.length === 0)
-        ? documentToReactComponents(post.body, contentfulRenderOptions)
-        : null}
+      {/* For Contentful blogs without spotlight entries, insert date as first element inside content */}
+      {post.source === "contentful" && isContentfulDocument(post.body) && (!post.spotlightEntries || post.spotlightEntries.length === 0) && (
+        <>
+          {post.date && (
+            <div className="text-base text-muted-foreground mb-2">
+              📅 <b>Last Updated:</b> {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+            </div>
+          )}
+          {documentToReactComponents(post.body, contentfulRenderOptions)}
+        </>
+      )}
       {post.source !== "contentful" && <MDXContent code={String(post.body)} />}
       <p className="text-md mt-2 mb-0 text-muted-foreground text-justify">
         <i>All content on this website is protected by copyright and may not be copied, distributed, or reproduced in any form without the express written consent from <span className="font-semibold">team@bac.moe</span>.</i>
