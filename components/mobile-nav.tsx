@@ -147,7 +147,7 @@ export function MobileNav() {
               type="text"
               value={searchQuery}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-              placeholder="Search blog..." // Changed placeholder to match desktop
+              placeholder="Search blogs & events" // Changed placeholder to match desktop
               className="flex-grow h-10"
               autoFocus
             />

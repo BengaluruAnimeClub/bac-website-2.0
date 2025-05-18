@@ -128,7 +128,7 @@ export function MainNav() {
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          placeholder="Search blog..."
+          placeholder="Search blogs & events"
           className="px-2 py-1 rounded border border-gray-300 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           style={{ minWidth: 180 }}
         />
