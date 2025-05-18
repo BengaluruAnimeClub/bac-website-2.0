@@ -18,8 +18,8 @@ export function MainNav() {
   const [search, setSearch] = useState("");
 
   return (
-    <nav className="flex items-center space-x-4 lg:space-x-5">
-      <Link href="/" className="mr-1 flex items-center space-x-2">
+    <nav className="flex items-center justify-evenly w-full">
+      <Link href="/" className="flex items-center space-x-2">
         <Icons.logo className="h-8 w-8" />
         <span className="font-bold">{siteConfig.name}</span>
       </Link>
@@ -77,15 +77,6 @@ export function MainNav() {
       >
         Gallery
       </Link>
-      {/* <Link
-        href="/terumin"
-        className={cn(
-          "text-sm font-medium transition-colors hover:text-primary hidden sm:inline-block",
-          pathname === "/terumin" ? "text-foreground" : "text-foreground/60"
-        )}
-      >
-        Terumin
-      </Link> */}
       <Link
         href="/game"
         className={cn(
@@ -113,12 +104,11 @@ export function MainNav() {
       >
         Contact
       </Link>
-      {/* Search bar with search params */}
       <form
         onSubmit={e => {
           e.preventDefault();
           if (search.trim()) {
-            router.push(`/search?search=${encodeURIComponent(search)}`); // Use /search for global search
+            router.push(`/search?search=${encodeURIComponent(search)}`);
             setSearch("");
           }
         }}
@@ -133,7 +123,7 @@ export function MainNav() {
           style={{ minWidth: 180 }}
         />
       </form>
-      <div className="ml-4 hidden sm:block">
+      <div className="hidden sm:block">
         {session ? (
           <button
             onClick={() => signOut()}
