@@ -25,7 +25,7 @@ export function MobileNav() {
   const handleSearchSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/blog?search=${encodeURIComponent(searchQuery.trim())}`); // Changed q to search
+      router.push(`/search?search=${encodeURIComponent(searchQuery.trim())}`); // Use /search for global search
       setSearchQuery("");
       setIsSearchVisible(false);
       if (openSheet) setOpenSheet(false);

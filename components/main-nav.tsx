@@ -118,7 +118,7 @@ export function MainNav() {
         onSubmit={e => {
           e.preventDefault();
           if (search.trim()) {
-            router.push(`/blog?search=${encodeURIComponent(search)}`);
+            router.push(`/search?search=${encodeURIComponent(search)}`); // Use /search for global search
             setSearch("");
           }
         }}
