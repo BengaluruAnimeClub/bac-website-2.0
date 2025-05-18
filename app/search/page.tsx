@@ -3,6 +3,7 @@ import { PostItem } from "@/components/post-item";
 import { blogSearchIndex } from "@/components/blog-search-index";
 import { sortPosts } from "@/lib/utils";
 import { Metadata } from "next";
+import { fetchBlogPosts, fetchAnnouncementPosts, fetchEventReportPosts } from "@/lib/contentful";
 
 export const metadata: Metadata = {
   title: "Search | BAC",
@@ -15,8 +16,57 @@ interface SearchPageProps {
   };
 }
 
-export default function SearchPage({ searchParams }: SearchPageProps) {
+export default async function SearchPage({ searchParams }: SearchPageProps) {
   const search = searchParams?.search?.toLowerCase() || "";
+  // Fetch Contentful posts
+  const [contentfulBlogs, contentfulAnnouncements, contentfulEventReports] = await Promise.all([
+    fetchBlogPosts(),
+    fetchAnnouncementPosts(),
+    fetchEventReportPosts(),
+  ]);
+  // Normalize Contentful posts
+  const normalizedBlogs = contentfulBlogs.map((entry: any) => {
+    const fields = entry.fields;
+    return {
+      slug: String(fields.slug ?? ""),
+      slugAsParams: String(fields.slug ?? ""),
+      date: String(fields.date ?? ""),
+      title: String(fields.title ?? ""),
+      description: typeof fields.description === "string" ? fields.description : "",
+      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
+      published: true,
+      body: fields.content ?? null,
+      _section: "Blog",
+    };
+  });
+  const normalizedAnnouncements = contentfulAnnouncements.map((entry: any) => {
+    const fields = entry.fields;
+    return {
+      slug: String(fields.slug ?? ""),
+      slugAsParams: String(fields.slug ?? ""),
+      date: String(fields.date ?? ""),
+      title: String(fields.title ?? ""),
+      description: typeof fields.description === "string" ? fields.description : "",
+      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
+      published: true,
+      body: fields.content ?? null,
+      _section: "Events",
+    };
+  });
+  const normalizedEventReports = contentfulEventReports.map((entry: any) => {
+    const fields = entry.fields;
+    return {
+      slug: String(fields.slug ?? ""),
+      slugAsParams: String(fields.slug ?? ""),
+      date: String(fields.date ?? ""),
+      title: String(fields.title ?? ""),
+      description: typeof fields.description === "string" ? fields.description : "",
+      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
+      published: true,
+      body: fields.content ?? null,
+      _section: "Looking BAC",
+    };
+  });
   // Explicitly type posts with _section
   type PostWithSection = (typeof posts[number] & { _section: string });
   // Add virtual posts for Socials and Contact
@@ -59,9 +109,20 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
     ...posts.map((p) => ({ ...p, _section: "Blog" })),
     ...upcomingEventsPosts.map((p) => ({ ...p, _section: "Events" })),
     ...pastEventsPosts.map((p) => ({ ...p, _section: "Looking BAC" })),
+    ...normalizedBlogs,
+    ...normalizedAnnouncements,
+    ...normalizedEventReports,
     ...virtualPosts
   ];
   let filteredPosts = sortPosts(allPosts.filter((post) => post.published)) as typeof allPosts;
+
+  // Deduplicate by slugAsParams (Contentful and local may overlap)
+  const seen = new Set();
+  filteredPosts = filteredPosts.filter((post) => {
+    if (seen.has(post.slugAsParams)) return false;
+    seen.add(post.slugAsParams);
+    return true;
+  });
 
   if (search) {
     const searchWords = search.split(/\s+/).filter(Boolean);
@@ -76,9 +137,15 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
         );
       })
       .map((b) => b.slug);
-    filteredPosts = filteredPosts.filter((post) =>
-      matchingSlugs.includes(post.slugAsParams) || matchingSlugs.includes(post.slug)
-    );
+    filteredPosts = filteredPosts.filter((post) => {
+      // For local posts, use the static index
+      if (!post.body && (post._section === "Blog" || post._section === "Looking BAC" || post._section === "Events")) {
+        return matchingSlugs.includes(post.slugAsParams) || matchingSlugs.includes(post.slug);
+      }
+      // For Contentful posts, match title/description/tags
+      const text = `${post.title} ${post.description} ${(post.tags || []).join(" ")}`.toLowerCase();
+      return searchWords.every(word => text.includes(word));
+    });
   }
 
   return (
