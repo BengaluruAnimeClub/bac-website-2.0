@@ -7,6 +7,7 @@ import { getAllTags, sortPosts, sortTagsByCount } from "@/lib/utils";
 import { Metadata } from "next";
 import { blogSearchIndex } from "@/components/blog-search-index";
 import { useSearchParams } from "next/navigation";
+import { fetchBlogPosts as fetchContentfulPosts } from "@/lib/contentful";
 
 export const metadata: Metadata = {
   title: "BAC · Blog",
@@ -25,26 +26,40 @@ interface BlogPageProps {
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   const currentPage = Number(searchParams?.page) || 1;
   const search = searchParams?.search?.toLowerCase() || "";
-  let filteredPosts = sortPosts(posts.filter((post) => post.published));
 
+  // Fetch Contentful posts
+  const contentfulRaw = await fetchContentfulPosts();
+  // Normalize Contentful posts to match local post structure
+  const contentfulPosts = contentfulRaw.map((entry: any) => ({
+    slug: entry.fields.slug,
+    slugAsParams: entry.fields.slug, // for search index compatibility
+    date: entry.fields.date,
+    title: entry.fields.title,
+    description: entry.fields.description || "",
+    tags: Array.isArray(entry.fields.tags) ? entry.fields.tags : [],
+    published: true, // assume all Contentful posts are published
+    body: "", // Add dummy body for type compatibility
+  }));
+
+  // Combine local and Contentful posts
+  let allPosts = [...posts, ...contentfulPosts];
+  allPosts = sortPosts(allPosts.filter((post) => post.published));
+
+  let filteredPosts = allPosts;
   if (search) {
-    // Split search into words
     const searchWords = search.split(/\s+/).filter(Boolean);
     const matchingSlugs = blogSearchIndex
       .filter((b) => {
         const title = b.title.toLowerCase();
         const description = (b.description || "").toLowerCase();
         const headers = b.headers.map((h) => h.toLowerCase());
-        // Check if every search word is in title, description, or any header
         return searchWords.every(word =>
           title.includes(word) ||
-          // description.includes(word) || // don't include description words
           headers.some(h => h.includes(word))
         );
       })
       .map((b) => b.slug);
-    // posts use slugAsParams, not slug
-    filteredPosts = filteredPosts.filter((post) => matchingSlugs.includes(post.slugAsParams));
+    filteredPosts = allPosts.filter((post) => matchingSlugs.includes(post.slugAsParams));
   }
 
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
@@ -53,7 +68,8 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
     POSTS_PER_PAGE * currentPage
   );
 
-  const tags = getAllTags(posts);
+  // Tags from both sources
+  const tags = getAllTags(allPosts);
   const sortedTags = sortTagsByCount(tags);
 
   return (

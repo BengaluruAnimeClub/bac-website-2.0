@@ -21,3 +21,13 @@ export async function fetchBlogPostBySlug(slug: string) {
   });
   return entries.items[0] || null;
 }
+
+export async function fetchBlogPostBySlugWithEntries(slug: string) {
+  const entries = await contentfulClient.getEntries({
+    content_type: 'blogPost',
+    'fields.slug': slug,
+    include: 2, // fetch linked spotlight entries and authors
+    limit: 1,
+  });
+  return entries.items[0] || null;
+}
