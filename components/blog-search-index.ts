@@ -392,5 +392,60 @@ export const blogSearchIndex = [
     "description": "First BAC meetup of 2025",
     "slug": "we're-so-back",
     "headers": []
+  },
+  {
+    "title": "Join BAC",
+    "description": "Instagram, WhatsApp, Discord, Twitter, Facebook, YouTube, Bluesky, Telegram, and more",
+    "slug": "socials",
+    "headers": [
+      "instagram",
+      "whatsapp",
+      "discord",
+      "twitter",
+      "facebook",
+      "youtube",
+      "bluesky",
+      "telegram",
+      "social",
+      "ig",
+      "socials",
+      "community",
+      "group",
+      "join",
+      "connect"
+    ]
+  },
+  {
+    "title": "Contact BAC",
+    "description": "Support, email, feedback, help, collaborations, events, general inquiries",
+    "slug": "contact-us",
+    "headers": [
+      "support",
+      "email",
+      "contact",
+      "help",
+      "feedback",
+      "collaborations",
+      "events",
+      "inquiries"
+    ]
+  },
+  {
+    "title": "Love Story (Game)",
+    "description": "Play the BAC Love Story Valentine Game!",
+    "slug": "game",
+    "headers": [
+      "game",
+      "love story",
+      "valentine",
+      "valentines",
+      "valentine's",
+      "dating",
+      "visual novel",
+      "bac game",
+      "bac love story",
+      "play",
+      "interactive"
+    ]
   }
 ];

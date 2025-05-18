@@ -19,10 +19,47 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
   const search = searchParams?.search?.toLowerCase() || "";
   // Explicitly type posts with _section
   type PostWithSection = (typeof posts[number] & { _section: string });
+  // Add virtual posts for Socials and Contact
+  const virtualPosts: PostWithSection[] = [
+    {
+      slug: "socials",
+      slugAsParams: "socials",
+      title: "Join BAC",
+      description: "Instagram, WhatsApp, Discord, Twitter, Facebook, YouTube, Bluesky, Telegram, and more",
+      date: "2025-01-01",
+      tags: [],
+      published: true,
+      body: "",
+      _section: "Info"
+    },
+    {
+      slug: "contact-us",
+      slugAsParams: "contact-us",
+      title: "Contact BAC",
+      description: "Support, email, feedback, help, collaborations, events, general inquiries",
+      date: "2025-01-01",
+      tags: [],
+      published: true,
+      body: "",
+      _section: "Info"
+    },
+    {
+      slug: "game",
+      slugAsParams: "game",
+      title: "BAC Love Story (Game)",
+      description: "Play BAC Love Story, the Valentine's Day Game!",
+      date: "2025-02-14",
+      tags: [],
+      published: true,
+      body: "",
+      _section: "Game"
+    }
+  ];
   const allPosts: PostWithSection[] = [
     ...posts.map((p) => ({ ...p, _section: "Blog" })),
     ...upcomingEventsPosts.map((p) => ({ ...p, _section: "Events" })),
     ...pastEventsPosts.map((p) => ({ ...p, _section: "Looking BAC" })),
+    ...virtualPosts
   ];
   let filteredPosts = sortPosts(allPosts.filter((post) => post.published)) as typeof allPosts;
 

@@ -8,7 +8,10 @@ import { cn } from "@/lib/utils";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useUI } from "@/context/ui-context"; // Import useUI
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Search, X } from "lucide-react";
 
 export function MainNav() {
   const pathname = usePathname();
@@ -16,10 +19,22 @@ export function MainNav() {
   const { openLoginModal } = useUI(); // Get openLoginModal function
   const router = useRouter();
   const [search, setSearch] = useState("");
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Add a handler for search submit (to match MobileNav)
+  const handleSearchSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
+    if (search.trim()) {
+      router.push(`/search?search=${encodeURIComponent(search.trim())}`);
+      setSearch("");
+      setShowSearchDropdown(false);
+    }
+  };
 
   return (
-    <nav className="flex items-center space-x-4 lg:space-x-5">
-      <Link href="/" className="mr-1 flex items-center space-x-2">
+    <nav className="flex items-center justify-between w-full relative">
+      <Link href="/" className="flex items-center space-x-2">
         <Icons.logo className="h-8 w-8" />
         <span className="font-bold">{siteConfig.name}</span>
       </Link>
@@ -77,15 +92,6 @@ export function MainNav() {
       >
         Gallery
       </Link>
-      {/* <Link
-        href="/terumin"
-        className={cn(
-          "text-sm font-medium transition-colors hover:text-primary hidden sm:inline-block",
-          pathname === "/terumin" ? "text-foreground" : "text-foreground/60"
-        )}
-      >
-        Terumin
-      </Link> */}
       <Link
         href="/game"
         className={cn(
@@ -113,27 +119,54 @@ export function MainNav() {
       >
         Contact
       </Link>
-      {/* Search bar with search params */}
+      {/* Desktop search bar (hidden below xl) */}
       <form
-        onSubmit={e => {
-          e.preventDefault();
-          if (search.trim()) {
-            router.push(`/search?search=${encodeURIComponent(search)}`); // Use /search for global search
-            setSearch("");
-          }
-        }}
-        className="relative hidden sm:block"
+        onSubmit={handleSearchSubmit}
+        className="relative hidden xl:block"
       >
-        <input
+        <Input
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="Search blogs & events"
-          className="px-2 py-1 rounded border border-gray-300 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-          style={{ minWidth: 180 }}
+          className="min-w-[180px]"
         />
       </form>
-      <div className="ml-4 hidden sm:block">
+      {/* Search icon for desktop only, when below xl (not on mobile) */}
+      <div className="hidden md:block xl:hidden relative">
+        <Button
+          variant="outline"
+          className="w-10 px-0"
+          onClick={() => {
+            setShowSearchDropdown(v => !v);
+            setTimeout(() => searchInputRef.current?.focus(), 100);
+          }}
+          aria-label={showSearchDropdown ? "Close search bar" : "Open search bar"}
+        >
+          {showSearchDropdown ? <X className="h-6 w-6" /> : <Search className="h-6 w-6" />}
+        </Button>
+        {showSearchDropdown && (
+          <div
+            className="absolute top-full mt-2 right-0 w-[90vw] max-w-lg z-50 bg-background shadow-lg p-4 border-b border-border"
+          >
+            <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
+              <Input
+                ref={searchInputRef}
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search blogs & events"
+                className="flex-grow h-10"
+                autoFocus
+              />
+              <Button type="submit" variant="default" size="icon" className="h-10 w-10 flex-shrink-0">
+                <Search className="h-5 w-5" />
+              </Button>
+            </form>
+          </div>
+        )}
+      </div>
+      <div className="hidden md:block">
         {session ? (
           <button
             onClick={() => signOut()}
