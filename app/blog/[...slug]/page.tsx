@@ -174,13 +174,11 @@ export default async function PostPage({ params }: PostPageProps) {
       </div>
       <hr className="my-4 mt-2 mb-4" />
       {/* Show date as first element inside the first spotlight entry */}
-
-      {post.date && (
+      {post.source === "contentful" && post.date && (
         <div className="text-base text-muted-foreground mb-4 mt-4">
           📅 <b>Date:</b> {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
         </div>
       )}
-
       {post.source === "contentful" && Array.isArray(post.spotlightEntries) && post.spotlightEntries.length > 0 ? (
         <div>
           {post.spotlightEntries.map((entry, idx) => (
