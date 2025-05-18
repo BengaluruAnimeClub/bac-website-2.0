@@ -5,6 +5,7 @@ import { Tag } from "@/components/tag";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllTags, sortPosts, sortTagsByCount } from "@/lib/utils";
 import { Metadata } from "next";
+import { fetchAnnouncementPosts } from "@/lib/contentful";
 
 export const metadata: Metadata = {
   title: "BAC · Events",
@@ -21,16 +22,38 @@ interface BlogPageProps {
 
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   const currentPage = Number(searchParams?.page) || 1;
-  const sortedPosts = sortPosts(upcomingEventsPosts.filter((post) => post.published));
+
+  // Fetch Contentful announcement posts
+  const contentfulAnnouncementPosts = await fetchAnnouncementPosts();
+  // Normalize Contentful posts
+  const normalizedContentful = contentfulAnnouncementPosts.map((entry: any) => {
+    const fields = entry.fields;
+    return {
+      slug: String(fields.slug ?? ""),
+      slugAsParams: String(fields.slug ?? ""),
+      date: String(fields.date ?? ""),
+      title: String(fields.title ?? ""),
+      description: typeof fields.description === "string" ? fields.description : "",
+      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
+      published: true,
+      body: fields.content ?? null,
+      author: fields.author?.fields?.name || "",
+      source: "contentful",
+    };
+  });
+
+  // Merge local and Contentful posts
+  const allPosts = [
+    ...upcomingEventsPosts.map((p) => ({ ...p, source: "local" })),
+    ...normalizedContentful,
+  ];
+  const sortedPosts = sortPosts(allPosts.filter((post) => post.published));
   const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
 
   const displayPosts = sortedPosts.slice(
     POSTS_PER_PAGE * (currentPage - 1),
     POSTS_PER_PAGE * currentPage
   );
-
-  // const tags = getAllTags(upcomingEventsPosts);
-  // const sortedTags = sortTagsByCount(tags);
 
   return (
     <div className="container max-w-4xl py-6 lg:py-10">
@@ -56,7 +79,8 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                       date={date}
                       title={title}
                       description={description}
-                      // tags={tags}
+                      tags={tags}
+                      basePath="/upcoming-events/"
                     />
                   </li>
                 );
