@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 const BLOG_DIR = path.join(__dirname, '../content/blog');
+const PAST_EVENTS_DIR = path.join(__dirname, '../content/past-events');
+const UPCOMING_EVENTS_DIR = path.join(__dirname, '../content/upcoming-events');
 const OUT_FILE = path.join(__dirname, '../components/blog-search-index.ts');
 
 function getFrontmatter(content) {
@@ -59,7 +61,10 @@ function slugFromFilePath(filePath) {
 }
 
 function main() {
-  const files = getAllMdxFiles(BLOG_DIR);
+  const blogFiles = getAllMdxFiles(BLOG_DIR);
+  const pastEventsFiles = getAllMdxFiles(PAST_EVENTS_DIR);
+  const upcomingEventsFiles = getAllMdxFiles(UPCOMING_EVENTS_DIR);
+  const files = [...blogFiles, ...pastEventsFiles, ...upcomingEventsFiles];
   const index = files.map(filePath => {
     const content = fs.readFileSync(filePath, 'utf8');
     const fm = getFrontmatter(content);
