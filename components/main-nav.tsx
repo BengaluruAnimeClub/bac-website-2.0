@@ -9,6 +9,9 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useUI } from "@/context/ui-context"; // Import useUI
 import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Search, X } from "lucide-react";
 
 export function MainNav() {
   const pathname = usePathname();
@@ -18,6 +21,16 @@ export function MainNav() {
   const [search, setSearch] = useState("");
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Add a handler for search submit (to match MobileNav)
+  const handleSearchSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
+    if (search.trim()) {
+      router.push(`/search?search=${encodeURIComponent(search.trim())}`);
+      setSearch("");
+      setShowSearchDropdown(false);
+    }
+  };
 
   return (
     <nav className="flex items-center justify-between w-full relative">
@@ -108,62 +121,47 @@ export function MainNav() {
       </Link>
       {/* Desktop search bar (hidden below xl) */}
       <form
-        onSubmit={e => {
-          e.preventDefault();
-          if (search.trim()) {
-            router.push(`/search?search=${encodeURIComponent(search)}`);
-            setSearch("");
-            setShowSearchDropdown(false);
-          }
-        }}
+        onSubmit={handleSearchSubmit}
         className="relative hidden xl:block"
       >
-        <input
+        <Input
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="Search blogs & events"
-          className="px-2 py-1 rounded border border-gray-300 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-          style={{ minWidth: 180 }}
+          className="min-w-[180px]"
         />
       </form>
       {/* Search icon for desktop only, when below xl (not on mobile) */}
       <div className="hidden md:block xl:hidden relative">
-        <button
-          type="button"
-          aria-label="Open search"
-          className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+        <Button
+          variant="outline"
+          className="w-10 px-0"
           onClick={() => {
             setShowSearchDropdown(v => !v);
             setTimeout(() => searchInputRef.current?.focus(), 100);
           }}
+          aria-label={showSearchDropdown ? "Close search bar" : "Open search bar"}
         >
-          {/* Inline SVG for search icon */}
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5 text-gray-700 dark:text-gray-200">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-          </svg>
-        </button>
+          {showSearchDropdown ? <X className="h-6 w-6" /> : <Search className="h-6 w-6" />}
+        </Button>
         {showSearchDropdown && (
-          <div className="absolute right-0 mt-2 z-50 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded shadow-lg p-2 w-64">
-            <form
-              onSubmit={e => {
-                e.preventDefault();
-                if (search.trim()) {
-                  router.push(`/search?search=${encodeURIComponent(search)}`);
-                  setSearch("");
-                  setShowSearchDropdown(false);
-                }
-              }}
-            >
-              <input
+          <div
+            className="absolute top-full mt-2 right-0 w-[90vw] max-w-lg z-50 bg-background shadow-lg p-4 border-b border-border"
+          >
+            <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
+              <Input
                 ref={searchInputRef}
                 type="text"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Search blogs & events"
-                className="w-full px-2 py-1 rounded border border-gray-300 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white dark:bg-gray-900"
-                style={{ minWidth: 180 }}
+                className="flex-grow h-10"
+                autoFocus
               />
+              <Button type="submit" variant="default" size="icon" className="h-10 w-10 flex-shrink-0">
+                <Search className="h-5 w-5" />
+              </Button>
             </form>
           </div>
         )}
