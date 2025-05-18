@@ -235,6 +235,11 @@ export const blogSearchIndex = [
     ]
   },
   {
+    "title": "Spring 2025 Season Recommendations",
+    "slug": "spring-2025",
+    "headers": []
+  },
+  {
     "title": "Naoko Yamada Spotlight: Tamako Love Story",
     "description": "Special edition of the Anime Spotlight series in the backdrop of upcoming release of \"The Colors Within\" movie!",
     "slug": "tamako-love-story",
