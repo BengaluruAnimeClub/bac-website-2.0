@@ -136,13 +136,9 @@ export function MobileNav() {
       {/* Dropdown Search Bar */}
       {isSearchVisible && (
         <div
-          className="absolute top-full mt-2 right-0 w-[90vw] max-w-lg z-50 bg-background shadow-lg p-4 border-b border-border"
-          // 'top-full' positions it below the parent div (icons row). 'mt-2' adds a small gap.
-          // 'right-0' aligns it to the right of the icon container.
-          // 'w-[90vw]' makes it 90% of viewport width.
-          // 'max-w-lg' caps the width on larger mobile screens.
+          className="fixed left-0 right-0 top-[100%] mt-2 w-screen max-w-none z-50 bg-background shadow-lg p-4 border-b border-border"
         >
-          <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
+          <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 w-full">
             <Input
               type="text"
               value={searchQuery}
