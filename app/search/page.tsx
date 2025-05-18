@@ -101,6 +101,14 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
                 title={post.title}
                 description={post.description}
                 tags={post.tags}
+                basePath={
+                  post._section === "Events" ? "/upcoming-events/" :
+                  post._section === "Looking BAC" ? "/past-events/" :
+                  post._section === "Blog" ? "/blog/" :
+                  post._section === "Game" ? "/game/" :
+                  post._section === "Info" ? "/" :
+                  "/blog/"
+                }
               />
             </li>
           ))}
