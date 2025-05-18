@@ -5,13 +5,72 @@ import { posts, upcomingEventsPosts } from "#site/content";
 import { pastEventsPosts } from "#site/content";
 import Link from "next/link";
 import { PostItem } from "@/components/post-item";
+import { fetchBlogPosts, fetchAnnouncementPosts, fetchEventReportPosts } from "@/lib/contentful";
 
-export default function Home() {
-  const latestBlogPosts = sortPosts(posts).slice(0, 3);
-  const latestPastEventsPosts = sortPosts(pastEventsPosts).slice(0, 3);
-  const latestUpcomingEventsPosts = sortPosts(upcomingEventsPosts).slice(0, 4).reverse();
-  const latestPosts = sortPosts(posts.concat(pastEventsPosts)).slice(0, 5);
+export default async function Home() {
+  // Fetch Contentful posts
+  const [contentfulBlogs, contentfulAnnouncements, contentfulEventReports] = await Promise.all([
+    fetchBlogPosts(),
+    fetchAnnouncementPosts(),
+    fetchEventReportPosts(),
+  ]);
+
+  // Normalize Contentful posts
+  const normalizedBlogs = contentfulBlogs.map((entry: any) => {
+    const fields = entry.fields;
+    return {
+      slug: String(fields.slug ?? ""),
+      slugAsParams: String(fields.slug ?? ""),
+      date: String(fields.date ?? ""),
+      title: String(fields.title ?? ""),
+      description: typeof fields.description === "string" ? fields.description : "",
+      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
+      published: true,
+      body: fields.content ?? null,
+      _type: "blog",
+    };
+  });
+  const normalizedAnnouncements = contentfulAnnouncements.map((entry: any) => {
+    const fields = entry.fields;
+    return {
+      slug: String(fields.slug ?? ""),
+      slugAsParams: String(fields.slug ?? ""),
+      date: String(fields.date ?? ""),
+      title: String(fields.title ?? ""),
+      description: typeof fields.description === "string" ? fields.description : "",
+      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
+      published: true,
+      body: fields.content ?? null,
+      _type: "upcoming-event",
+    };
+  });
+  const normalizedEventReports = contentfulEventReports.map((entry: any) => {
+    const fields = entry.fields;
+    return {
+      slug: String(fields.slug ?? ""),
+      slugAsParams: String(fields.slug ?? ""),
+      date: String(fields.date ?? ""),
+      title: String(fields.title ?? ""),
+      description: typeof fields.description === "string" ? fields.description : "",
+      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
+      published: true,
+      body: fields.content ?? null,
+      _type: "past-event",
+    };
+  });
+
+  // Merge all posts for latestPosts (blogs, announcements, event reports, both local and Contentful)
+  const allBlogPosts = posts.map((p) => ({ ...p, _type: "blog" })).concat(normalizedBlogs);
+  const allPastEventsPosts = pastEventsPosts.map((p) => ({ ...p, _type: "past-event" })).concat(normalizedEventReports);
+  const allUpcomingEventsPosts = upcomingEventsPosts.map((p) => ({ ...p, _type: "upcoming-event" })).concat(normalizedAnnouncements);
+  // For latestPosts, include only blogs and past events (exclude upcoming events)
+  const allLatestPosts = [
+    ...allBlogPosts,
+    ...allPastEventsPosts,
+  ];
+  const latestPosts = sortPosts(allLatestPosts.filter((p) => p.published)).slice(0, 5);
   const today = new Date().toISOString().slice(0, 10);
+
   return (
     <>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:mt-10 lg:py-10">
@@ -75,13 +134,13 @@ export default function Home() {
         </div>
       </section>
 
-      {latestUpcomingEventsPosts.some((post) => post.published && post.date >= today) && (
+      {allUpcomingEventsPosts.some((post) => post.published && post.date >= today) && (
         <section className="container max-w-4xl py-6 lg:py-10 flex flex-col space-y-6 mt-0">
           <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-5xl font-black text-center">
             Upcoming Events
           </h2>
           <ul className="flex flex-col">
-            {latestUpcomingEventsPosts.map((post) => (
+            {allUpcomingEventsPosts.map((post) => (
               post.published && 
               post.date >= today && (
                 <li key={post.slug} className="first:border-t first:border-border">
@@ -90,6 +149,7 @@ export default function Home() {
                     title={post.title}
                     description={post.description}
                     date={post.date}
+                    basePath="/upcoming-events/"
                   />
                 </li>
               )
@@ -103,18 +163,30 @@ export default function Home() {
           Latest Posts
         </h2>
         <ul className="flex flex-col">
-          {latestPosts.map((post) => (
-            post.published && (
-              <li key={post.slug} className="first:border-t first:border-border">
-                <PostItem
-                  slug={post.slug}
-                  title={post.title}
-                  description={post.description}
-                  date={post.date}
-                />
-              </li>
-            )
-          ))}
+          {latestPosts.map((post) => {
+            let basePath = "/blog/";
+            // Use _type if present, else infer from slug
+            const type = (post as any)._type;
+            if (type === "upcoming-event" || post.slug.includes("upcoming-events")) {
+              basePath = "/upcoming-events/";
+            } else if (type === "past-event" || post.slug.includes("past-events")) {
+              basePath = "/past-events/";
+            }
+            return (
+              post.published && (
+                <li key={post.slugAsParams} className="first:border-t first:border-border">
+                  <PostItem
+                    slug={post.slug}
+                    title={post.title}
+                    description={post.description}
+                    date={post.date}
+                    tags={post.tags}
+                    basePath={basePath}
+                  />
+                </li>
+              )
+            );
+          })}
         </ul>
       </section>
     </>
