@@ -429,5 +429,23 @@ export const blogSearchIndex = [
       "events",
       "inquiries"
     ]
+  },
+  {
+    "title": "Love Story (Game)",
+    "description": "Play the BAC Love Story Valentine Game!",
+    "slug": "game",
+    "headers": [
+      "game",
+      "love story",
+      "valentine",
+      "valentines",
+      "valentine's",
+      "dating",
+      "visual novel",
+      "bac game",
+      "bac love story",
+      "play",
+      "interactive"
+    ]
   }
 ];

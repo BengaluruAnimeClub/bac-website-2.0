@@ -77,7 +77,7 @@ function main() {
     };
   });
 
-  // Add static entries for socials and contact page
+  // Add static entries for socials, contact page, and love story game
   index.push(
     {
       title: "Join BAC",
@@ -93,6 +93,14 @@ function main() {
       slug: "contact-us",
       headers: [
         "support", "email", "contact", "help", "feedback", "collaborations", "events", "inquiries"
+      ]
+    },
+    {
+      title: "Love Story (Game)",
+      description: "Play the BAC Love Story Valentine Game!",
+      slug: "game",
+      headers: [
+        "game", "love story", "valentine", "valentines", "valentine's", "dating", "visual novel", "bac game", "bac love story", "play", "interactive"
       ]
     }
   );

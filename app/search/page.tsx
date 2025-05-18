@@ -42,6 +42,17 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
       published: true,
       body: "",
       _section: "Info"
+    },
+    {
+      slug: "game",
+      slugAsParams: "game",
+      title: "BAC Love Story (Game)",
+      description: "Play BAC Love Story, the Valentine's Day Game!",
+      date: "2025-02-14",
+      tags: [],
+      published: true,
+      body: "",
+      _section: "Game"
     }
   ];
   const allPosts: PostWithSection[] = [
