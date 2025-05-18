@@ -7,6 +7,8 @@ import Link from "next/link";
 import { PostItem } from "@/components/post-item";
 import { fetchBlogPosts, fetchAnnouncementPosts, fetchEventReportPosts } from "@/lib/contentful";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   // Fetch Contentful posts
   const [contentfulBlogs, contentfulAnnouncements, contentfulEventReports] = await Promise.all([
@@ -26,7 +28,7 @@ export default async function Home() {
       description: typeof fields.description === "string" ? fields.description : "",
       tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
       published: true,
-      body: fields.content ?? null,
+      body: fields.content ?? "",
       _type: "blog",
     };
   });
@@ -40,7 +42,7 @@ export default async function Home() {
       description: typeof fields.description === "string" ? fields.description : "",
       tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
       published: true,
-      body: fields.content ?? null,
+      body: fields.content ?? "",
       _type: "upcoming-event",
     };
   });
@@ -54,7 +56,7 @@ export default async function Home() {
       description: typeof fields.description === "string" ? fields.description : "",
       tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
       published: true,
-      body: fields.content ?? null,
+      body: fields.content ?? "",
       _type: "past-event",
     };
   });
