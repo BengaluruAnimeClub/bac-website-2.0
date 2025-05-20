@@ -8,6 +8,19 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatDate(input: string | number): string {
+  // If input is a string in YYYY-MM-DD or YYYY-MM-DDTHH:mm format, always treat as local date (no timezone shift)
+  if (typeof input === "string" && /^\d{4}-\d{2}-\d{2}/.test(input)) {
+    // Extract only the date part
+    const [year, month, day] = input.split("T")[0].split("-");
+    // Create a date object in local time
+    const date = new Date(Number(year), Number(month) - 1, Number(day));
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  }
+  // fallback to default
   const date = new Date(input);
   return date.toLocaleDateString("en-US", {
     month: "long",
