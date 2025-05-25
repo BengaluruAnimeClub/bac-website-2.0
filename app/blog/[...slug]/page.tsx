@@ -112,6 +112,10 @@ export async function generateMetadata({
   let ogImage: string | undefined;
   if (post.source === "local" && typeof post.body === "string") {
     ogImage = extractFirstImageSrc(post.body);
+    // If the image path is relative, prefix with site base URL for OG
+    if (ogImage && ogImage.startsWith("/")) {
+      ogImage = `${process.env.NEXT_PUBLIC_APP_URL || siteConfig.url}${ogImage}`;
+    }
   }
   // For Contentful, you may want to extract from spotlightEntries or body if available
   if (post.source === "contentful" && Array.isArray(post.spotlightEntries)) {
@@ -136,7 +140,7 @@ export async function generateMetadata({
 
   // Fallback to a default image if none found
   if (!ogImage) {
-    ogImage = "/images/preview.png";
+    ogImage = `${process.env.NEXT_PUBLIC_APP_URL || siteConfig.url}/images/preview.png`;
   }
 
   return {
