@@ -73,31 +73,3 @@ export function extractFirstImageSrc(content: string): string | undefined {
   }
   return undefined;
 }
-
-/**
- * Given a Contentful asset URL, returns a 1200x630 JPG for og:image use.
- * Leaves non-Contentful URLs unchanged.
- */
-export function optimizeContentfulImage(url: string): string {
-  if (!url) return url;
-  if (url.includes('images.ctfassets.net')) {
-    const [base] = url.split('?');
-    return `${base}?w=1200&h=630&fit=thumb&fm=jpg&q=80`;
-  }
-  return url;
-}
-
-/**
- * Extracts the first image URL from a Contentful rich text body (object).
- * Returns the optimized og:image URL if found, else undefined.
- */
-export function extractOgImageFromContentfulBody(body: any): string | undefined {
-  if (!body || typeof body !== 'object') return undefined;
-  const contentStr = JSON.stringify(body);
-  const imgMatch = contentStr.match(/(https?:)?\/\/(?:[^"'\\\s]+)\.(webp|png|jpg|jpeg|gif)/i);
-  if (imgMatch) {
-    let url = imgMatch[0].startsWith('//') ? `https:${imgMatch[0]}` : imgMatch[0];
-    return optimizeContentfulImage(url);
-  }
-  return undefined;
-}
