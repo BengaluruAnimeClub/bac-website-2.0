@@ -7,7 +7,7 @@ import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import "@/styles/mdx.css";
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
-import { sortPosts } from "@/lib/utils";
+import { sortPosts, optimizeContentfulImage, extractOgImageFromContentfulBody } from "@/lib/utils";
 import { CommentSection } from "@/components/comment-section";
 
 interface PostPageProps {
@@ -97,13 +97,7 @@ export async function generateMetadata({
     }
   }
   if (!ogImage && post.source === "contentful") {
-    if (post.body && typeof post.body === "object") {
-      const contentStr = JSON.stringify(post.body);
-      const imgMatch = contentStr.match(/(https?:)?\/\/(?:[^"'\\\s]+)\.(webp|png|jpg|jpeg|gif)/i);
-      if (imgMatch) {
-        ogImage = imgMatch[0].startsWith('//') ? `https:${imgMatch[0]}` : imgMatch[0];
-      }
-    }
+    ogImage = extractOgImageFromContentfulBody(post.body);
   }
 
   // Debug: log the ogImage value to verify extraction

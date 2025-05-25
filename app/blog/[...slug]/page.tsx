@@ -10,7 +10,7 @@ import { sortPosts } from "@/lib/utils";
 import { CommentSection } from "@/components/comment-section";
 import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { extractFirstImageSrc } from "@/lib/utils";
+import { extractFirstImageSrc, optimizeContentfulImage, extractOgImageFromContentfulBody } from "@/lib/utils";
 import matter from "gray-matter";
 import { BLOCKS } from "./contentful-blocks-enum";
 
@@ -137,22 +137,13 @@ export async function generateMetadata({
   if (!ogImage && post.source === "contentful" && Array.isArray(post.spotlightEntries)) {
     for (const entry of post.spotlightEntries) {
       if (entry.content && typeof entry.content === "object") {
-        const contentStr = JSON.stringify(entry.content);
-        // Match https://, http://, or protocol-relative (//) image URLs
-        const imgMatch = contentStr.match(/(https?:)?\/\/(?:[^"'\\\s]+)\.(webp|png|jpg|jpeg|gif)/i);
-        if (imgMatch) {
-          ogImage = imgMatch[0].startsWith('//') ? `https:${imgMatch[0]}` : imgMatch[0];
-          break;
-        }
+        ogImage = extractOgImageFromContentfulBody(entry.content);
+        if (ogImage) break;
       }
     }
   }
   if (!ogImage && post.source === "contentful" && post.body && typeof post.body === "object") {
-    const contentStr = JSON.stringify(post.body);
-    const imgMatch = contentStr.match(/(https?:)?\/\/(?:[^"'\\\s]+)\.(webp|png|jpg|jpeg|gif)/i);
-    if (imgMatch) {
-      ogImage = imgMatch[0].startsWith('//') ? `https:${imgMatch[0]}` : imgMatch[0];
-    }
+    ogImage = extractOgImageFromContentfulBody(post.body);
   }
 
   // Debug: log the ogImage value to verify extraction
