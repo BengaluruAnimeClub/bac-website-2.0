@@ -149,10 +149,8 @@ export async function generateMetadata({
     }
   }
 
-  // Fallback to a default image if none found
-  if (!ogImage) {
-    ogImage = `${process.env.NEXT_PUBLIC_APP_URL || siteConfig.url}/images/preview.png`;
-  }
+  // Fallback to no image if none found
+  // ogImage will be undefined if nothing is found
 
   return {
     title: post.title,
