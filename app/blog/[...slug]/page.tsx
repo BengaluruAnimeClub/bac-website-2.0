@@ -138,6 +138,7 @@ export async function generateMetadata({
     for (const entry of post.spotlightEntries) {
       if (entry.content && typeof entry.content === "object") {
         const contentStr = JSON.stringify(entry.content);
+        // Try to extract image src from embedded-asset-blocks (Contentful rich text)
         const imgMatch = contentStr.match(/https?:\/\/[^"'\\\s]+\.(webp|png|jpg|jpeg|gif)/i);
         if (imgMatch) {
           ogImage = imgMatch[0].replace(/\\/g, "");
@@ -147,6 +148,7 @@ export async function generateMetadata({
     }
   }
   if (!ogImage && post.source === "contentful" && post.body && typeof post.body === "object") {
+    // Try to extract image src from embedded-asset-blocks (Contentful rich text)
     const contentStr = JSON.stringify(post.body);
     const imgMatch = contentStr.match(/https?:\/\/[^"'\\\s]+\.(webp|png|jpg|jpeg|gif)/i);
     if (imgMatch) {
