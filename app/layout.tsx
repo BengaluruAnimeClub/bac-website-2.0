@@ -22,11 +22,7 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.title,
-    images: [
-      {
-        url: siteConfig.preview_image,
-      },
-    ],
+    images: [], // Remove default image, let per-page metadata handle it
     type: 'website',
   },
   icons: {
@@ -38,7 +34,7 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     site: siteConfig.twitter_handle,
     creator: siteConfig.twitter_handle,
-    images: [siteConfig.preview_image], 
+    images: [], // Remove default image, let per-page metadata handle it
   }
 };
 

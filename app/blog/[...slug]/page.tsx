@@ -10,6 +10,12 @@ import { sortPosts } from "@/lib/utils";
 import { CommentSection } from "@/components/comment-section";
 import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { extractFirstImageSrc, extractFirstImageSrcWithFallback, extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
+import matter from "gray-matter";
+import { BLOCKS } from "./contentful-blocks-enum";
+
+// Helper: force-cast to Document type for Contentful rich text
+import type { Document } from "@contentful/rich-text-types";
 
 interface PostPageProps {
   params: {
@@ -52,17 +58,19 @@ async function getPostFromParams(params: PostPageProps["params"]) {
       body: fields.content ?? null, // rich text document or null
       spotlightEntries,
       source: "contentful",
-    };
+      image: typeof fields.image === "string" ? fields.image : undefined, // <-- add image field
+    } as { [key: string]: any; image?: string };
   }
   return null;
 }
 
-function isContentfulDocument(doc: any): doc is { nodeType: string; content: any[] } {
+function isContentfulDocument(doc: any): doc is { nodeType: typeof BLOCKS.DOCUMENT; content: any[]; data: any } {
   return (
     doc &&
     typeof doc === "object" &&
-    doc.nodeType === "document" &&
-    Array.isArray(doc.content)
+    doc.nodeType === BLOCKS.DOCUMENT &&
+    Array.isArray(doc.content) &&
+    ("data" in doc)
   );
 }
 
@@ -107,12 +115,54 @@ export async function generateMetadata({
     return {};
   }
 
-  const ogSearchParams = new URLSearchParams();
-  ogSearchParams.set("title", post.title);
+  // Try to extract og:image from frontmatter if present
+  let ogImage: string | undefined;
+  if (post.source === "local") {
+    // Use post.image directly if available (frontmatter is already parsed)
+    if (post.image) {
+      ogImage = post.image;
+      if (ogImage && ogImage.startsWith("/")) {
+        ogImage = `${process.env.NEXT_PUBLIC_APP_URL || siteConfig.url}${ogImage}`;
+      }
+    }
+    // If not in frontmatter, try to extract from content (with fallback)
+    if (!ogImage && typeof post.body === "string") {
+      ogImage = extractFirstImageSrcWithFallback(post.body);
+    }
+  }
+  // For Contentful, extract from spotlightEntries or body if available (with fallback)
+  if (!ogImage && post.source === "contentful" && Array.isArray(post.spotlightEntries)) {
+    for (const entry of post.spotlightEntries) {
+      if (entry.content && typeof entry.content === "object") {
+        ogImage = extractOgImageFromContentfulBodyWithFallback(entry.content);
+        if (ogImage) break;
+      }
+    }
+  }
+  if (!ogImage && post.source === "contentful" && post.body && typeof post.body === "object") {
+    ogImage = extractOgImageFromContentfulBodyWithFallback(post.body);
+  }
+
+  // Debug: log the ogImage value to verify extraction
+  console.log('OG IMAGE DEBUG', ogImage);
+
+  // Fallback to no image if none found
+  // ogImage will be undefined if nothing is found
 
   return {
     title: post.title,
     description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      images: ogImage ? [{ url: ogImage }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: ogImage ? [ogImage] : [],
+    },
   };
 }
 
@@ -188,7 +238,7 @@ export default async function PostPage({ params }: PostPageProps) {
               📅 <b>Last Updated:</b> {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
             </div>
           )}
-          {documentToReactComponents(post.body, contentfulRenderOptions)}
+          {documentToReactComponents({ ...post.body, data: post.body.data ?? {} } as unknown as Document, contentfulRenderOptions)}
         </>
       )}
       {post.source !== "contentful" && <MDXContent code={String(post.body)} />}

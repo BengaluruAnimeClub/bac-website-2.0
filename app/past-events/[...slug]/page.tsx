@@ -3,6 +3,7 @@ import { MDXContent } from "@/components/mdx-components";
 import { notFound } from "next/navigation";
 import { fetchEventReportPosts, fetchEventReportPostBySlugWithEntries } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { extractFirstImageSrcWithFallback, extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 
 import "@/styles/mdx.css";
 import { Metadata } from "next";
@@ -84,12 +85,33 @@ export async function generateMetadata({
     return {};
   }
 
-  const ogSearchParams = new URLSearchParams();
-  ogSearchParams.set("title", post.title);
+  let ogImage: string | undefined;
+  if (post.source === "local") {
+    if (typeof post.body === "string") {
+      ogImage = extractFirstImageSrcWithFallback(post.body);
+    }
+  }
+  if (!ogImage && post.source === "contentful") {
+    ogImage = extractOgImageFromContentfulBodyWithFallback(post.body);
+  }
+
+  // Debug: log the ogImage value to verify extraction
+  console.log('OG IMAGE DEBUG', ogImage);
 
   return {
     title: post.title,
     description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      images: ogImage ? [{ url: ogImage }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: ogImage ? [ogImage] : [],
+    },
   };
 }
 
