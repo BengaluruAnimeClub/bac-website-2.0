@@ -11,6 +11,7 @@ import { CommentSection } from "@/components/comment-section";
 import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { extractFirstImageSrc } from "@/lib/utils";
+import matter from "gray-matter";
 
 interface PostPageProps {
   params: {
@@ -108,17 +109,27 @@ export async function generateMetadata({
     return {};
   }
 
-  // Try to extract a preview image from the post body (for local MDX)
+  // Try to extract og:image from frontmatter if present
   let ogImage: string | undefined;
   if (post.source === "local" && typeof post.body === "string") {
-    ogImage = extractFirstImageSrc(post.body);
-    // If the image path is relative, prefix with site base URL for OG
-    if (ogImage && ogImage.startsWith("/")) {
-      ogImage = `${process.env.NEXT_PUBLIC_APP_URL || siteConfig.url}${ogImage}`;
+    // Use gray-matter to parse frontmatter
+    const { data, content } = matter(post.body);
+    if (data && data.image) {
+      ogImage = data.image;
+      if (ogImage && ogImage.startsWith("/")) {
+        ogImage = `${process.env.NEXT_PUBLIC_APP_URL || siteConfig.url}${ogImage}`;
+      }
+    }
+    // If not in frontmatter, try to extract from content
+    if (!ogImage) {
+      ogImage = extractFirstImageSrc(content);
+      if (ogImage && ogImage.startsWith("/")) {
+        ogImage = `${process.env.NEXT_PUBLIC_APP_URL || siteConfig.url}${ogImage}`;
+      }
     }
   }
   // For Contentful, you may want to extract from spotlightEntries or body if available
-  if (post.source === "contentful" && Array.isArray(post.spotlightEntries)) {
+  if (!ogImage && post.source === "contentful" && Array.isArray(post.spotlightEntries)) {
     for (const entry of post.spotlightEntries) {
       if (entry.content && typeof entry.content === "object") {
         const contentStr = JSON.stringify(entry.content);
