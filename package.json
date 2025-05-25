@@ -35,6 +35,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@contentful/rich-text-types": "^17.0.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^20.17.31",
     "@types/react": "^18.3.20",

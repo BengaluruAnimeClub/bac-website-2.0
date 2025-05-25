@@ -12,6 +12,10 @@ import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts 
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { extractFirstImageSrc } from "@/lib/utils";
 import matter from "gray-matter";
+import { BLOCKS } from "./contentful-blocks-enum";
+
+// Helper: force-cast to Document type for Contentful rich text
+import type { Document } from "@contentful/rich-text-types";
 
 interface PostPageProps {
   params: {
@@ -54,17 +58,19 @@ async function getPostFromParams(params: PostPageProps["params"]) {
       body: fields.content ?? null, // rich text document or null
       spotlightEntries,
       source: "contentful",
-    };
+      image: typeof fields.image === "string" ? fields.image : undefined, // <-- add image field
+    } as { [key: string]: any; image?: string };
   }
   return null;
 }
 
-function isContentfulDocument(doc: any): doc is { nodeType: string; content: any[] } {
+function isContentfulDocument(doc: any): doc is { nodeType: typeof BLOCKS.DOCUMENT; content: any[]; data: any } {
   return (
     doc &&
     typeof doc === "object" &&
-    doc.nodeType === "document" &&
-    Array.isArray(doc.content)
+    doc.nodeType === BLOCKS.DOCUMENT &&
+    Array.isArray(doc.content) &&
+    ("data" in doc)
   );
 }
 
@@ -111,18 +117,17 @@ export async function generateMetadata({
 
   // Try to extract og:image from frontmatter if present
   let ogImage: string | undefined;
-  if (post.source === "local" && typeof post.body === "string") {
-    // Use gray-matter to parse frontmatter
-    const { data, content } = matter(post.body);
-    if (data && data.image) {
-      ogImage = data.image;
+  if (post.source === "local") {
+    // Use post.image directly if available (frontmatter is already parsed)
+    if (post.image) {
+      ogImage = post.image;
       if (ogImage && ogImage.startsWith("/")) {
         ogImage = `${process.env.NEXT_PUBLIC_APP_URL || siteConfig.url}${ogImage}`;
       }
     }
     // If not in frontmatter, try to extract from content
-    if (!ogImage) {
-      ogImage = extractFirstImageSrc(content);
+    if (!ogImage && typeof post.body === "string") {
+      ogImage = extractFirstImageSrc(post.body);
       if (ogImage && ogImage.startsWith("/")) {
         ogImage = `${process.env.NEXT_PUBLIC_APP_URL || siteConfig.url}${ogImage}`;
       }
@@ -244,7 +249,7 @@ export default async function PostPage({ params }: PostPageProps) {
               📅 <b>Last Updated:</b> {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
             </div>
           )}
-          {documentToReactComponents(post.body, contentfulRenderOptions)}
+          {documentToReactComponents({ ...post.body, data: post.body.data ?? {} } as unknown as Document, contentfulRenderOptions)}
         </>
       )}
       {post.source !== "contentful" && <MDXContent code={String(post.body)} />}

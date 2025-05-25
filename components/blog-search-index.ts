@@ -33,12 +33,6 @@ export const blogSearchIndex = [
     "headers": []
   },
   {
-    "title": "Anime Spotlight May'25",
-    "description": "Servant × Service",
-    "slug": "anime-spotlight-may25",
-    "headers": []
-  },
-  {
     "title": "Anime Spotlight Nov'24",
     "description": "Shirobako",
     "slug": "anime-spotlight-nov24",
@@ -164,7 +158,7 @@ export const blogSearchIndex = [
   },
   {
     "title": "Manga Spotlight May'25",
-    "description": "Mr. Mallow Blue",
+    "description": "Mr. Mallow Blue, How to Grill Our Love",
     "slug": "manga-spotlight-may25",
     "headers": []
   },
