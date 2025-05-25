@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Post } from "#site/content";
 import { slug } from "github-slugger";
+import { siteConfig } from "@/config/site";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -60,6 +61,46 @@ export function getPostsByTagSlug(posts: Array<Post>, tag: string) {
     const slugifiedTags = post.tags.map(tag => slug(tag))
     return slugifiedTags.includes(tag)
   })
+}
+
+/**
+ * Returns the fallback preview image as an absolute URL.
+ */
+export function getFallbackOgImage(): string {
+  const base = process.env.NEXT_PUBLIC_APP_URL || siteConfig.url;
+  return `${base}/images/preview.png`;
+}
+
+/**
+ * Extracts the first image src from a string of HTML/MDX content.
+ * Returns fallback if no image is found.
+ */
+export function extractFirstImageSrcWithFallback(content: string): string {
+  const imgTagMatch = content.match(/<img[^>]+src=["']([^"']+)["']/i);
+  if (imgTagMatch) {
+    let src = imgTagMatch[1];
+    if (src.startsWith('/')) {
+      const base = process.env.NEXT_PUBLIC_APP_URL || siteConfig.url;
+      src = `${base}${src}`;
+    }
+    return src;
+  }
+  return getFallbackOgImage();
+}
+
+/**
+ * Extracts the first image URL from a Contentful rich text body (object).
+ * Returns the first image URL if found, else fallback.
+ */
+export function extractOgImageFromContentfulBodyWithFallback(body: any): string {
+  if (!body || typeof body !== 'object') return getFallbackOgImage();
+  const contentStr = JSON.stringify(body);
+  const imgMatch = contentStr.match(/(https?:)?\/\/(?:[^"'\\\s]+)\.(webp|png|jpg|jpeg|gif)/i);
+  if (imgMatch) {
+    let url = imgMatch[0].startsWith('//') ? `https:${imgMatch[0]}` : imgMatch[0];
+    return url;
+  }
+  return getFallbackOgImage();
 }
 
 /**

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { CommentSection } from "@/components/comment-section"; // Import CommentSection
 import { fetchAnnouncementPostBySlugWithEntries, fetchAnnouncementPosts } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { extractFirstImageSrcWithFallback, extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 
 import "@/styles/mdx.css";
 import { Metadata } from "next";
@@ -104,27 +105,12 @@ export async function generateMetadata({
 
   let ogImage: string | undefined;
   if (post.source === "local") {
-    // No frontmatter image support for events, but try to extract from content
     if (typeof post.body === "string") {
-      const imgTagMatch = post.body.match(/<img[^>]+src=["']([^"']+)["']/i);
-      if (imgTagMatch) {
-        ogImage = imgTagMatch[1];
-        if (ogImage && ogImage.startsWith("/")) {
-          ogImage = `${process.env.NEXT_PUBLIC_APP_URL || siteConfig.url}${ogImage}`;
-        }
-      }
+      ogImage = extractFirstImageSrcWithFallback(post.body);
     }
   }
-  // For Contentful, extract from body (rich text) if available
   if (!ogImage && post.source === "contentful") {
-    if (post.body && typeof post.body === "object") {
-      const contentStr = JSON.stringify(post.body);
-      const imgMatch = contentStr.match(/(https?:)?\/\/(?:[^"'\\\s]+)\.(webp|png|jpg|jpeg|gif)/i);
-      if (imgMatch) {
-        ogImage = imgMatch[0].startsWith('//') ? `https:${imgMatch[0]}` : imgMatch[0];
-      }
-    }
-    // No spotlightEntries for events, so skip that part
+    ogImage = extractOgImageFromContentfulBodyWithFallback(post.body);
   }
 
   // Debug: log the ogImage value to verify extraction
