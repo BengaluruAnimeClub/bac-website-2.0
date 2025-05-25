@@ -149,6 +149,9 @@ export async function generateMetadata({
     }
   }
 
+  // Debug: log the ogImage value to verify extraction
+  console.log('OG IMAGE DEBUG', ogImage);
+
   // Fallback to no image if none found
   // ogImage will be undefined if nothing is found
 
