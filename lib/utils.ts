@@ -61,3 +61,15 @@ export function getPostsByTagSlug(posts: Array<Post>, tag: string) {
     return slugifiedTags.includes(tag)
   })
 }
+
+/**
+ * Extracts the first image src from a string of HTML/MDX content.
+ * Returns undefined if no image is found.
+ */
+export function extractFirstImageSrc(content: string): string | undefined {
+  const imgTagMatch = content.match(/<img[^>]+src=["']([^"']+)["']/i);
+  if (imgTagMatch) {
+    return imgTagMatch[1];
+  }
+  return undefined;
+}

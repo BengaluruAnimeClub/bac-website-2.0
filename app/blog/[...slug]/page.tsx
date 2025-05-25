@@ -10,6 +10,7 @@ import { sortPosts } from "@/lib/utils";
 import { CommentSection } from "@/components/comment-section";
 import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { extractFirstImageSrc } from "@/lib/utils";
 
 interface PostPageProps {
   params: {
@@ -107,12 +108,51 @@ export async function generateMetadata({
     return {};
   }
 
-  const ogSearchParams = new URLSearchParams();
-  ogSearchParams.set("title", post.title);
+  // Try to extract a preview image from the post body (for local MDX)
+  let ogImage: string | undefined;
+  if (post.source === "local" && typeof post.body === "string") {
+    ogImage = extractFirstImageSrc(post.body);
+  }
+  // For Contentful, you may want to extract from spotlightEntries or body if available
+  if (post.source === "contentful" && Array.isArray(post.spotlightEntries)) {
+    for (const entry of post.spotlightEntries) {
+      if (entry.content && typeof entry.content === "object") {
+        const contentStr = JSON.stringify(entry.content);
+        const imgMatch = contentStr.match(/https?:\/\/[^"'\\\s]+\.(webp|png|jpg|jpeg|gif)/i);
+        if (imgMatch) {
+          ogImage = imgMatch[0].replace(/\\/g, "");
+          break;
+        }
+      }
+    }
+  }
+  if (!ogImage && post.source === "contentful" && post.body && typeof post.body === "object") {
+    const contentStr = JSON.stringify(post.body);
+    const imgMatch = contentStr.match(/https?:\/\/[^"'\\\s]+\.(webp|png|jpg|jpeg|gif)/i);
+    if (imgMatch) {
+      ogImage = imgMatch[0].replace(/\\/g, "");
+    }
+  }
+
+  // Fallback to a default image if none found
+  if (!ogImage) {
+    ogImage = "/images/preview.png";
+  }
 
   return {
     title: post.title,
     description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      images: ogImage ? [{ url: ogImage }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: ogImage ? [ogImage] : [],
+    },
   };
 }
 
