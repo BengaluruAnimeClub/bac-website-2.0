@@ -133,26 +133,25 @@ export async function generateMetadata({
       }
     }
   }
-  // For Contentful, you may want to extract from spotlightEntries or body if available
+  // For Contentful, extract from spotlightEntries or body if available
   if (!ogImage && post.source === "contentful" && Array.isArray(post.spotlightEntries)) {
     for (const entry of post.spotlightEntries) {
       if (entry.content && typeof entry.content === "object") {
         const contentStr = JSON.stringify(entry.content);
-        // Try to extract image src from embedded-asset-blocks (Contentful rich text)
-        const imgMatch = contentStr.match(/https?:\/\/[^"'\\\s]+\.(webp|png|jpg|jpeg|gif)/i);
+        // Match https://, http://, or protocol-relative (//) image URLs
+        const imgMatch = contentStr.match(/(https?:)?\/\/(?:[^"'\\\s]+)\.(webp|png|jpg|jpeg|gif)/i);
         if (imgMatch) {
-          ogImage = imgMatch[0].replace(/\\/g, "");
+          ogImage = imgMatch[0].startsWith('//') ? `https:${imgMatch[0]}` : imgMatch[0];
           break;
         }
       }
     }
   }
   if (!ogImage && post.source === "contentful" && post.body && typeof post.body === "object") {
-    // Try to extract image src from embedded-asset-blocks (Contentful rich text)
     const contentStr = JSON.stringify(post.body);
-    const imgMatch = contentStr.match(/https?:\/\/[^"'\\\s]+\.(webp|png|jpg|jpeg|gif)/i);
+    const imgMatch = contentStr.match(/(https?:)?\/\/(?:[^"'\\\s]+)\.(webp|png|jpg|jpeg|gif)/i);
     if (imgMatch) {
-      ogImage = imgMatch[0].replace(/\\/g, "");
+      ogImage = imgMatch[0].startsWith('//') ? `https:${imgMatch[0]}` : imgMatch[0];
     }
   }
 
