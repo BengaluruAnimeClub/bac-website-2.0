@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { fetchEventReportPosts, fetchEventReportPostBySlugWithEntries } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { extractFirstImageSrcWithFallback, extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
+import parse from "html-react-parser";
 
 import "@/styles/mdx.css";
 import { Metadata } from "next";
@@ -35,6 +36,27 @@ const contentfulRenderOptions = {
           />
         </div>
       );
+    },
+    'paragraph': (node: any, children: any) => {
+      if (
+        node.content.length === 1 &&
+        typeof node.content[0].value === "string" &&
+        node.content[0].value.trim().startsWith("<") &&
+        node.content[0].value.trim().endsWith(">")
+      ) {
+        return <>{parse(node.content[0].value)}</>;
+      }
+      return <p>{children}</p>;
+    },
+    'code': (node: any) => {
+      if (
+        typeof node.content[0]?.value === "string" &&
+        node.content[0].value.trim().startsWith("<") &&
+        node.content[0].value.trim().endsWith(">")
+      ) {
+        return <>{parse(node.content[0].value)}</>;
+      }
+      return <pre><code>{node.content[0]?.value}</code></pre>;
     },
   },
 };

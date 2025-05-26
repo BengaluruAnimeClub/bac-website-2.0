@@ -5,6 +5,7 @@ import { CommentSection } from "@/components/comment-section"; // Import Comment
 import { fetchAnnouncementPostBySlugWithEntries, fetchAnnouncementPosts } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { extractFirstImageSrcWithFallback, extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
+import parse from "html-react-parser";
 
 import "@/styles/mdx.css";
 import { Metadata } from "next";
@@ -43,10 +44,25 @@ const contentfulRenderOptions = {
     },
     'hr': () => <hr className="my-4 mt-8 mb-8 border-t-2" />,
     'paragraph': (node: any, children: any) => {
-      if (node.content.length === 1 && node.content[0].value === '\n') {
-        return <br />;
+      if (
+        node.content.length === 1 &&
+        typeof node.content[0].value === "string" &&
+        node.content[0].value.trim().startsWith("<") &&
+        node.content[0].value.trim().endsWith(">")
+      ) {
+        return <>{parse(node.content[0].value)}</>;
       }
       return <p>{children}</p>;
+    },
+    'code': (node: any) => {
+      if (
+        typeof node.content[0]?.value === "string" &&
+        node.content[0].value.trim().startsWith("<") &&
+        node.content[0].value.trim().endsWith(">")
+      ) {
+        return <>{parse(node.content[0].value)}</>;
+      }
+      return <pre><code>{node.content[0]?.value}</code></pre>;
     },
   },
   renderText: (text: string) => {

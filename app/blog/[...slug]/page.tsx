@@ -13,6 +13,7 @@ import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { extractFirstImageSrc, extractFirstImageSrcWithFallback, extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 import matter from "gray-matter";
 import { BLOCKS } from "./contentful-blocks-enum";
+import parse from "html-react-parser";
 
 // Helper: force-cast to Document type for Contentful rich text
 import type { Document } from "@contentful/rich-text-types";
@@ -92,10 +93,29 @@ const contentfulRenderOptions = {
     },
     'hr': () => <hr className="my-4 mt-8 mb-8 border-t-2" />,
     'paragraph': (node: any, children: any) => {
+      // If the paragraph contains a single text node that looks like HTML, render as HTML
+      if (
+        node.content.length === 1 &&
+        typeof node.content[0].value === "string" &&
+        node.content[0].value.trim().startsWith("<") &&
+        node.content[0].value.trim().endsWith(">")
+      ) {
+        return <>{parse(node.content[0].value)}</>;
+      }
       if (node.content.length === 1 && node.content[0].value === '\n') {
         return <br />;
       }
       return <p>{children}</p>;
+    },
+    'code': (node: any) => {
+      if (
+        typeof node.content[0]?.value === "string" &&
+        node.content[0].value.trim().startsWith("<") &&
+        node.content[0].value.trim().endsWith(">")
+      ) {
+        return <>{parse(node.content[0].value)}</>;
+      }
+      return <pre><code>{node.content[0]?.value}</code></pre>;
     },
   },
   renderText: (text: string) => {
