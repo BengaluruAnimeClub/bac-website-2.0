@@ -58,6 +58,101 @@ const contentfulRenderOptions = {
       }
       return <pre><code>{node.content[0]?.value}</code></pre>;
     },
+    'embedded-entry-block': (node: any) => {
+      const entry = node.data.target;
+      if (entry && entry.sys && entry.sys.contentType?.sys?.id === 'imageWithSettings') {
+        const { media, imageWidthDesktop, imageWidthMobile } = entry.fields;
+        let imageUrl = '';
+        let alt = '';
+        if (media && media.fields && media.fields.file && media.fields.file.url) {
+          imageUrl = media.fields.file.url.startsWith('http') ? media.fields.file.url : `https:${media.fields.file.url}`;
+          alt = media.fields.title || '';
+        }
+        const widthDesktop = imageWidthDesktop ? `${imageWidthDesktop}%` : '100%';
+        const widthMobile = imageWidthMobile ? `${imageWidthMobile}%` : '100%';
+        if (imageUrl) {
+          return (
+            <div className="flex justify-center my-6">
+              <img
+                src={imageUrl}
+                alt={alt}
+                className="mx-auto rounded contentful-img-responsive"
+                style={{
+                  width: '100%',
+                  display: 'block',
+                  '--contentful-img-mobile': widthMobile,
+                  '--contentful-img-desktop': widthDesktop,
+                } as React.CSSProperties}
+              />
+            </div>
+          );
+        }
+        return (
+          <div style={{color: 'red', fontSize: '0.9em'}}>
+            imageWithSettings: Image not found<br />
+            <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-all', background: '#f8f8f8', padding: '8px', borderRadius: '4px', marginTop: '8px'}}>
+              {String(JSON.stringify(entry, null, 2))}
+            </pre>
+          </div>
+        );
+      }
+      return (
+        <div style={{color: 'red', fontSize: '0.9em'}}>
+          embedded-entry-block: Unhandled entry type or missing data<br />
+          <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-all', background: '#f8f8f8', padding: '8px', borderRadius: '4px', marginTop: '8px'}}>
+            {String(JSON.stringify(node, null, 2))}
+          </pre>
+        </div>
+      );
+    },
+    'embedded-entry-inline': (node: any) => {
+      const entry = node.data.target;
+      if (entry && entry.sys && entry.sys.contentType?.sys?.id === 'imageWithSettings') {
+        const { media, imageWidthDesktop, imageWidthMobile } = entry.fields;
+        let imageUrl = '';
+        let alt = '';
+        if (media && media.fields && media.fields.file && media.fields.file.url) {
+          imageUrl = media.fields.file.url.startsWith('http') ? media.fields.file.url : `https:${media.fields.file.url}`;
+          alt = media.fields.title || '';
+        }
+        const widthDesktop = imageWidthDesktop ? `${imageWidthDesktop}%` : '100%';
+        const widthMobile = imageWidthMobile ? `${imageWidthMobile}%` : '100%';
+        if (imageUrl) {
+          return (
+            <span className="inline-flex justify-center mx-2 align-middle">
+              <img
+                src={imageUrl}
+                alt={alt}
+                className="mx-auto rounded contentful-img-responsive"
+                style={{
+                  width: '100%',
+                  display: 'inline-block',
+                  verticalAlign: 'middle',
+                  '--contentful-img-mobile': widthMobile,
+                  '--contentful-img-desktop': widthDesktop,
+                } as React.CSSProperties}
+              />
+            </span>
+          );
+        }
+        return (
+          <span style={{color: 'red', fontSize: '0.9em'}}>
+            imageWithSettings (inline): Image not found<br />
+            <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-all', background: '#f8f8f8', padding: '8px', borderRadius: '4px', marginTop: '8px'}}>
+              {String(JSON.stringify(entry, null, 2))}
+            </pre>
+          </span>
+        );
+      }
+      return (
+        <span style={{color: 'red', fontSize: '0.9em'}}>
+          embedded-entry-inline: Unhandled entry type or missing data<br />
+          <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-all', background: '#f8f8f8', padding: '8px', borderRadius: '4px', marginTop: '8px'}}>
+            {String(JSON.stringify(node, null, 2))}
+          </pre>
+        </span>
+      );
+    },
   },
 };
 

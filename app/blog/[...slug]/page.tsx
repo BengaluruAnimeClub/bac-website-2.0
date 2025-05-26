@@ -78,6 +78,109 @@ function isContentfulDocument(doc: any): doc is { nodeType: typeof BLOCKS.DOCUME
 // Custom renderer for Contentful rich text
 const contentfulRenderOptions = {
   renderNode: {
+    'embedded-entry-block': (node: any) => {
+      const entry = node.data.target;
+      // Always log node and entry for debugging
+      // eslint-disable-next-line no-console
+      console.log('embedded-entry-block node:', JSON.stringify(node, null, 2));
+      // Try to handle imageWithSettings
+      if (entry && entry.sys && entry.sys.contentType?.sys?.id === 'imageWithSettings') {
+        const { media, imageWidthDesktop, imageWidthMobile } = entry.fields;
+        let imageUrl = '';
+        let alt = '';
+        if (media && media.fields && media.fields.file && media.fields.file.url) {
+          imageUrl = media.fields.file.url.startsWith('http') ? media.fields.file.url : `https:${media.fields.file.url}`;
+          alt = media.fields.title || '';
+        }
+        const widthDesktop = imageWidthDesktop ? `${imageWidthDesktop}%` : '100%';
+        const widthMobile = imageWidthMobile ? `${imageWidthMobile}%` : '100%';
+        if (imageUrl) {
+          return (
+            <div className="flex justify-center my-6">
+              <img
+                src={imageUrl}
+                alt={alt}
+                className="mx-auto rounded contentful-img-responsive"
+                style={{
+                  width: '100%',
+                  display: 'block',
+                  '--contentful-img-mobile': widthMobile,
+                  '--contentful-img-desktop': widthDesktop,
+                } as React.CSSProperties}
+              />
+            </div>
+          );
+        }
+        // If image not found, show error and dump entry
+        return (
+          <div style={{color: 'red', fontSize: '0.9em'}}>
+            imageWithSettings: Image not found<br />
+            <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-all', background: '#f8f8f8', padding: '8px', borderRadius: '4px', marginTop: '8px'}}>
+              {String(JSON.stringify(entry, null, 2))}
+            </pre>
+          </div>
+        );
+      }
+      // If not imageWithSettings, show error and dump node
+      return (
+        <div style={{color: 'red', fontSize: '0.9em'}}>
+          embedded-entry-block: Unhandled entry type or missing data<br />
+          <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-all', background: '#f8f8f8', padding: '8px', borderRadius: '4px', marginTop: '8px'}}>
+            {String(JSON.stringify(node, null, 2))}
+          </pre>
+        </div>
+      );
+    },
+    'embedded-entry-inline': (node: any) => {
+      const entry = node.data.target;
+      if (entry && entry.sys && entry.sys.contentType?.sys?.id === 'imageWithSettings') {
+        const { media, imageWidthDesktop, imageWidthMobile } = entry.fields;
+        let imageUrl = '';
+        let alt = '';
+        if (media && media.fields && media.fields.file && media.fields.file.url) {
+          imageUrl = media.fields.file.url.startsWith('http') ? media.fields.file.url : `https:${media.fields.file.url}`;
+          alt = media.fields.title || '';
+        }
+        const widthDesktop = imageWidthDesktop ? `${imageWidthDesktop}%` : '100%';
+        const widthMobile = imageWidthMobile ? `${imageWidthMobile}%` : '100%';
+        if (imageUrl) {
+          return (
+            <span className="inline-flex justify-center mx-2 align-middle">
+              <img
+                src={imageUrl}
+                alt={alt}
+                className="mx-auto rounded contentful-img-responsive"
+                style={{
+                  width: '100%',
+                  display: 'inline-block',
+                  verticalAlign: 'middle',
+                  '--contentful-img-mobile': widthMobile,
+                  '--contentful-img-desktop': widthDesktop,
+                } as React.CSSProperties}
+              />
+            </span>
+          );
+        }
+        // If image not found, show error and dump entry
+        return (
+          <span style={{color: 'red', fontSize: '0.9em'}}>
+            imageWithSettings (inline): Image not found<br />
+            <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-all', background: '#f8f8f8', padding: '8px', borderRadius: '4px', marginTop: '8px'}}>
+              {String(JSON.stringify(entry, null, 2))}
+            </pre>
+          </span>
+        );
+      }
+      // If not imageWithSettings, show error and dump node
+      return (
+        <span style={{color: 'red', fontSize: '0.9em'}}>
+          embedded-entry-inline: Unhandled entry type or missing data<br />
+          <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-all', background: '#f8f8f8', padding: '8px', borderRadius: '4px', marginTop: '8px'}}>
+            {String(JSON.stringify(node, null, 2))}
+          </pre>
+        </span>
+      );
+    },
     'embedded-asset-block': (node: any) => {
       const { file, title, description } = node.data.target.fields;
       const url = file?.url?.startsWith('http') ? file.url : `https:${file.url}`;
