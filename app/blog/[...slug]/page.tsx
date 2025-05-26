@@ -184,8 +184,6 @@ export async function generateStaticParams(): Promise<
 
 export const revalidate = 60;
 
-export const dynamic = "force-dynamic";
-
 export default async function PostPage({ params }: PostPageProps) {
   const post = await getPostFromParams(params);
 

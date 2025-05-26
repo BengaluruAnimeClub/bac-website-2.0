@@ -11,7 +11,7 @@ import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import { sortPosts } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 interface PostPageProps {
   params: {
