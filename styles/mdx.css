@@ -37,3 +37,13 @@
 .subheading-anchor {
   @apply no-underline hover:underline;
 }
+
+/* Responsive Contentful image with settings */
+.contentful-img-responsive {
+  max-width: var(--contentful-img-desktop, 100%) !important;
+}
+@media (max-width: 768px) {
+  .contentful-img-responsive {
+    max-width: var(--contentful-img-mobile, 100%) !important;
+  }
+}
