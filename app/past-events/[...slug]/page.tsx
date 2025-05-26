@@ -11,6 +11,8 @@ import { siteConfig } from "@/config/site";
 import { sortPosts } from "@/lib/utils";
 import { CommentSection } from "@/components/comment-section";
 
+export const dynamic = "force-dynamic";
+
 interface PostPageProps {
   params: {
     slug: string[];
