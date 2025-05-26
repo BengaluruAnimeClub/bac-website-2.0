@@ -61,7 +61,7 @@ const contentfulRenderOptions = {
     'embedded-entry-block': (node: any) => {
       const entry = node.data.target;
       if (entry && entry.sys && entry.sys.contentType?.sys?.id === 'imageWithSettings') {
-        const { media, imageWidthDesktop, imageWidthMobile } = entry.fields;
+        const { media, imageWidthDesktop, imageWidthMobile, caption } = entry.fields;
         let imageUrl = '';
         let alt = '';
         if (media && media.fields && media.fields.file && media.fields.file.url) {
@@ -72,7 +72,7 @@ const contentfulRenderOptions = {
         const widthMobile = imageWidthMobile ? `${imageWidthMobile}%` : '100%';
         if (imageUrl) {
           return (
-            <div className="flex justify-center my-6">
+            <div className="flex flex-col items-center my-6">
               <img
                 src={imageUrl}
                 alt={alt}
@@ -84,6 +84,11 @@ const contentfulRenderOptions = {
                   '--contentful-img-desktop': widthDesktop,
                 } as React.CSSProperties}
               />
+              {caption && (
+                <div className="text-center text-sm text-muted-foreground mt-2 max-w-full" style={{maxWidth: 'var(--contentful-img-desktop, 100%)'}}>
+                  {caption}
+                </div>
+              )}
             </div>
           );
         }
