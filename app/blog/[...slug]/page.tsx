@@ -182,6 +182,8 @@ export async function generateStaticParams(): Promise<
   return [...localParams, ...contentfulParams];
 }
 
+export const revalidate = 60;
+
 export default async function PostPage({ params }: PostPageProps) {
   const post = await getPostFromParams(params);
 

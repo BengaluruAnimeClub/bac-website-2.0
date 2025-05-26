@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: "Join our events and meetups in Bengaluru!",
 };
 
+export const revalidate = 60;
+
 const POSTS_PER_PAGE = 10;
 
 interface BlogPageProps {

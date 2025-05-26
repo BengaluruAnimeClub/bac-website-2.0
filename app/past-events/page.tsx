@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: "An archive of past events organised by BAC",
 };
 
+export const revalidate = 60;
+
 const POSTS_PER_PAGE = 10;
 
 interface BlogPageProps {
