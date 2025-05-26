@@ -14,8 +14,6 @@ export const metadata: Metadata = {
   description: "Blogs and articles published by BAC members.",
 };
 
-export const revalidate = 60;
-
 const POSTS_PER_PAGE = 10;
 
 interface BlogPageProps {

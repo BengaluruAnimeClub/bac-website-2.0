@@ -11,8 +11,6 @@ import { siteConfig } from "@/config/site";
 import { sortPosts } from "@/lib/utils";
 import { CommentSection } from "@/components/comment-section";
 
-export const revalidate = 60;
-
 interface PostPageProps {
   params: {
     slug: string[];
