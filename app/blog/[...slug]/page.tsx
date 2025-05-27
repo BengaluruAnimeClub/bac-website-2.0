@@ -85,7 +85,7 @@ const contentfulRenderOptions = {
       console.log('embedded-entry-block node:', JSON.stringify(node, null, 2));
       // Try to handle imageWithSettings
       if (entry && entry.sys && entry.sys.contentType?.sys?.id === 'imageWithSettings') {
-        const { media, imageWidthDesktop, imageWidthMobile, caption } = entry.fields;
+        const { media, imageWidthDesktop, imageWidthMobile, caption, marginTop, marginBottom } = entry.fields;
         let imageUrl = '';
         let alt = '';
         if (media && media.fields && media.fields.file && media.fields.file.url) {
@@ -94,6 +94,21 @@ const contentfulRenderOptions = {
         }
         const widthDesktop = imageWidthDesktop ? `${imageWidthDesktop}%` : '100%';
         const widthMobile = imageWidthMobile ? `${imageWidthMobile}%` : '100%';
+        const style: React.CSSProperties = {
+          width: '100%',
+          display: 'block',
+          // @ts-ignore: CSS custom properties for responsive width
+          '--contentful-img-mobile': widthMobile,
+          // @ts-ignore: CSS custom properties for responsive width
+          '--contentful-img-desktop': widthDesktop,
+        };
+        if (marginTop !== undefined && marginTop !== null && marginTop !== '') style.marginTop = `${marginTop}px`;
+        // Only apply marginBottom to image if no caption
+        if (!caption && marginBottom !== undefined && marginBottom !== null && marginBottom !== '') style.marginBottom = `${marginBottom}px`;
+        let captionStyle: React.CSSProperties | undefined = undefined;
+        if (caption && marginBottom !== undefined && marginBottom !== null && marginBottom !== '') {
+          captionStyle = { marginBottom: `${marginBottom}px` };
+        }
         if (imageUrl) {
           return (
             <div className="flex flex-col items-center my-6">
@@ -101,15 +116,13 @@ const contentfulRenderOptions = {
                 src={imageUrl}
                 alt={alt}
                 className="mx-auto rounded contentful-img-responsive"
-                style={{
-                  width: '100%',
-                  display: 'block',
-                  '--contentful-img-mobile': widthMobile,
-                  '--contentful-img-desktop': widthDesktop,
-                } as React.CSSProperties}
+                style={style}
               />
               {caption && (
-                <div className="text-center text-sm text-muted-foreground mt-2 max-w-full" style={{maxWidth: 'var(--contentful-img-desktop, 100%)'}}>
+                <div
+                  className="text-center text-sm text-muted-foreground max-w-full"
+                  style={{ maxWidth: 'var(--contentful-img-desktop, 100%)', ...captionStyle, marginTop: '-20px' }}
+                >
                   {caption}
                 </div>
               )}
@@ -159,7 +172,9 @@ const contentfulRenderOptions = {
                   width: '100%',
                   display: 'inline-block',
                   verticalAlign: 'middle',
+                  // @ts-ignore: CSS custom properties for responsive width
                   '--contentful-img-mobile': widthMobile,
+                  // @ts-ignore: CSS custom properties for responsive width
                   '--contentful-img-desktop': widthDesktop,
                 } as React.CSSProperties}
               />
@@ -272,7 +287,7 @@ export async function generateMetadata({
   }
 
   // Debug: log the ogImage value to verify extraction
-  console.log('OG IMAGE DEBUG', ogImage);
+  // console.log('OG IMAGE DEBUG', ogImage);
 
   // Fallback to no image if none found
   // ogImage will be undefined if nothing is found
@@ -332,7 +347,7 @@ export default async function PostPage({ params }: PostPageProps) {
       {/* Show date as first element inside the first spotlight entry */}
       {post.source === "contentful" && post.date && (
         <div className="text-base text-muted-foreground mb-4 mt-4">
-          📅 <b>Date:</b> {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          📅&nbsp; {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
         </div>
       )}
       {post.source === "contentful" && Array.isArray(post.spotlightEntries) && post.spotlightEntries.length > 0 ? (
@@ -358,17 +373,7 @@ export default async function PostPage({ params }: PostPageProps) {
           ))}
         </div>
       ) : null}
-      {/* For Contentful blogs without spotlight entries, insert date as first element inside content */}
-      {post.source === "contentful" && isContentfulDocument(post.body) && (!post.spotlightEntries || post.spotlightEntries.length === 0) && (
-        <>
-          {post.date && (
-            <div className="text-base text-muted-foreground mb-2">
-              📅 <b>Last Updated:</b> {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-            </div>
-          )}
-          {documentToReactComponents({ ...post.body, data: post.body.data ?? {} } as unknown as Document, contentfulRenderOptions)}
-        </>
-      )}
+
       {post.source !== "contentful" && <MDXContent code={String(post.body)} />}
       <p className="text-md mt-2 mb-0 text-muted-foreground text-justify">
         <i>All content on this website is protected by copyright and may not be copied, distributed, or reproduced in any form without the express written consent from <span className="font-semibold">team@bac.moe</span>.</i>

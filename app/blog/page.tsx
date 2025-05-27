@@ -96,7 +96,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         </div>
       )}
       <div className="grid grid-cols-12 gap-3 mt-4">
-        <div className="col-span-12 col-start-1 sm:col-span-8">
+        <div className="col-span-12 col-start-1 sm:col-span-9">
           <hr />
           {displayPosts?.length > 0 ? (
             <ul className="flex flex-col">
@@ -123,12 +123,12 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
             className="mt-4"
           />
         </div>
-        <Card className="col-span-12 row-start-3 h-fit sm:col-span-4 sm:col-start-9 sm:row-start-1 hidden sm:block">
+        <Card className="col-span-12 row-start-0 sm:col-span-3 sm:col-start-10 sm:row-start-1 hidden sm:block border-none shadow-none">
           <CardHeader>
             <CardTitle>Tags</CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-wrap gap-2">
-            {sortedTags?.map((tag) => (
+          <CardContent className="flex flex-col items-start gap-2">
+            {[...sortedTags].sort((a, b) => a.localeCompare(b)).map((tag) => (
               <Tag tag={tag} key={tag} count={tags[tag]} />
             ))}
           </CardContent>
