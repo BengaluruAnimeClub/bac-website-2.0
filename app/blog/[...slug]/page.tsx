@@ -332,7 +332,7 @@ export default async function PostPage({ params }: PostPageProps) {
       {/* Show date as first element inside the first spotlight entry */}
       {post.source === "contentful" && post.date && (
         <div className="text-base text-muted-foreground mb-4 mt-4">
-          📅 <b>Date:</b> {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          📅&nbsp; {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
         </div>
       )}
       {post.source === "contentful" && Array.isArray(post.spotlightEntries) && post.spotlightEntries.length > 0 ? (
@@ -358,17 +358,7 @@ export default async function PostPage({ params }: PostPageProps) {
           ))}
         </div>
       ) : null}
-      {/* For Contentful blogs without spotlight entries, insert date as first element inside content */}
-      {post.source === "contentful" && isContentfulDocument(post.body) && (!post.spotlightEntries || post.spotlightEntries.length === 0) && (
-        <>
-          {post.date && (
-            <div className="text-base text-muted-foreground mb-2">
-              📅 <b>Last Updated:</b> {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-            </div>
-          )}
-          {documentToReactComponents({ ...post.body, data: post.body.data ?? {} } as unknown as Document, contentfulRenderOptions)}
-        </>
-      )}
+
       {post.source !== "contentful" && <MDXContent code={String(post.body)} />}
       <p className="text-md mt-2 mb-0 text-muted-foreground text-justify">
         <i>All content on this website is protected by copyright and may not be copied, distributed, or reproduced in any form without the express written consent from <span className="font-semibold">team@bac.moe</span>.</i>
