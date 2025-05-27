@@ -59,11 +59,6 @@ export async function GET(req: NextRequest) {
     }
   }
   flatComments.sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-  // DEBUG: Log flattened comments
-  if (process.env.NODE_ENV !== 'production') {
-    // eslint-disable-next-line no-console
-    console.log('FLATTENED COMMENTS:', flatComments);
-  }
   return NextResponse.json({ comments: flatComments });
 }
 
