@@ -3,10 +3,18 @@
 import { useTheme } from "next-themes";
 import { Button } from "./ui/button";
 import { Moon, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export function ModeToggle() {
-  const { theme, setTheme } = useTheme();
-  const isDark = theme === "dark";
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Use resolvedTheme for SSR safety
+  const isDark = (mounted ? (resolvedTheme === "dark") : false);
 
   function toggleTheme() {
     setTheme(isDark ? "light" : "dark");
