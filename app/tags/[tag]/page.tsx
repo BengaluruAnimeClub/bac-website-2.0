@@ -78,7 +78,6 @@ export default async function TagPage({ params }: TagPageProps) {
                   title={post.title}
                   description={post.description}
                   date={post.date}
-                  tags={post.tags}
                   basePath="/blog/"
                 />
               ))

@@ -65,7 +65,6 @@ const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
             title={post.title}
             description={post.description}
             date={post.date}
-            tags={post.tags}
             basePath="/past-events/"
           />
         ))}
