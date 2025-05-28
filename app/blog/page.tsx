@@ -1,12 +1,9 @@
-import { posts } from "#site/content";
 import { PostItem } from "@/components/post-item";
 import { QueryPagination } from "@/components/query-pagination";
 import { Tag } from "@/components/tag";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllTags, sortPosts, sortTagsByCount } from "@/lib/utils";
 import { Metadata } from "next";
-import { blogSearchIndex } from "@/components/blog-search-index";
-import { useSearchParams } from "next/navigation";
 import { fetchBlogPosts as fetchContentfulPosts } from "@/lib/contentful";
 
 export const metadata: Metadata = {
@@ -41,99 +38,59 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
     body: "", // Add dummy body for type compatibility
   }));
 
-  // Combine local and Contentful posts
-  let allPosts = [
-    ...posts.map(post => ({
-      ...post,
-      // Remove leading 'blog/' from slug if present
-      slug: post.slug.replace(/^blog\//, ''),
-      slugAsParams: post.slugAsParams.replace(/^blog\//, ''),
-    })),
-    ...contentfulPosts
-  ];
-  allPosts = sortPosts(allPosts.filter((post) => post.published));
+  // Only use Contentful posts
+  let allPosts = contentfulPosts;
 
-  let filteredPosts = allPosts;
+  // Filter by search
   if (search) {
-    const searchWords = search.split(/\s+/).filter(Boolean);
-    const matchingSlugs = blogSearchIndex
-      .filter((b) => {
-        const title = b.title.toLowerCase();
-        const description = (b.description || "").toLowerCase();
-        const headers = b.headers.map((h) => h.toLowerCase());
-        return searchWords.every(word =>
-          title.includes(word) ||
-          headers.some(h => h.includes(word))
-        );
-      })
-      .map((b) => b.slug);
-    filteredPosts = allPosts.filter((post) => matchingSlugs.includes(post.slugAsParams));
+    allPosts = allPosts.filter((post) =>
+      post.title.toLowerCase().includes(search) ||
+      (post.description && post.description.toLowerCase().includes(search))
+    );
   }
 
-  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
-  const displayPosts = filteredPosts.slice(
-    POSTS_PER_PAGE * (currentPage - 1),
-    POSTS_PER_PAGE * currentPage
+  const sortedPosts = sortPosts(allPosts.filter((post) => post.published));
+  const paginatedPosts = sortedPosts.slice(
+    (currentPage - 1) * POSTS_PER_PAGE,
+    currentPage * POSTS_PER_PAGE
   );
 
-  // Tags from both sources
-  const tags = getAllTags(allPosts);
-  const sortedTags = sortTagsByCount(tags);
+  const tags = getAllTags(sortedPosts);
+  const sortedTagNames = sortTagsByCount(tags);
+  const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
 
   return (
-    <div className="container max-w-4xl py-6 lg:py-10">
-      <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between md:gap-8">
-        <div className="flex-1 space-y-4">
-          <h1 className="inline-block font-black text-4xl lg:text-5xl">Blog</h1>
-        </div>
-      </div>
-      {search && displayPosts.length > 0 && (
-        <div className="mb-4 mt-6 text-muted-foreground text-base">
-          <i>
-            Showing results for
-            "{searchParams?.search}"
-          </i>
-        </div>
-      )}
+    <div className="container max-w-4xl py-6 px-4">
+      <h1 className="inline-block font-black text-4xl lg:text-5xl mb-1">Blog</h1>
       <div className="grid grid-cols-12 gap-3 mt-4">
-        <div className="col-span-12 col-start-1 sm:col-span-9">
-          <hr />
-          {displayPosts?.length > 0 ? (
-            <ul className="flex flex-col">
-              {displayPosts.map((post) => {
-                const { slug, date, title, description, tags } = post;
-                return (
-                  <li key={slug}>
-                    <PostItem
-                      slug={slug}
-                      date={date}
-                      title={title}
-                      description={description}
-                      tags={tags}
-                    />
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <p>{search ? `No results for "${search}"` : "Nothing to see here yet!"}</p>
-          )}
-          <QueryPagination
-            totalPages={totalPages}
-            className="mt-4"
-          />
+        <div className="col-span-12 col-start-1 sm:col-span-9 mt-2">
+          <hr className="mt-0 mb-4" />
+          <div className="flex flex-col gap-6 mb-6">
+            {paginatedPosts.map((post) => (
+              <PostItem
+                key={post.slug}
+                slug={post.slug}
+                title={post.title}
+                description={post.description}
+                date={post.date}
+                tags={post.tags}
+                basePath="/blog/"
+              />
+            ))}
+          </div>
+          <QueryPagination totalPages={totalPages} />
         </div>
         <Card className="col-span-12 row-start-0 sm:col-span-3 sm:col-start-10 sm:row-start-1 hidden sm:block border-none shadow-none">
           <CardHeader>
             <CardTitle>Tags</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-start gap-2">
-            {[...sortedTags].sort((a, b) => a.localeCompare(b)).map((tag) => (
+            {[...sortedTagNames].sort((a, b) => a.localeCompare(b)).map((tag) => (
               <Tag tag={tag} key={tag} count={tags[tag]} />
             ))}
           </CardContent>
         </Card>
-      </div>
+        </div>
     </div>
   );
 }

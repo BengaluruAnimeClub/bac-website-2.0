@@ -138,14 +138,14 @@ export default async function Home() {
 
       {allUpcomingEventsPosts.some((post) => post.published && post.date >= today) && (
         <section className="container max-w-4xl py-6 lg:py-10 flex flex-col space-y-6 mt-0">
-          <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-5xl font-black text-center">
-            Upcoming Events
+          <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-5xl font-black text-center -mb-4">
+            Upcoming
           </h2>
           <ul className="flex flex-col">
             {allUpcomingEventsPosts.map((post) => (
               post.published && 
               post.date >= today && (
-                <li key={post.slug} className="first:border-t first:border-border">
+                <li key={post.slug} className="first:border-t first:pt-3 mt-3">
                   <PostItem
                     slug={post.slug}
                     title={post.title}
@@ -161,7 +161,7 @@ export default async function Home() {
       )}
 
       <section className="container max-w-4xl py-6 lg:py-10 flex flex-col space-y-6 mt-0">
-        <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-5xl font-black text-center">
+        <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-5xl font-black text-center -mb-4">
           Latest Posts
         </h2>
         <ul className="flex flex-col">
@@ -176,7 +176,7 @@ export default async function Home() {
             }
             return (
               post.published && (
-                <li key={post.slugAsParams} className="first:border-t first:border-border">
+                <li key={post.slugAsParams} className="first:border-t first:pt-3 mt-3">
                   <PostItem
                     slug={post.slug}
                     title={post.title}

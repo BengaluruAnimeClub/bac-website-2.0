@@ -1,68 +1,21 @@
-import { posts } from "#site/content";
-import { MDXContent } from "@/components/mdx-components";
 import { notFound } from "next/navigation";
-
-import "@/styles/mdx.css";
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import { Tag } from "@/components/tag";
-import { sortPosts } from "@/lib/utils";
 import { CommentSection } from "@/components/comment-section";
 import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { extractFirstImageSrc, extractFirstImageSrcWithFallback, extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
-import matter from "gray-matter";
+import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 import { BLOCKS } from "./contentful-blocks-enum";
 import parse from "html-react-parser";
-
-// Helper: force-cast to Document type for Contentful rich text
 import type { Document } from "@contentful/rich-text-types";
+import { ShareButtons } from "@/components/share-buttons";
+import "@/styles/mdx.css";
 
 interface PostPageProps {
   params: {
     slug: string[];
   };
-}
-
-async function getPostFromParams(params: PostPageProps["params"]) {
-  const slug = params?.slug?.join("/");
-  let post = posts.find((post) => post.slugAsParams === slug);
-
-  if (post) return { ...post, source: "local" };
-
-  // Try Contentful if not found locally
-  const entry = await fetchBlogPostBySlugWithEntries(slug);
-  if (entry && entry.fields) {
-    const fields = entry.fields;
-    // spotlightEntries: array of spotlightEntry references
-    let spotlightEntries: any[] = [];
-    if (Array.isArray(fields.entries)) {
-      spotlightEntries = fields.entries.map((e: any) => {
-        if (e.fields) {
-          return {
-            title: e.fields.title || "",
-            content: e.fields.content || null,
-            author: e.fields.author?.fields?.name || "",
-          };
-        }
-        return null;
-      }).filter(Boolean);
-    }
-    return {
-      slug: String(fields.slug ?? ""),
-      slugAsParams: String(fields.slug ?? ""),
-      date: String(fields.date ?? ""),
-      title: String(fields.title ?? ""),
-      description: typeof fields.description === "string" ? fields.description : "",
-      tags: Array.isArray(fields.tags) ? fields.tags.filter((t) => typeof t === "string") : [],
-      published: true,
-      body: fields.content ?? null, // rich text document or null
-      spotlightEntries,
-      source: "contentful",
-      image: typeof fields.image === "string" ? fields.image : undefined, // <-- add image field
-    } as { [key: string]: any; image?: string };
-  }
-  return null;
 }
 
 function isContentfulDocument(doc: any): doc is { nodeType: typeof BLOCKS.DOCUMENT; content: any[]; data: any } {
@@ -75,15 +28,10 @@ function isContentfulDocument(doc: any): doc is { nodeType: typeof BLOCKS.DOCUME
   );
 }
 
-// Custom renderer for Contentful rich text
 const contentfulRenderOptions = {
   renderNode: {
     'embedded-entry-block': (node: any) => {
       const entry = node.data.target;
-      // Always log node and entry for debugging
-      // eslint-disable-next-line no-console
-      console.log('embedded-entry-block node:', JSON.stringify(node, null, 2));
-      // Try to handle imageWithSettings
       if (entry && entry.sys && entry.sys.contentType?.sys?.id === 'imageWithSettings') {
         const { media, imageWidthDesktop, imageWidthMobile, caption, marginTop, marginBottom } = entry.fields;
         let imageUrl = '';
@@ -103,7 +51,6 @@ const contentfulRenderOptions = {
           '--contentful-img-desktop': widthDesktop,
         };
         if (marginTop !== undefined && marginTop !== null && marginTop !== '') style.marginTop = `${marginTop}px`;
-        // Only apply marginBottom to image if no caption
         if (!caption && marginBottom !== undefined && marginBottom !== null && marginBottom !== '') style.marginBottom = `${marginBottom}px`;
         let captionStyle: React.CSSProperties | undefined = undefined;
         if (caption && marginBottom !== undefined && marginBottom !== null && marginBottom !== '') {
@@ -129,7 +76,6 @@ const contentfulRenderOptions = {
             </div>
           );
         }
-        // If image not found, show error and dump entry
         return (
           <div style={{color: 'red', fontSize: '0.9em'}}>
             imageWithSettings: Image not found<br />
@@ -139,7 +85,6 @@ const contentfulRenderOptions = {
           </div>
         );
       }
-      // If not imageWithSettings, show error and dump node
       return (
         <div style={{color: 'red', fontSize: '0.9em'}}>
           embedded-entry-block: Unhandled entry type or missing data<br />
@@ -172,16 +117,15 @@ const contentfulRenderOptions = {
                   width: '100%',
                   display: 'inline-block',
                   verticalAlign: 'middle',
-                  // @ts-ignore: CSS custom properties for responsive width
+                  // @ts-ignore: allow custom CSS vars for responsive width
                   '--contentful-img-mobile': widthMobile,
-                  // @ts-ignore: CSS custom properties for responsive width
+                  // @ts-ignore: allow custom CSS vars for responsive width
                   '--contentful-img-desktop': widthDesktop,
                 } as React.CSSProperties}
               />
             </span>
           );
         }
-        // If image not found, show error and dump entry
         return (
           <span style={{color: 'red', fontSize: '0.9em'}}>
             imageWithSettings (inline): Image not found<br />
@@ -191,7 +135,6 @@ const contentfulRenderOptions = {
           </span>
         );
       }
-      // If not imageWithSettings, show error and dump node
       return (
         <span style={{color: 'red', fontSize: '0.9em'}}>
           embedded-entry-inline: Unhandled entry type or missing data<br />
@@ -216,7 +159,6 @@ const contentfulRenderOptions = {
     },
     'hr': () => <hr className="my-4 mt-8 mb-8 border-t-2" />,
     'paragraph': (node: any, children: any) => {
-      // If the paragraph contains a single text node that looks like HTML, render as HTML
       if (
         node.content.length === 1 &&
         typeof node.content[0].value === "string" &&
@@ -249,31 +191,49 @@ const contentfulRenderOptions = {
   },
 };
 
+async function getPostFromParams(params: PostPageProps["params"]) {
+  const slug = params?.slug?.join("/");
+  const entry = await fetchBlogPostBySlugWithEntries(slug);
+  if (entry && entry.fields) {
+    const fields = entry.fields;
+    let spotlightEntries: any[] = [];
+    if (Array.isArray(fields.entries)) {
+      spotlightEntries = fields.entries.map((e: any) => {
+        if (e.fields) {
+          return {
+            title: e.fields.title || "",
+            content: e.fields.content || null,
+            author: e.fields.author?.fields?.name || "",
+          };
+        }
+        return null;
+      }).filter(Boolean);
+    }
+    return {
+      slug: String(fields.slug ?? ""),
+      slugAsParams: String(fields.slug ?? ""),
+      date: String(fields.date ?? ""),
+      title: String(fields.title ?? ""),
+      description: typeof fields.description === "string" ? fields.description : "",
+      tags: Array.isArray(fields.tags) ? fields.tags.filter((t) => typeof t === "string") : [],
+      published: true,
+      body: fields.content ?? null,
+      spotlightEntries,
+      source: "contentful",
+      image: typeof fields.image === "string" ? fields.image : undefined,
+    } as { [key: string]: any; image?: string };
+  }
+  return null;
+}
+
 export async function generateMetadata({
   params,
 }: PostPageProps): Promise<Metadata> {
   const post = await getPostFromParams(params);
-
   if (!post) {
     return {};
   }
-
-  // Try to extract og:image from frontmatter if present
   let ogImage: string | undefined;
-  if (post.source === "local") {
-    // Use post.image directly if available (frontmatter is already parsed)
-    if (post.image) {
-      ogImage = post.image;
-      if (ogImage && ogImage.startsWith("/")) {
-        ogImage = `${process.env.NEXT_PUBLIC_APP_URL || siteConfig.url}${ogImage}`;
-      }
-    }
-    // If not in frontmatter, try to extract from content (with fallback)
-    if (!ogImage && typeof post.body === "string") {
-      ogImage = extractFirstImageSrcWithFallback(post.body);
-    }
-  }
-  // For Contentful, extract from spotlightEntries or body if available (with fallback)
   if (!ogImage && post.source === "contentful" && Array.isArray(post.spotlightEntries)) {
     for (const entry of post.spotlightEntries) {
       if (entry.content && typeof entry.content === "object") {
@@ -285,13 +245,6 @@ export async function generateMetadata({
   if (!ogImage && post.source === "contentful" && post.body && typeof post.body === "object") {
     ogImage = extractOgImageFromContentfulBodyWithFallback(post.body);
   }
-
-  // Debug: log the ogImage value to verify extraction
-  // console.log('OG IMAGE DEBUG', ogImage);
-
-  // Fallback to no image if none found
-  // ogImage will be undefined if nothing is found
-
   return {
     title: post.title,
     description: post.description,
@@ -312,26 +265,24 @@ export async function generateMetadata({
 export async function generateStaticParams(): Promise<
   PostPageProps["params"][]
 > {
-  // Local MDX posts
-  const localParams = posts.map((post) => ({ slug: post.slugAsParams.split("/") }));
-
-  // Contentful posts
   const contentfulRaw = await fetchContentfulPosts();
   const contentfulParams = contentfulRaw
     .map((entry: any) => entry.fields?.slug)
     .filter((slug: any) => typeof slug === "string" && slug.length > 0)
     .map((slug: string) => ({ slug: slug.split("/") }));
-
-  return [...localParams, ...contentfulParams];
+  return contentfulParams;
 }
 
 export default async function PostPage({ params }: PostPageProps) {
   const post = await getPostFromParams(params);
-
   if (!post || !post.published) {
     notFound();
   }
-
+  // Get the blog URL for sharing (on client only)
+  let blogUrl = '';
+  if (typeof window !== 'undefined') {
+    blogUrl = window.location.href;
+  }
   return (
     <article className="container py-6 prose dark:prose-invert max-w-3xl px-4">
       <h1 className="mb-2 text-3xl lg:text-4xl">{String(post.title)}</h1>
@@ -344,10 +295,14 @@ export default async function PostPage({ params }: PostPageProps) {
         <p className="text-lg mt-0 mb-1 text-muted-foreground">{String(post.description)}</p>
       ) : null}
       <hr className="my-4 mt-2 mb-4" />
-      {/* Show date as first element inside the first spotlight entry */}
       {post.source === "contentful" && post.date && (
-        <div className="text-base text-muted-foreground mb-4 mt-4">
-          📅&nbsp; {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+        <div className="flex items-center justify-between text-base text-muted-foreground mb-4 mt-4">
+          <div className="flex-1 min-w-0">
+            📅&nbsp; {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          </div>
+          <div className="flex-shrink-0 flex items-center ml-4">
+            <ShareButtons url={''} />
+          </div>
         </div>
       )}
       {post.source === "contentful" && Array.isArray(post.spotlightEntries) && post.spotlightEntries.length > 0 ? (
@@ -357,7 +312,6 @@ export default async function PostPage({ params }: PostPageProps) {
               <div style={{marginBottom: '-10px', marginTop: '0px'}}>
                 <h1 className="text-3xl font-extrabold">{entry.title}</h1>
               </div>
-              
               {entry.content && isContentfulDocument(entry.content) && (
                 <div className="mb-2">
                   {documentToReactComponents(entry.content, contentfulRenderOptions)}
@@ -373,13 +327,11 @@ export default async function PostPage({ params }: PostPageProps) {
           ))}
         </div>
       ) : null}
-      {/* For Contentful blogs without spotlight entries*/}
       {post.source === "contentful" && isContentfulDocument(post.body) && (!post.spotlightEntries || post.spotlightEntries.length === 0) && (
         <>
           {documentToReactComponents({ ...post.body, data: post.body.data ?? {} } as unknown as Document, contentfulRenderOptions)}
         </>
       )}
-      {post.source !== "contentful" && <MDXContent code={String(post.body)} />}
       <p className="text-md mt-2 mb-0 text-muted-foreground text-justify">
         <i>All content on this website is protected by copyright and may not be copied, distributed, or reproduced in any form without the express written consent from <span className="font-semibold">team@bac.moe</span>.</i>
       </p>

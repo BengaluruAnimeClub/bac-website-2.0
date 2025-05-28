@@ -1,16 +1,11 @@
-import { upcomingEventsPosts } from "#site/content";
-import { MDXContent } from "@/components/mdx-components";
 import { notFound } from "next/navigation";
-import { CommentSection } from "@/components/comment-section"; // Import CommentSection
 import { fetchAnnouncementPostBySlugWithEntries, fetchAnnouncementPosts } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { extractFirstImageSrcWithFallback, extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
-import parse from "html-react-parser";
-
-import "@/styles/mdx.css";
+import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 import { Metadata } from "next";
-import { siteConfig } from "@/config/site";
-import { sortPosts } from "@/lib/utils";
+import { CommentSection } from "@/components/comment-section";
+import parse from "html-react-parser";
+import { ShareButtons } from "@/components/share-buttons";
 
 interface PostPageProps {
   params: {
@@ -85,7 +80,6 @@ const contentfulRenderOptions = {
           '--contentful-img-desktop': widthDesktop,
         };
         if (marginTop !== undefined && marginTop !== null && marginTop !== '') style.marginTop = `${marginTop}px`;
-        // Only apply marginBottom to image if no caption
         if (!caption && marginBottom !== undefined && marginBottom !== null && marginBottom !== '') style.marginBottom = `${marginBottom}px`;
         let captionStyle: React.CSSProperties | undefined = undefined;
         if (caption && marginBottom !== undefined && marginBottom !== null && marginBottom !== '') {
@@ -152,9 +146,9 @@ const contentfulRenderOptions = {
                   width: '100%',
                   display: 'inline-block',
                   verticalAlign: 'middle',
-                  // @ts-ignore: CSS custom properties for responsive width
+                  // @ts-ignore: allow custom CSS vars for responsive width
                   '--contentful-img-mobile': widthMobile,
-                  // @ts-ignore: CSS custom properties for responsive width
+                  // @ts-ignore: allow custom CSS vars for responsive width
                   '--contentful-img-desktop': widthDesktop,
                 } as React.CSSProperties}
               />
@@ -195,10 +189,6 @@ const contentfulRenderOptions = {
 
 async function getPostFromParams(params: PostPageProps["params"]) {
   const slug = params?.slug?.join("/");
-  // Try local first
-  let post = upcomingEventsPosts.find((post) => post.slugAsParams === slug);
-  if (post) return { ...post, source: "local" };
-  // Try Contentful
   const entry = await fetchAnnouncementPostBySlugWithEntries(slug);
   if (entry && entry.fields) {
     const fields = entry.fields;
@@ -234,24 +224,13 @@ export async function generateMetadata({
   params,
 }: PostPageProps): Promise<Metadata> {
   const post = await getPostFromParams(params);
-
   if (!post) {
     return {};
   }
-
   let ogImage: string | undefined;
-  if (post.source === "local") {
-    if (typeof post.body === "string") {
-      ogImage = extractFirstImageSrcWithFallback(post.body);
-    }
-  }
   if (!ogImage && post.source === "contentful") {
     ogImage = extractOgImageFromContentfulBodyWithFallback(post.body);
   }
-
-  // Debug: log the ogImage value to verify extraction
-  console.log('OG IMAGE DEBUG', ogImage);
-
   return {
     title: post.title,
     description: post.description,
@@ -272,24 +251,19 @@ export async function generateMetadata({
 export async function generateStaticParams(): Promise<
   PostPageProps["params"][]
 > {
-  // Local MDX posts
-  const localParams = upcomingEventsPosts.map((post) => ({ slug: post.slugAsParams.split("/") }));
-  // Contentful posts
   const contentfulRaw = await fetchAnnouncementPosts();
   const contentfulParams = contentfulRaw
     .map((entry: any) => entry.fields?.slug)
     .filter((slug: any) => typeof slug === "string" && slug.length > 0)
     .map((slug: string) => ({ slug: slug.split("/") }));
-  return [...localParams, ...contentfulParams];
+  return contentfulParams;
 }
 
 export default async function PostPage({ params }: PostPageProps) {
   const post = await getPostFromParams(params);
-
   if (!post || !post.published) {
     notFound();
   }
-
   return (
     <article className="container py-6 prose dark:prose-invert max-w-3xl px-4">
       <h1 className="mb-2 text-3xl lg:text-4xl">{post.title}</h1>
@@ -297,19 +271,20 @@ export default async function PostPage({ params }: PostPageProps) {
         <p className="text-lg mt-0 mb-1 text-muted-foreground">{post.description}</p>
       ) : null}
       <hr className="my-4 mt-2 mb-4" />
-      {/* Only show date for Contentful posts */}
       {post.source === "contentful" && post.date && (
-        <div className="text-base text-muted-foreground mb-4 mt-4">
-          📅 <b>Date:</b> {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+        <div className="flex items-center justify-between text-base text-muted-foreground mb-4 mt-4">
+          <div className="flex-1 min-w-0">
+            📅&nbsp; {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          </div>
+          <div className="flex-shrink-0 flex items-center ml-4">
+            <ShareButtons url={''} type="event" />
+          </div>
         </div>
       )}
-      {/* Render Contentful or MDX content */}
       {post.source === "contentful" && isContentfulDocument(post.body) ? (
         <div>{documentToReactComponents(post.body, contentfulRenderOptions)}</div>
-      ) : (
-        <MDXContent code={String(post.body)} />
-      )}
-      <CommentSection slug={post.slugAsParams} /> {/* Add CommentSection */}
+      ) : null}
+      <CommentSection slug={post.slugAsParams} />
     </article>
   );
 }

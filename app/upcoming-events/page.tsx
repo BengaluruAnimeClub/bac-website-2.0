@@ -1,4 +1,3 @@
-import { upcomingEventsPosts } from "#site/content";
 import { PostItem } from "@/components/post-item";
 import { QueryPagination } from "@/components/query-pagination";
 import { Tag } from "@/components/tag";
@@ -42,63 +41,36 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
     };
   });
 
-  // Merge local and Contentful posts
-  const allPosts = [
-    ...upcomingEventsPosts.map((p) => ({ ...p, source: "local" })),
-    ...normalizedContentful,
-  ];
+  // Only use Contentful posts
+  const allPosts = normalizedContentful;
   const sortedPosts = sortPosts(allPosts.filter((post) => post.published));
-  const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
-
-  const displayPosts = sortedPosts.slice(
-    POSTS_PER_PAGE * (currentPage - 1),
-    POSTS_PER_PAGE * currentPage
+  const paginatedPosts = sortedPosts.slice(
+    (currentPage - 1) * POSTS_PER_PAGE,
+    currentPage * POSTS_PER_PAGE
   );
 
+const tags = getAllTags(sortedPosts);
+const sortedTagNames = sortTagsByCount(tags);
+const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
+
   return (
-    <div className="container max-w-4xl py-6 lg:py-10">
-      <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between md:gap-8">
-        <div className="flex-1 space-y-4">
-          <h1 className="inline-block font-black text-4xl lg:text-5xl">Events</h1>
-          <p className="text-xl text-muted-foreground">
-            Join our events and meetups in Bengaluru!
-          </p>
-        </div>
-      </div>
-      <div className="grid gap-3 mt-8">
-        <div className="col-span-12 col-start-1 sm:col-span-8">
-          <hr />
-          {displayPosts?.length > 0 ? (
-            <ul className="flex flex-col">
-              {displayPosts.map((post) => {
-                const { slug, date, title, description, tags } = post;
-                return (
-                  <li key={slug}>
-                    <PostItem
-                      slug={slug}
-                      date={date}
-                      title={title}
-                      description={description}
-                      tags={tags}
-                      basePath="/upcoming-events/"
-                    />
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <div className="mt-8">
-              <p className="text-xl text-muted-foreground">
-                Nothing to see here yet!
-              </p>
-            </div>
-          )}
-          <QueryPagination
-            totalPages={totalPages}
-            className="mt-4"
+    <div className="container max-w-4xl py-6 px-4">
+      <h1 className="inline-block font-black text-4xl lg:text-5xl mb-1">Upcoming</h1>
+      <hr className="mt-4 mb-5" />
+      <div className="flex flex-col gap-6 mb-6">
+        {paginatedPosts.map((post) => (
+          <PostItem
+            key={post.slug}
+            slug={post.slug}
+            title={post.title}
+            description={post.description}
+            date={post.date}
+            tags={post.tags}
+            basePath="/upcoming-events/"
           />
-        </div>
+        ))}
       </div>
+      <QueryPagination totalPages={totalPages} />
     </div>
   );
 }
