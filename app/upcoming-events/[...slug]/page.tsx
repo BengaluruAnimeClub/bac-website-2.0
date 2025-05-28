@@ -5,6 +5,7 @@ import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 import { Metadata } from "next";
 import { CommentSection } from "@/components/comment-section";
 import parse from "html-react-parser";
+import { ShareButtons } from "@/components/share-buttons";
 
 interface PostPageProps {
   params: {
@@ -271,8 +272,13 @@ export default async function PostPage({ params }: PostPageProps) {
       ) : null}
       <hr className="my-4 mt-2 mb-4" />
       {post.source === "contentful" && post.date && (
-        <div className="text-base text-muted-foreground mb-4 mt-4">
-          📅 <b>Date:</b> {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+        <div className="flex items-center justify-between text-base text-muted-foreground mb-4 mt-4">
+          <div className="flex-1 min-w-0">
+            📅&nbsp; {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          </div>
+          <div className="flex-shrink-0 flex items-center ml-4">
+            <ShareButtons url={''} />
+          </div>
         </div>
       )}
       {post.source === "contentful" && isContentfulDocument(post.body) ? (
