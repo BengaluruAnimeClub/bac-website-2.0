@@ -179,61 +179,67 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         })()}
       </div>
       <hr className="mb-6 mt-2" />
-      <h2 className="text-2xl font-semibold mb-3">Blog Posts</h2>
-      {combinedBlogs.length === 0 ? <p>No blog posts found.</p> : (
-        <ul className="mb-6">
-          {combinedBlogs.map((post, idx) => (
-            <li key={post.title + idx} className="mb-2">
-              {post.type === "blog" ? (
-                <>
-                  <Link href={`/blog/${post.slug}`} className="underline">
-                    <span className="font-medium">{post.title}</span>
-                  </Link>
-                  {post.date && (
-                    <span className="ml-2 text-xs text-muted-foreground">{post.date.toLocaleDateString()}</span>
-                  )}
-                </>
-              ) : post.hasParent ? (
-                <>
-                  <Link href={`/blog/${post.slug}`} className="underline">
-                    <span className="font-medium">{post.title}</span>
-                  </Link>
-                  {post.parentTitle && (
+      <div className="flex flex-col items-center w-full">
+        <div className="inline-block bg-white dark:bg-zinc-900 rounded-xl p-6" style={{ border: 'none' }}>
+          <h2 className="text-2xl font-semibold mb-3 text-center">Blog Posts</h2>
+          {combinedBlogs.length === 0 ? <p className="text-center">No blog posts found.</p> : (
+            <ul className="mb-6 text-left">
+              {combinedBlogs.map((post, idx) => (
+                <li key={post.title + idx} className="mb-2">
+                  {post.type === "blog" ? (
                     <>
-                      <span className="text-muted-foreground"> in </span>
-                      <span>{post.parentTitle}</span>
+                      <Link href={`/blog/${post.slug}`} className="underline">
+                        <span className="font-medium">{post.title}</span>
+                      </Link>
+                      {post.date && (
+                        <span className="ml-2 text-xs text-muted-foreground">{post.date.toLocaleDateString()}</span>
+                      )}
+                    </>
+                  ) : post.hasParent ? (
+                    <>
+                      <Link href={`/blog/${post.slug}`} className="underline">
+                        <span className="font-medium">{post.title}</span>
+                      </Link>
+                      {post.parentTitle && (
+                        <>
+                          <span className="text-muted-foreground"> in </span>
+                          <span>{post.parentTitle}</span>
+                        </>
+                      )}
+                      <span className="ml-2 text-xs text-muted-foreground">
+                        {post.date ? post.date.toLocaleDateString() : 'No date'}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-medium">{post.title}</span>
+                      {post.date && (
+                        <span className="ml-2 text-xs text-muted-foreground">{post.date.toLocaleDateString()}</span>
+                      )}
                     </>
                   )}
-                  <span className="ml-2 text-xs text-muted-foreground">
-                    {post.date ? post.date.toLocaleDateString() : 'No date'}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="font-medium">{post.title}</span>
-                  {post.date && (
-                    <span className="ml-2 text-xs text-muted-foreground">{post.date.toLocaleDateString()}</span>
-                  )}
-                </>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
       {/* Only show Event Reports section if there are any */}
       {authoredEvents.length > 0 && (
-        <>
-          <h2 className="text-2xl font-semibold mb-3">Event Reports</h2>
-          <ul>
-            {authoredEvents.map((post: any) => (
-              <li key={post.fields.slug} className="mb-2">
-                <Link href={`/past-events/${post.fields.slug}`} className="underline">
-                  {post.fields.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </>
+        <div className="flex flex-col items-center w-full mt-8">
+          <div className="inline-block bg-white dark:bg-zinc-900 rounded-xl p-6" style={{ border: 'none' }}>
+            <h2 className="text-2xl font-semibold mb-3 text-center">Event Reports</h2>
+            <ul className="text-left">
+              {authoredEvents.map((post: any) => (
+                <li key={post.fields.slug} className="mb-2">
+                  <Link href={`/past-events/${post.fields.slug}`} className="underline">
+                    {post.fields.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       )}
     </div>
   );
