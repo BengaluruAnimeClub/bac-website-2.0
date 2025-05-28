@@ -361,7 +361,7 @@ export default async function PostPage({ params }: PostPageProps) {
               )}
               {entry.author && (
                 <div className="text-base text-muted-foreground mb-2">
-                  <b>Credits:</b>{' '}
+                  <b>Article by:</b>{' '}
                   {typeof entry.author === 'object' && entry.author !== null ? (
                     entry.author.slug ? (
                       <a href={`/contributors/${entry.author.slug}`} className="underline hover:text-blue-700">{entry.author.name}</a>
@@ -386,7 +386,7 @@ export default async function PostPage({ params }: PostPageProps) {
       {/* Show authors at the end of the blog post */}
       {post.source === "contentful" && post.body && post.authors && Array.isArray(post.authors) && post.authors.length > 0 && (
         <div className="mt-4 mb-4">
-          <b>Author{post.authors.length > 1 ? 's' : ''}:</b>{' '}
+          <b>Article by{post.authors.length > 1 ? 's' : ''}:</b>{' '}
           {post.authors.map((author: any, idx: number) => (
             <span key={author.slug || author.name}>
               {author.slug ? (
