@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import { CommentSection } from "@/components/comment-section";
 import parse from "html-react-parser";
 import { ShareButtons } from "@/components/share-buttons";
+import { Calendar } from "lucide-react";
 
 interface PostPageProps {
   params: {
@@ -273,8 +274,15 @@ export default async function PostPage({ params }: PostPageProps) {
       <hr className="my-4 mt-2 mb-4" />
       {post.source === "contentful" && post.date && (
         <div className="flex items-center justify-between text-base text-muted-foreground mb-4 mt-4">
-          <div className="flex-1 min-w-0">
-            📅&nbsp; {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          <div className="text-sm sm:text-base font-medium flex items-center gap-1">
+            <Calendar className="h-4 w-4" />
+            <time dateTime={post.date}>{
+              new Date(post.date).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric"
+              })
+            }</time>
           </div>
           <div className="flex-shrink-0 flex items-center ml-4">
             <ShareButtons url={''} type="event" />
