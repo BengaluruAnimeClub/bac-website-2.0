@@ -373,7 +373,12 @@ export default async function PostPage({ params }: PostPageProps) {
           ))}
         </div>
       ) : null}
-
+      {/* For Contentful blogs without spotlight entries*/}
+      {post.source === "contentful" && isContentfulDocument(post.body) && (!post.spotlightEntries || post.spotlightEntries.length === 0) && (
+        <>
+          {documentToReactComponents({ ...post.body, data: post.body.data ?? {} } as unknown as Document, contentfulRenderOptions)}
+        </>
+      )}
       {post.source !== "contentful" && <MDXContent code={String(post.body)} />}
       <p className="text-md mt-2 mb-0 text-muted-foreground text-justify">
         <i>All content on this website is protected by copyright and may not be copied, distributed, or reproduced in any form without the express written consent from <span className="font-semibold">team@bac.moe</span>.</i>
