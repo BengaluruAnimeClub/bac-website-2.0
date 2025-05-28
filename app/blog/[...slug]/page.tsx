@@ -347,6 +347,7 @@ export default async function PostPage({ params }: PostPageProps) {
           {documentToReactComponents({ ...post.header, data: post.header.data ?? {} } as unknown as Document, contentfulRenderOptions)}
         </div>
       )}
+      {/* Render spotlight entries if present */}
       {post.source === "contentful" && Array.isArray(post.spotlightEntries) && post.spotlightEntries.length > 0 ? (
         <div>
           {post.spotlightEntries.map((entry, idx) => (
@@ -378,7 +379,8 @@ export default async function PostPage({ params }: PostPageProps) {
           ))}
         </div>
       ) : null}
-      {post.source === "contentful" && isContentfulDocument(post.body) && (!post.spotlightEntries || post.spotlightEntries.length === 0) && (
+      {/* Render blog content if present */}
+      {post.source === "contentful" && isContentfulDocument(post.body) && (
         <>
           {documentToReactComponents({ ...post.body, data: post.body.data ?? {} } as unknown as Document, contentfulRenderOptions)}
         </>
