@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { fetchAuthorBySlug } from "@/lib/contentful-authors";
-import { fetchBlogPosts, fetchEventReportPosts } from "@/lib/contentful";
+import { fetchBlogPosts, fetchEventReportPosts, fetchSpotlightPosts } from "@/lib/contentful";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -21,9 +21,10 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
   const { name, avatar, bio, socialLinks } = author.fields;
 
   // Find all posts by this author
-  const [blogPosts, eventPosts] = await Promise.all([
+  const [blogPosts, eventPosts, spotlightPosts] = await Promise.all([
     fetchBlogPosts(),
     fetchEventReportPosts(),
+    fetchSpotlightPosts(),
   ]);
   // Blog posts
   const authoredBlogs = blogPosts.filter((post: any) => {
@@ -36,6 +37,22 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
     const a = post.fields.author;
     if (Array.isArray(a)) return a.some((x: any) => hasContentfulFields(x) && x.fields.slug === params.slug);
     return hasContentfulFields(a) && a.fields.slug === params.slug;
+  });
+  // Spotlight posts
+  let authoredSpotlights = spotlightPosts.filter((post: any) => {
+    const a = post.fields.author;
+    return hasContentfulFields(a) && a.fields.slug === params.slug;
+  });
+  // Sort by parent blog date descending (if available)
+  authoredSpotlights = authoredSpotlights.sort((a: any, b: any) => {
+    const aParent = a.fields.parentBlog;
+    const bParent = b.fields.parentBlog;
+    const aDate = (hasContentfulFields(aParent) && aParent.fields.date) ? new Date(aParent.fields.date) : null;
+    const bDate = (hasContentfulFields(bParent) && bParent.fields.date) ? new Date(bParent.fields.date) : null;
+    if (aDate && bDate) return bDate.getTime() - aDate.getTime();
+    if (aDate) return -1;
+    if (bDate) return 1;
+    return 0;
   });
 
   // Type guards for avatar, name, bio
@@ -95,6 +112,28 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
             </li>
           ))}
         </ul>
+      )}
+      {/* Only show Spotlight Posts section if there are any */}
+      {authoredSpotlights.length > 0 && (
+        <>
+          <h2 className="text-2xl font-semibold mb-3">Spotlight Posts</h2>
+          <ul className="mb-6">
+            {authoredSpotlights.map((post: any, idx: number) => (
+              <li key={post.sys.id || idx} className="mb-2">
+                <span className="font-medium">{post.fields.title}</span>
+                {post.fields.parentBlog && hasContentfulFields(post.fields.parentBlog) && post.fields.parentBlog.fields.slug && (
+                  <>
+                    {" "}
+                    <span className="text-muted-foreground">in</span>{" "}
+                    <Link href={`/blog/${post.fields.parentBlog.fields.slug}`} className="underline">
+                      {post.fields.parentBlog.fields.title}
+                    </Link>
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+        </>
       )}
       {/* Only show Event Reports section if there are any */}
       {authoredEvents.length > 0 && (
