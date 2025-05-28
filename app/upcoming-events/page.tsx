@@ -49,36 +49,26 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
     currentPage * POSTS_PER_PAGE
   );
 
-  const tags = getAllTags(sortedPosts);
+const tags = getAllTags(sortedPosts);
 const sortedTagNames = sortTagsByCount(tags);
 const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
 
   return (
     <div className="container max-w-4xl py-6 px-4">
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Upcoming Events</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {sortedTagNames.map((tag: string) => (
-  <Tag tag={tag} key={tag} count={tags[tag]} />
-))}
-          </div>
-        </CardContent>
-      </Card>
-      <div className="flex flex-col gap-6">
+      <h1 className="inline-block font-black text-4xl lg:text-5xl mb-1">Announcements</h1>
+      <hr className="mt-4 mb-5" />
+      <div className="flex flex-col gap-6 mb-6">
         {paginatedPosts.map((post) => (
-  <PostItem
-    key={post.slug}
-    slug={post.slug}
-    title={post.title}
-    description={post.description}
-    date={post.date}
-    tags={post.tags}
-    basePath="/upcoming-events/"
-  />
-))}
+          <PostItem
+            key={post.slug}
+            slug={post.slug}
+            title={post.title}
+            description={post.description}
+            date={post.date}
+            tags={post.tags}
+            basePath="/upcoming-events/"
+          />
+        ))}
       </div>
       <QueryPagination totalPages={totalPages} />
     </div>
