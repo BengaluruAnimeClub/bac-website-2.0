@@ -3,6 +3,7 @@ import ProfileCard from "@/components/ui/profilecard";
 import AffiliatedCard from "@/components/ui/affiliatedcard";
 import { siteConfig } from "@/config/site";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "BAC · About",
@@ -118,13 +119,9 @@ export default async function AboutPage() {
     <div className="container max-w-5xl py-6 lg:py-10">
       <div className="flex flex-col md:flex-row gap-8 items-center md:items-start pb-5">
         <p className="text-muted-foreground text-lg py-4">
-        <b>Bengaluru Anime Club (BAC)</b> is a community of anime enthusiasts based in the city of Bengaluru. Whether you’re a seasoned otaku or new to the world of anime and manga, this club offers a welcoming space to connect with fellow fans, share your love for Japanese animation, and explore diverse genres and series.
-        <br/>
-        <br/>
-        From regular meetups and watch parties to discussions on the latest episodes, cosplaying events, and manga swaps, BAC fosters a sense of belonging among anime fans of all ages. We also host special screenings, anime trivia nights, and cultural events to celebrate the rich art and storytelling from Japan.
-        <br/>
-        <br/>
-        Join us to dive deep into the world of anime, make new friends, and be part of a growing community that shares your passion for all things anime!
+        <b>Bengaluru Anime Club (BAC)</b> is a community of anime and manga enthusiasts in Bengaluru. We welcome everyone from seasoned fans to newcomers. Join us for meetups, fan screenings, cosplay events, anime music quizzes, art groups, and to connect with fellow fans of anime and manga!
+        <br/><br/>
+        For a list of all contributors to the site, check out <Link href="/author" className="underline">this page</Link>.
         </p>
       </div>
       
