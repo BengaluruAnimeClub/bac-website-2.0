@@ -79,8 +79,8 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
       */}
       <div className="grid grid-cols-12 gap-3 mt-4">
         <div className="col-span-12 col-start-1 sm:col-span-9 mt-2">
-          <hr className="mt-0 mb-0" />
-          <div className="flex flex-col gap-6">
+          <hr className="mt-0 mb-4" />
+          <div className="flex flex-col gap-6 mb-6">
             {paginatedPosts.map((post) => (
               <PostItem
                 key={post.slug}
@@ -95,7 +95,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           </div>
           <QueryPagination totalPages={totalPages} />
         </div>
-        <Card className="col-span-12 row-start-0 sm:col-span-3 sm:col-start-10 sm:row-start-1 hidden sm:block border-lg shadow-none">
+        <Card className="col-span-12 row-start-0 sm:col-span-3 sm:col-start-10 sm:row-start-1 hidden sm:block border-none shadow-none">
           <CardHeader>
             <CardTitle>Tags</CardTitle>
           </CardHeader>

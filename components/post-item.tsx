@@ -30,7 +30,7 @@ export function PostItem({
     normalizedSlug = slug.replace(/^past-events\//, "");
   }
   return (
-    <article className="flex flex-col gap-2 border-border border-b py-3">
+    <article className="flex flex-col gap-2 border-border border-b pb-0 pt-0">
       <div>
         <h2 className="text-2xl font-bold">
           <Link href={basePath + normalizedSlug}>{title}</Link>
@@ -42,7 +42,7 @@ export function PostItem({
         ))}
       </div>
       <div className="max-w-none text-muted-foreground">{description}</div>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center pb-3">
         {date && (
           <dl>
             <dt className="sr-only">Published On</dt>
