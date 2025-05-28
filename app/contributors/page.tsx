@@ -11,7 +11,7 @@ export default async function AuthorsListPage() {
         {authors.map((author: any) => {
           const { name, slug, avatar } = author.fields;
           return (
-            <Link key={slug} href={`/author/${slug}`} className="flex items-center justify-center text-center gap-4 p-3 border rounded hover:bg-accent transition">
+            <Link key={slug} href={`/contributors/${slug}`} className="flex items-center justify-center text-center gap-4 p-3 border rounded hover:bg-accent transition">
               <span className="text-md font-semibold">{name}</span>
             </Link>
           );
