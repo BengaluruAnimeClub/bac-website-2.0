@@ -65,24 +65,49 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
       parentTitle: "",
       hasParent: false,
     })),
-    ...authoredSpotlights.map((post: any) => {
-      const parent = post.fields.parentBlog;
-      const hasParent = parent && hasContentfulFields(parent) && parent.fields.slug;
+    ...authoredSpotlights.map((spotlight: any) => {
+      // Find the parent blogPost that references this spotlight in its entries
+      const parentBlog = blogPosts.find((blog: any) => {
+        const entries = blog.fields.entries;
+        if (Array.isArray(entries)) {
+          return entries.some((entry: any) =>
+            entry && typeof entry === 'object' && 'sys' in entry && spotlight && 'sys' in spotlight && entry.sys.id === spotlight.sys.id
+          );
+        }
+        return false;
+      });
+      let parentDate: Date | null = null;
+      let parentSlug: string | undefined = undefined;
+      let parentTitle: string = "";
+      let hasParent = false;
+      if (parentBlog && parentBlog.fields) {
+        const dateVal = parentBlog.fields.date;
+        const slugVal = parentBlog.fields.slug;
+        const titleVal = parentBlog.fields.title;
+        if (typeof dateVal === 'string' || typeof dateVal === 'number') parentDate = new Date(dateVal);
+        if (typeof slugVal === 'string') parentSlug = slugVal;
+        if (typeof titleVal === 'string') parentTitle = titleVal;
+        hasParent = !!parentSlug;
+      }
       return {
         type: "spotlight",
-        date: hasParent && parent.fields.date ? new Date(parent.fields.date) : null,
-        title: post.fields.title,
-        slug: hasParent ? parent.fields.slug : undefined,
-        parentTitle: hasParent ? parent.fields.title || "" : "",
+        date: parentDate,
+        title: typeof spotlight.fields.title === 'string' ? spotlight.fields.title : '',
+        slug: parentSlug, // always use parent blog's slug
+        parentTitle: parentTitle,
         hasParent,
       };
-    }),
+    })
   ].sort((a, b) => {
+    // Sort strictly by date descending, regardless of type
     if (a.date && b.date) return b.date.getTime() - a.date.getTime();
     if (a.date) return -1;
     if (b.date) return 1;
     return 0;
   });
+
+  // Debug: print combinedBlogs to check date values
+  console.log('combinedBlogs', combinedBlogs);
 
   // Type guards for avatar, name, bio
   let avatarUrl: string | null = null;
@@ -136,21 +161,36 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           {combinedBlogs.map((post, idx) => (
             <li key={post.title + idx} className="mb-2">
               {post.type === "blog" ? (
-                <Link href={`/blog/${post.slug}`} className="underline">
-                  {post.title}
-                </Link>
-              ) : post.hasParent ? (
-                <Link href={`/blog/${post.slug}`} className="underline">
-                  <span className="font-medium">{post.title}</span>
-                  {post.parentTitle && (
-                    <>
-                      <span className="text-muted-foreground"> in </span>
-                      <span>{post.parentTitle}</span>
-                    </>
+                <>
+                  <Link href={`/blog/${post.slug}`} className="underline">
+                    {post.title}
+                  </Link>
+                  {post.date && (
+                    <span className="ml-2 text-xs text-muted-foreground">{post.date.toLocaleDateString()}</span>
                   )}
-                </Link>
+                </>
+              ) : post.hasParent ? (
+                <>
+                  <Link href={`/blog/${post.slug}`} className="underline">
+                    <span className="font-medium">{post.title}</span>
+                    {post.parentTitle && (
+                      <>
+                        <span className="text-muted-foreground"> in </span>
+                        <span>{post.parentTitle}</span>
+                      </>
+                    )}
+                  </Link>
+                  <span className="ml-2 text-xs text-muted-foreground">
+                    {post.date ? post.date.toLocaleDateString() : 'No date'}
+                  </span>
+                </>
               ) : (
-                <span className="font-medium">{post.title}</span>
+                <>
+                  <span className="font-medium">{post.title}</span>
+                  {post.date && (
+                    <span className="ml-2 text-xs text-muted-foreground">{post.date.toLocaleDateString()}</span>
+                  )}
+                </>
               )}
             </li>
           ))}
