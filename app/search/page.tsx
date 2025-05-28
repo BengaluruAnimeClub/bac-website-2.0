@@ -1,5 +1,4 @@
 import { PostItem } from "@/components/post-item";
-import { sortPosts } from "@/lib/utils";
 import { Metadata } from "next";
 import { fetchBlogPosts, fetchAnnouncementPosts, fetchEventReportPosts } from "@/lib/contentful";
 
@@ -120,7 +119,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     ...normalizedEventReports,
     ...virtualPosts
   ];
-  let filteredPosts: PostWithSection[] = sortPosts(allPosts.filter((post) => post.published));
+  // Sort by date descending (newest first)
+  let filteredPosts: PostWithSection[] = allPosts
+    .filter((post) => post.published)
+    .sort((a, b) => (a.date > b.date ? -1 : a.date < b.date ? 1 : 0));
 
   if (search) {
     const searchWords = search.split(/\s+/).filter(Boolean);
