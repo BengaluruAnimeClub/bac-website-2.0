@@ -3,6 +3,8 @@ import { fetchAuthorBySlug } from "@/lib/contentful-authors";
 import { fetchBlogPosts, fetchEventReportPosts, fetchSpotlightPosts } from "@/lib/contentful";
 import Image from "next/image";
 import Link from "next/link";
+import { FaTwitter, FaInstagram } from "react-icons/fa";
+import { SiMyanimelist, SiAnilist } from "react-icons/si";
 
 interface AuthorPageProps {
   params: { slug: string };
@@ -144,15 +146,36 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         )}
         <h1 className="text-3xl font-bold mb-1">{displayName}</h1>
         {displayBio && <p className="text-center text-muted-foreground mb-2">{displayBio}</p>}
-        {socialLinks && Array.isArray(socialLinks) && socialLinks.length > 0 && (
-          <div className="flex gap-3 mt-2">
-            {socialLinks.map((link: any, i: number) => (
-              <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-blue-800">
-                {link.label || link.url}
-              </a>
-            ))}
-          </div>
-        )}
+        {/* Social Links Section */}
+        {socialLinks && typeof socialLinks === 'object' && !Array.isArray(socialLinks) && (() => {
+          const links = socialLinks as { [key: string]: string };
+          return (
+            <div className="flex gap-4 mt-2">
+              {links['MyAnimeList'] && (
+                <a href={links['MyAnimeList']} target="_blank" rel="noopener noreferrer" title="MyAnimeList" className="text-2xl text-blue-600 hover:text-blue-800 flex items-center">
+                  <span style={{ fontSize: '2rem', marginTop: '-5px', display: 'inline-flex', alignItems: 'center' }}>
+                    <SiMyanimelist />
+                  </span>
+                </a>
+              )}
+              {links['Anilist'] && (
+                <a href={links['Anilist']} target="_blank" rel="noopener noreferrer" title="Anilist" className="text-xl text-blue-600 hover:text-blue-800">
+                  <SiAnilist />
+                </a>
+              )}
+              {links['Twitter'] && (
+                <a href={links['Twitter']} target="_blank" rel="noopener noreferrer" title="Twitter" className="text-xl text-blue-600 hover:text-blue-800">
+                  <FaTwitter />
+                </a>
+              )}
+              {links['Instagram'] && (
+                <a href={links['Instagram']} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-xl text-blue-600 hover:text-blue-800">
+                  <FaInstagram />
+                </a>
+              )}
+            </div>
+          );
+        })()}
       </div>
       <hr className="my-6" />
       <h2 className="text-2xl font-semibold mb-3">Blog Posts</h2>
