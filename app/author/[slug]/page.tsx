@@ -151,26 +151,26 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         {socialLinks && typeof socialLinks === 'object' && !Array.isArray(socialLinks) && (() => {
           const links = socialLinks as { [key: string]: string };
           return (
-            <div className="flex gap-4 mt-2">
+            <div className="flex gap-4 mt-4">
               {links['MyAnimeList'] && (
-                <a href={links['MyAnimeList']} target="_blank" rel="noopener noreferrer" title="MyAnimeList" className="text-2xl text-blue-600 hover:text-blue-800 flex items-center">
-                  <span style={{ fontSize: '2rem', marginTop: '-5px', display: 'inline-flex', alignItems: 'center' }}>
+                <a href={links['MyAnimeList']} target="_blank" rel="noopener noreferrer" title="MyAnimeList" className="text-3xl flex items-center text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
+                  <span style={{ fontSize: '3rem', marginTop: '-7px', display: 'inline-flex', alignItems: 'center' }}>
                     <SiMyanimelist />
                   </span>
                 </a>
               )}
               {links['Anilist'] && (
-                <a href={links['Anilist']} target="_blank" rel="noopener noreferrer" title="Anilist" className="text-xl text-blue-600 hover:text-blue-800">
+                <a href={links['Anilist']} target="_blank" rel="noopener noreferrer" title="Anilist" className="text-3xl text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
                   <SiAnilist />
                 </a>
               )}
               {links['Twitter'] && (
-                <a href={links['Twitter']} target="_blank" rel="noopener noreferrer" title="Twitter" className="text-xl text-blue-600 hover:text-blue-800">
+                <a href={links['Twitter']} target="_blank" rel="noopener noreferrer" title="Twitter" className="text-3xl text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
                   <PiXLogoBold />
                 </a>
               )}
               {links['Instagram'] && (
-                <a href={links['Instagram']} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-xl text-blue-600 hover:text-blue-800">
+                <a href={links['Instagram']} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-3xl text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
                   <FaInstagram />
                 </a>
               )}
@@ -178,7 +178,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           );
         })()}
       </div>
-      <hr className="my-6" />
+      <hr className="mb-6 mt-2" />
       <h2 className="text-2xl font-semibold mb-3">Blog Posts</h2>
       {combinedBlogs.length === 0 ? <p>No blog posts found.</p> : (
         <ul className="mb-6">
@@ -187,7 +187,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
               {post.type === "blog" ? (
                 <>
                   <Link href={`/blog/${post.slug}`} className="underline">
-                    {post.title}
+                    <span className="font-medium">{post.title}</span>
                   </Link>
                   {post.date && (
                     <span className="ml-2 text-xs text-muted-foreground">{post.date.toLocaleDateString()}</span>
