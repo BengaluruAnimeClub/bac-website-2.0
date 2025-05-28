@@ -153,24 +153,24 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           return (
             <div className="flex gap-4 mt-4">
               {links['MyAnimeList'] && (
-                <a href={links['MyAnimeList']} target="_blank" rel="noopener noreferrer" title="MyAnimeList" className="text-3xl flex items-center text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
-                  <span style={{ fontSize: '3rem', marginTop: '-7px', display: 'inline-flex', alignItems: 'center' }}>
+                <a href={links['MyAnimeList']} target="_blank" rel="noopener noreferrer" title="MyAnimeList" className="text-xl flex items-center text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
+                  <span style={{ fontSize: '2.2rem', marginTop: '-4px', display: 'inline-flex', alignItems: 'center' }}>
                     <SiMyanimelist />
                   </span>
                 </a>
               )}
               {links['Anilist'] && (
-                <a href={links['Anilist']} target="_blank" rel="noopener noreferrer" title="Anilist" className="text-3xl text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
+                <a href={links['Anilist']} target="_blank" rel="noopener noreferrer" title="Anilist" className="text-2xl text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
                   <SiAnilist />
                 </a>
               )}
               {links['Twitter'] && (
-                <a href={links['Twitter']} target="_blank" rel="noopener noreferrer" title="Twitter" className="text-3xl text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
+                <a href={links['Twitter']} target="_blank" rel="noopener noreferrer" title="Twitter" className="text-2xl text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
                   <PiXLogoBold />
                 </a>
               )}
               {links['Instagram'] && (
-                <a href={links['Instagram']} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-3xl text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
+                <a href={links['Instagram']} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-2xl text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
                   <FaInstagram />
                 </a>
               )}
@@ -178,9 +178,9 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           );
         })()}
       </div>
-      <hr className="mb-6 mt-2" />
+      {/* <hr className="mb-2 mt-2" /> */}
       <div className="flex flex-col items-center w-full">
-        <div className="inline-block bg-white dark:bg-zinc-900 rounded-xl p-6" style={{ border: 'none' }}>
+        <div className="inline-block bg-white dark:bg-zinc-900 rounded-xl p-2" style={{ border: 'none' }}>
           <h2 className="text-2xl font-semibold mb-3 text-center">Blog Posts</h2>
           {combinedBlogs.length === 0 ? <p className="text-center">No blog posts found.</p> : (
             <ul className="mb-6 text-left">
