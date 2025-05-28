@@ -11,6 +11,7 @@ import parse from "html-react-parser";
 import type { Document } from "@contentful/rich-text-types";
 import { ShareButtons } from "@/components/share-buttons";
 import "@/styles/mdx.css";
+import { Calendar } from "lucide-react";
 
 interface PostPageProps {
   params: {
@@ -243,6 +244,8 @@ async function getPostFromParams(params: PostPageProps["params"]) {
       tags: Array.isArray(fields.tags) ? fields.tags.filter((t) => typeof t === "string") : [],
       published: true,
       body: fields.content ?? null,
+      header: fields.header ?? null,
+      footer: fields.footer ?? null,
       spotlightEntries,
       source: "contentful",
       image: typeof fields.image === "string" ? fields.image : undefined,
@@ -323,14 +326,28 @@ export default async function PostPage({ params }: PostPageProps) {
       <hr className="my-4 mt-2 mb-4" />
       {post.source === "contentful" && post.date && (
         <div className="flex items-center justify-between text-base text-muted-foreground mb-4 mt-4">
-          <div className="flex-1 min-w-0">
-            📅&nbsp; {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          <div className="text-sm sm:text-base font-medium flex items-center gap-1">
+            <Calendar className="h-4 w-4" />
+            <time dateTime={post.date}>{
+              new Date(post.date).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric"
+              })
+            }</time>
           </div>
           <div className="flex-shrink-0 flex items-center ml-4">
             <ShareButtons url={''} />
           </div>
         </div>
       )}
+      {/* Render blogPost header if present */}
+      {post.source === "contentful" && post.header && isContentfulDocument(post.header) && (
+        <div>
+          {documentToReactComponents({ ...post.header, data: post.header.data ?? {} } as unknown as Document, contentfulRenderOptions)}
+        </div>
+      )}
+      {/* Render spotlight entries if present */}
       {post.source === "contentful" && Array.isArray(post.spotlightEntries) && post.spotlightEntries.length > 0 ? (
         <div>
           {post.spotlightEntries.map((entry, idx) => (
@@ -345,7 +362,7 @@ export default async function PostPage({ params }: PostPageProps) {
               )}
               {entry.author && (
                 <div className="text-base text-muted-foreground mb-2">
-                  <b>Credits:</b>{' '}
+                  <b>Article by:</b>{' '}
                   {typeof entry.author === 'object' && entry.author !== null ? (
                     entry.author.slug ? (
                       <a href={`/contributors/${entry.author.slug}`} className="underline hover:text-blue-700">{entry.author.name}</a>
@@ -362,7 +379,8 @@ export default async function PostPage({ params }: PostPageProps) {
           ))}
         </div>
       ) : null}
-      {post.source === "contentful" && isContentfulDocument(post.body) && (!post.spotlightEntries || post.spotlightEntries.length === 0) && (
+      {/* Render blog content if present */}
+      {post.source === "contentful" && isContentfulDocument(post.body) && (
         <>
           {documentToReactComponents({ ...post.body, data: post.body.data ?? {} } as unknown as Document, contentfulRenderOptions)}
         </>
@@ -370,7 +388,7 @@ export default async function PostPage({ params }: PostPageProps) {
       {/* Show authors at the end of the blog post */}
       {post.source === "contentful" && post.body && post.authors && Array.isArray(post.authors) && post.authors.length > 0 && (
         <div className="mt-4 mb-4">
-          <b>Author{post.authors.length > 1 ? 's' : ''}:</b>{' '}
+          <b>Article by{post.authors.length > 1 ? 's' : ''}:</b>{' '}
           {post.authors.map((author: any, idx: number) => (
             <span key={author.slug || author.name}>
               {author.slug ? (
@@ -383,7 +401,13 @@ export default async function PostPage({ params }: PostPageProps) {
           ))}
         </div>
       )}
-      <hr className="my-4 mt-2 mb-4" />
+      {/* Render blogPost footer if present */}
+      {post.source === "contentful" && post.footer && isContentfulDocument(post.footer) && (
+        <div>
+          {documentToReactComponents({ ...post.footer, data: post.footer.data ?? {} } as unknown as Document, contentfulRenderOptions)}
+        </div>
+      )}
+      {/* <hr className="my-4 mt-2 mb-4" /> */}
       <p className="text-md mt-2 mb-0 text-muted-foreground text-justify">
         <i>All content on this website is protected by copyright and may not be copied, distributed, or reproduced in any form without the express written consent from <span className="font-semibold">team@bac.moe</span>.</i>
       </p>
