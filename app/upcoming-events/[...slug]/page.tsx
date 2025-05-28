@@ -280,7 +280,8 @@ export default async function PostPage({ params }: PostPageProps) {
               new Date(post.date).toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
-                year: "numeric"
+                year: "numeric",
+                timeZone: "Asia/Kolkata"
               })
             }</time>
           </div>

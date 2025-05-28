@@ -52,7 +52,8 @@ export function PostItem({
                 new Date(date).toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
-                  year: "numeric"
+                  year: "numeric",
+                  timeZone: "Asia/Kolkata"
                 })
               }</time>
             </dd>
