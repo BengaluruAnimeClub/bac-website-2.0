@@ -69,4 +69,11 @@
   body {
     @apply bg-background text-foreground;
   }
+  a {
+    transition-property: color;
+    transition-duration: 100ms;
+  }
+  a:hover {
+    color: #ea4167 !important;
+  }
 }

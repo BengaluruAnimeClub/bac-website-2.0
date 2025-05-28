@@ -191,6 +191,15 @@ const contentfulRenderOptions = {
   },
 };
 
+// Helper to check if an object is a Contentful Entry with fields
+function hasContentfulFields(obj: any): obj is { fields: any } {
+  return obj && typeof obj === "object" && "fields" in obj && typeof obj.fields === "object";
+}
+// Helper to check if fields has author info
+function isAuthorFields(fields: any): fields is { name: string; slug?: string } {
+  return fields && typeof fields.name === "string";
+}
+
 async function getPostFromParams(params: PostPageProps["params"]) {
   const slug = params?.slug?.join("/");
   const entry = await fetchBlogPostBySlugWithEntries(slug);
@@ -200,14 +209,30 @@ async function getPostFromParams(params: PostPageProps["params"]) {
     if (Array.isArray(fields.entries)) {
       spotlightEntries = fields.entries.map((e: any) => {
         if (e.fields) {
+          let author = null;
+          if (hasContentfulFields(e.fields.author) && isAuthorFields(e.fields.author.fields)) {
+            author = {
+              name: e.fields.author.fields.name,
+              slug: e.fields.author.fields.slug || undefined,
+            };
+          }
           return {
             title: e.fields.title || "",
             content: e.fields.content || null,
-            author: e.fields.author?.fields?.name || "",
+            author,
           };
         }
         return null;
       }).filter(Boolean);
+    }
+    // Support multiple authors for the main blog post
+    let authors: any[] = [];
+    if (fields.author) {
+      if (Array.isArray(fields.author)) {
+        authors = fields.author.map((a: any) => hasContentfulFields(a) && isAuthorFields(a.fields) ? { name: a.fields.name, slug: a.fields.slug } : null).filter(Boolean);
+      } else if (hasContentfulFields(fields.author) && isAuthorFields(fields.author.fields)) {
+        authors = [{ name: fields.author.fields.name, slug: fields.author.fields.slug }];
+      }
     }
     return {
       slug: String(fields.slug ?? ""),
@@ -221,6 +246,7 @@ async function getPostFromParams(params: PostPageProps["params"]) {
       spotlightEntries,
       source: "contentful",
       image: typeof fields.image === "string" ? fields.image : undefined,
+      authors,
     } as { [key: string]: any; image?: string };
   }
   return null;
@@ -319,7 +345,16 @@ export default async function PostPage({ params }: PostPageProps) {
               )}
               {entry.author && (
                 <div className="text-base text-muted-foreground mb-2">
-                  <b>Credits:</b> {entry.author}
+                  <b>Credits:</b>{' '}
+                  {typeof entry.author === 'object' && entry.author !== null ? (
+                    entry.author.slug ? (
+                      <a href={`/author/${entry.author.slug}`} className="underline hover:text-blue-700">{entry.author.name}</a>
+                    ) : (
+                      entry.author.name
+                    )
+                  ) : (
+                    String(entry.author)
+                  )}
                 </div>
               )}
               <hr className="my-4 mt-8 mb-8 border-t-2" />
@@ -332,6 +367,23 @@ export default async function PostPage({ params }: PostPageProps) {
           {documentToReactComponents({ ...post.body, data: post.body.data ?? {} } as unknown as Document, contentfulRenderOptions)}
         </>
       )}
+      {/* Show authors at the end of the blog post */}
+      {post.source === "contentful" && post.body && post.authors && Array.isArray(post.authors) && post.authors.length > 0 && (
+        <div className="mt-4 mb-4">
+          <b>Author{post.authors.length > 1 ? 's' : ''}:</b>{' '}
+          {post.authors.map((author: any, idx: number) => (
+            <span key={author.slug || author.name}>
+              {author.slug ? (
+                <a href={`/author/${author.slug}`} className="underline hover:text-blue-700">{author.name}</a>
+              ) : (
+                <span>{author.name}</span>
+              )}
+              {idx < post.authors.length - 1 && ', '}
+            </span>
+          ))}
+        </div>
+      )}
+      <hr className="my-4 mt-2 mb-4" />
       <p className="text-md mt-2 mb-0 text-muted-foreground text-justify">
         <i>All content on this website is protected by copyright and may not be copied, distributed, or reproduced in any form without the express written consent from <span className="font-semibold">team@bac.moe</span>.</i>
       </p>

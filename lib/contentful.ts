@@ -85,3 +85,11 @@ export async function fetchEventReportPostBySlugWithEntries(slug: string) {
   }));
   return entries.items[0] || null;
 }
+
+export async function fetchSpotlightPosts() {
+  const entries = await withNoCache(contentfulClient.getEntries({
+    content_type: 'spotlightEntry',
+    // No order field, since spotlightEntry has no date
+  }));
+  return entries.items;
+}
