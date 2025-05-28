@@ -10,6 +10,7 @@ import { BLOCKS } from "./contentful-blocks-enum";
 import parse from "html-react-parser";
 import type { Document } from "@contentful/rich-text-types";
 import { ShareButtons } from "@/components/share-buttons";
+import "@/styles/mdx.css";
 
 interface PostPageProps {
   params: {
@@ -41,14 +42,14 @@ const contentfulRenderOptions = {
         }
         const widthDesktop = imageWidthDesktop ? `${imageWidthDesktop}%` : '100%';
         const widthMobile = imageWidthMobile ? `${imageWidthMobile}%` : '100%';
-        const style = {
+        const style: React.CSSProperties = {
           width: '100%',
           display: 'block',
-          // @ts-ignore: allow custom CSS vars for responsive width
+          // @ts-ignore: CSS custom properties for responsive width
           '--contentful-img-mobile': widthMobile,
-          // @ts-ignore: allow custom CSS vars for responsive width
+          // @ts-ignore: CSS custom properties for responsive width
           '--contentful-img-desktop': widthDesktop,
-        } as React.CSSProperties;
+        };
         if (marginTop !== undefined && marginTop !== null && marginTop !== '') style.marginTop = `${marginTop}px`;
         if (!caption && marginBottom !== undefined && marginBottom !== null && marginBottom !== '') style.marginBottom = `${marginBottom}px`;
         let captionStyle: React.CSSProperties | undefined = undefined;

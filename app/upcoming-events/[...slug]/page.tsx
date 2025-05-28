@@ -74,11 +74,11 @@ const contentfulRenderOptions = {
         const style: React.CSSProperties = {
           width: '100%',
           display: 'block',
-          // @ts-ignore: allow custom CSS vars for responsive width
+          // @ts-ignore: CSS custom properties for responsive width
           '--contentful-img-mobile': widthMobile,
-          // @ts-ignore: allow custom CSS vars for responsive width
+          // @ts-ignore: CSS custom properties for responsive width
           '--contentful-img-desktop': widthDesktop,
-        } as React.CSSProperties;
+        };
         if (marginTop !== undefined && marginTop !== null && marginTop !== '') style.marginTop = `${marginTop}px`;
         if (!caption && marginBottom !== undefined && marginBottom !== null && marginBottom !== '') style.marginBottom = `${marginBottom}px`;
         let captionStyle: React.CSSProperties | undefined = undefined;
