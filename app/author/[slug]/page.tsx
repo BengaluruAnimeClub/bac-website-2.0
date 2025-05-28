@@ -173,13 +173,13 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                 <>
                   <Link href={`/blog/${post.slug}`} className="underline">
                     <span className="font-medium">{post.title}</span>
-                    {post.parentTitle && (
-                      <>
-                        <span className="text-muted-foreground"> in </span>
-                        <span>{post.parentTitle}</span>
-                      </>
-                    )}
                   </Link>
+                  {post.parentTitle && (
+                    <>
+                      <span className="text-muted-foreground"> in </span>
+                      <span>{post.parentTitle}</span>
+                    </>
+                  )}
                   <span className="ml-2 text-xs text-muted-foreground">
                     {post.date ? post.date.toLocaleDateString() : 'No date'}
                   </span>
