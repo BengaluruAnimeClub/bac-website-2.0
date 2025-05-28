@@ -64,7 +64,7 @@ export function CommentSection({ slug }: { slug: string }) {
   }
 
   return (
-    <section className="mt-0 pt-0">
+    <section className="-mt-4 pt-0">
       <h2 className="text-2xl font-bold mb-4">Comments</h2>
       {status === "loading" ? (
         <div>Loading...</div>

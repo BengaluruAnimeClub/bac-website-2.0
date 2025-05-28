@@ -369,21 +369,21 @@ export default async function PostPage({ params }: PostPageProps) {
       )}
       {/* Show authors at the end of the blog post */}
       {post.source === "contentful" && post.body && post.authors && Array.isArray(post.authors) && post.authors.length > 0 && (
-        <div className="mt-8 mb-4">
-          <b>Author{post.authors.length > 1 ? 's' : ''}:</b>
-          <ul className="flex flex-wrap gap-2 mt-1">
-            {post.authors.map((author: any) => (
-              <li key={author.slug || author.name}>
-                {author.slug ? (
-                  <a href={`/author/${author.slug}`} className="underline hover:text-blue-700">{author.name}</a>
-                ) : (
-                  <span>{author.name}</span>
-                )}
-              </li>
-            ))}
-          </ul>
+        <div className="mt-4 mb-4">
+          <b>Author{post.authors.length > 1 ? 's' : ''}:</b>{' '}
+          {post.authors.map((author: any, idx: number) => (
+            <span key={author.slug || author.name}>
+              {author.slug ? (
+                <a href={`/author/${author.slug}`} className="underline hover:text-blue-700">{author.name}</a>
+              ) : (
+                <span>{author.name}</span>
+              )}
+              {idx < post.authors.length - 1 && ', '}
+            </span>
+          ))}
         </div>
       )}
+      <hr className="my-4 mt-2 mb-4" />
       <p className="text-md mt-2 mb-0 text-muted-foreground text-justify">
         <i>All content on this website is protected by copyright and may not be copied, distributed, or reproduced in any form without the express written consent from <span className="font-semibold">team@bac.moe</span>.</i>
       </p>
