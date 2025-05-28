@@ -9,6 +9,7 @@ import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 import { BLOCKS } from "./contentful-blocks-enum";
 import parse from "html-react-parser";
 import type { Document } from "@contentful/rich-text-types";
+import { ShareButtons } from "@/components/share-buttons";
 
 interface PostPageProps {
   params: {
@@ -276,6 +277,11 @@ export default async function PostPage({ params }: PostPageProps) {
   if (!post || !post.published) {
     notFound();
   }
+  // Get the blog URL for sharing (on client only)
+  let blogUrl = '';
+  if (typeof window !== 'undefined') {
+    blogUrl = window.location.href;
+  }
   return (
     <article className="container py-6 prose dark:prose-invert max-w-3xl px-4">
       <h1 className="mb-2 text-3xl lg:text-4xl">{String(post.title)}</h1>
@@ -289,8 +295,13 @@ export default async function PostPage({ params }: PostPageProps) {
       ) : null}
       <hr className="my-4 mt-2 mb-4" />
       {post.source === "contentful" && post.date && (
-        <div className="text-base text-muted-foreground mb-4 mt-4">
-          📅&nbsp; {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+        <div className="flex items-center justify-between text-base text-muted-foreground mb-4 mt-4">
+          <div className="flex-1 min-w-0">
+            📅&nbsp; {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          </div>
+          <div className="flex-shrink-0 flex items-center ml-4">
+            <ShareButtons url={''} />
+          </div>
         </div>
       )}
       {post.source === "contentful" && Array.isArray(post.spotlightEntries) && post.spotlightEntries.length > 0 ? (
