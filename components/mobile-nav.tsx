@@ -81,10 +81,10 @@ export function MobileNav() {
               Blog
             </MobileLink>
             <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpenSheet} href="/past-events">
-              Looking BAC
+              Archives
             </MobileLink>
             <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpenSheet} href="/upcoming-events">
-              Events
+              Upcoming
             </MobileLink>
             <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpenSheet} href="/art">
               Art
