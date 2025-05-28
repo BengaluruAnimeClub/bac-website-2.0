@@ -90,7 +90,7 @@ export function MainNav() {
           pathname === "/gallery" ? "text-foreground" : "text-foreground/60"
         )}
       >
-        Gallery
+        Cosplay
       </Link>
       <Link
         href="/game"

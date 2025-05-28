@@ -90,7 +90,7 @@ export function MobileNav() {
               Art
             </MobileLink>
             <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpenSheet} href="/gallery">
-              Gallery
+              Cosplay
             </MobileLink>
             {/* <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpenSheet} href="/terumin">
               Terumin
