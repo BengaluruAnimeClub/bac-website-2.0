@@ -243,6 +243,8 @@ async function getPostFromParams(params: PostPageProps["params"]) {
       tags: Array.isArray(fields.tags) ? fields.tags.filter((t) => typeof t === "string") : [],
       published: true,
       body: fields.content ?? null,
+      header: fields.header ?? null,
+      footer: fields.footer ?? null,
       spotlightEntries,
       source: "contentful",
       image: typeof fields.image === "string" ? fields.image : undefined,
@@ -331,6 +333,12 @@ export default async function PostPage({ params }: PostPageProps) {
           </div>
         </div>
       )}
+      {/* Render blogPost header if present */}
+      {post.source === "contentful" && post.header && isContentfulDocument(post.header) && (
+        <div>
+          {documentToReactComponents({ ...post.header, data: post.header.data ?? {} } as unknown as Document, contentfulRenderOptions)}
+        </div>
+      )}
       {post.source === "contentful" && Array.isArray(post.spotlightEntries) && post.spotlightEntries.length > 0 ? (
         <div>
           {post.spotlightEntries.map((entry, idx) => (
@@ -381,6 +389,12 @@ export default async function PostPage({ params }: PostPageProps) {
               {idx < post.authors.length - 1 && ', '}
             </span>
           ))}
+        </div>
+      )}
+      {/* Render blogPost footer if present */}
+      {post.source === "contentful" && post.footer && isContentfulDocument(post.footer) && (
+        <div>
+          {documentToReactComponents({ ...post.footer, data: post.footer.data ?? {} } as unknown as Document, contentfulRenderOptions)}
         </div>
       )}
       {/* <hr className="my-4 mt-2 mb-4" /> */}
