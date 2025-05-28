@@ -1,6 +1,4 @@
-import { posts, pastEventsPosts, upcomingEventsPosts } from "#site/content";
 import { PostItem } from "@/components/post-item";
-import { blogSearchIndex } from "@/components/blog-search-index";
 import { sortPosts } from "@/lib/utils";
 import { Metadata } from "next";
 import { fetchBlogPosts, fetchAnnouncementPosts, fetchEventReportPosts } from "@/lib/contentful";
@@ -27,7 +25,18 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     fetchEventReportPosts(),
   ]);
   // Normalize Contentful posts
-  const normalizedBlogs = contentfulBlogs.map((entry: any) => {
+  type PostWithSection = {
+    slug: string;
+    slugAsParams: string;
+    date: string;
+    title: string;
+    description: string;
+    tags: string[];
+    published: boolean;
+    body: any;
+    _section: string;
+  };
+  const normalizedBlogs: PostWithSection[] = contentfulBlogs.map((entry: any) => {
     const fields = entry.fields;
     return {
       slug: String(fields.slug ?? ""),
@@ -41,7 +50,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       _section: "Blog",
     };
   });
-  const normalizedAnnouncements = contentfulAnnouncements.map((entry: any) => {
+  const normalizedAnnouncements: PostWithSection[] = contentfulAnnouncements.map((entry: any) => {
     const fields = entry.fields;
     return {
       slug: String(fields.slug ?? ""),
@@ -55,7 +64,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       _section: "Events",
     };
   });
-  const normalizedEventReports = contentfulEventReports.map((entry: any) => {
+  const normalizedEventReports: PostWithSection[] = contentfulEventReports.map((entry: any) => {
     const fields = entry.fields;
     return {
       slug: String(fields.slug ?? ""),
@@ -69,8 +78,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       _section: "Looking BAC",
     };
   });
-  // Explicitly type posts with _section
-  type PostWithSection = (typeof posts[number] & { _section: string });
   // Add virtual posts for Socials and Contact
   const virtualPosts: PostWithSection[] = [
     {
@@ -108,43 +115,16 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     }
   ];
   const allPosts: PostWithSection[] = [
-    ...posts.map((p) => ({ ...p, _section: "Blog" })),
-    ...upcomingEventsPosts.map((p) => ({ ...p, _section: "Events" })),
-    ...pastEventsPosts.map((p) => ({ ...p, _section: "Looking BAC" })),
     ...normalizedBlogs,
     ...normalizedAnnouncements,
     ...normalizedEventReports,
     ...virtualPosts
   ];
-  let filteredPosts = sortPosts(allPosts.filter((post) => post.published)) as typeof allPosts;
-
-  // Deduplicate by slugAsParams (Contentful and local may overlap)
-  const seen = new Set();
-  filteredPosts = filteredPosts.filter((post) => {
-    if (seen.has(post.slugAsParams)) return false;
-    seen.add(post.slugAsParams);
-    return true;
-  });
+  let filteredPosts: PostWithSection[] = sortPosts(allPosts.filter((post) => post.published));
 
   if (search) {
     const searchWords = search.split(/\s+/).filter(Boolean);
-    const matchingSlugs = blogSearchIndex
-      .filter((b) => {
-        const title = b.title.toLowerCase();
-        const description = (b.description || "").toLowerCase();
-        const headers = b.headers.map((h) => h.toLowerCase());
-        return searchWords.every(word =>
-          title.includes(word) ||
-          headers.some(h => h.includes(word))
-        );
-      })
-      .map((b) => b.slug);
     filteredPosts = filteredPosts.filter((post) => {
-      // For local posts, use the static index
-      if (!post.body && (post._section === "Blog" || post._section === "Looking BAC" || post._section === "Events")) {
-        return matchingSlugs.includes(post.slugAsParams) || matchingSlugs.includes(post.slug);
-      }
-      // For Contentful posts, match title/description/tags
       const text = `${post.title} ${post.description} ${(post.tags || []).join(" ")}`.toLowerCase();
       return searchWords.every(word => text.includes(word));
     });
@@ -152,13 +132,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <div className="container max-w-4xl py-6 lg:py-10">
-      {/* <h1 className="font-black text-4xl lg:text-5xl mb-4">Search Results</h1> */}
       {search && (
         <div className="mb-4 text-muted-foreground text-base">
           <h3>Showing results for "{searchParams?.search}"</h3>
         </div>
       )}
-      {/* <hr className="my-0 mt-2 border-t mb-4" /> */}
       {filteredPosts.length > 0 ? (
         <ul className="flex flex-col" >
           {filteredPosts.map((post) => (
