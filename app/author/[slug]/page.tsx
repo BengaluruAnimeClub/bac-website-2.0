@@ -151,26 +151,26 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         {socialLinks && typeof socialLinks === 'object' && !Array.isArray(socialLinks) && (() => {
           const links = socialLinks as { [key: string]: string };
           return (
-            <div className="flex gap-4 mt-4">
+            <div className="flex gap-4 mt-1">
               {links['MyAnimeList'] && (
-                <a href={links['MyAnimeList']} target="_blank" rel="noopener noreferrer" title="MyAnimeList" className="text-xl flex items-center text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
+                <a href={links['MyAnimeList']} target="_blank" rel="noopener noreferrer" title="MyAnimeList" className="text-xl flex items-center text-[#ea4167] dark:text-[#ea4167]">
                   <span style={{ fontSize: '2.2rem', marginTop: '-4px', display: 'inline-flex', alignItems: 'center' }}>
                     <SiMyanimelist />
                   </span>
                 </a>
               )}
               {links['Anilist'] && (
-                <a href={links['Anilist']} target="_blank" rel="noopener noreferrer" title="Anilist" className="text-2xl text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
+                <a href={links['Anilist']} target="_blank" rel="noopener noreferrer" title="Anilist" className="text-2xl text-[#ea4167] dark:text-[#ea4167]">
                   <SiAnilist />
                 </a>
               )}
               {links['Twitter'] && (
-                <a href={links['Twitter']} target="_blank" rel="noopener noreferrer" title="Twitter" className="text-2xl text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
+                <a href={links['Twitter']} target="_blank" rel="noopener noreferrer" title="Twitter" className="text-2xl text-[#ea4167] dark:text-[#ea4167]">
                   <PiXLogoBold />
                 </a>
               )}
               {links['Instagram'] && (
-                <a href={links['Instagram']} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-2xl text-black dark:text-white hover:text-blue-800 dark:hover:text-blue-400">
+                <a href={links['Instagram']} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-2xl text-[#ea4167] dark:text-[#ea4167]">
                   <FaInstagram />
                 </a>
               )}
