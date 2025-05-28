@@ -241,10 +241,11 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           </div>
         </div>
       )}
-
-      <center>
-      For a list of all contributors to the site, check out <Link href="/author" className="underline transition-colors duration-100 hover:text-[#ea4167] focus:text-[#ea4167] active:text-[#ea4167]">this page</Link>.
-      </center>
+      <div className="mt-2">
+        <center>
+          For a list of all contributors to the site, check out <Link href="/author" className="underline transition-colors duration-100 hover:text-[#ea4167] focus:text-[#ea4167] active:text-[#ea4167]">this page</Link>.
+        </center>
+      </div>
     </div>
   );
 }
