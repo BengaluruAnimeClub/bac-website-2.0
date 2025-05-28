@@ -277,7 +277,7 @@ export default async function PostPage({ params }: PostPageProps) {
             📅&nbsp; {(new Date(post.date)).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
           </div>
           <div className="flex-shrink-0 flex items-center ml-4">
-            <ShareButtons url={''} />
+            <ShareButtons url={''} type="event" />
           </div>
         </div>
       )}

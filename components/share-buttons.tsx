@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import { FaXTwitter, FaFacebookF, FaShare } from "react-icons/fa6";
+import { FaXTwitter, FaWhatsapp, FaShare } from "react-icons/fa6";
 
-export function ShareButtons({ url }: { url?: string }) {
+export function ShareButtons({ url, type = "blog" }: { url?: string, type?: "blog" | "event" }) {
   const [copied, setCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState(url || "");
 
@@ -12,13 +12,15 @@ export function ShareButtons({ url }: { url?: string }) {
     }
   }, [url]);
 
+  const shareText = type === "event"
+    ? `Check out this event by Bengaluru Anime Club (BAC)!\n${shareUrl}`
+    : `Check out this blog by Bengaluru Anime Club (BAC)!\n${shareUrl}`;
+
   return (
-    <div className="flex items-center gap-3 ml-4">
+    <div className="flex items-center gap-4 ml-4">
       {/* Social Share Icons (react-icons, minimal, blend in both themes) */}
       <a
-        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-          `Check out this blog by Bengaluru Anime Club (BAC) : ${shareUrl}`
-        )}`}
+        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Share on Twitter"
@@ -27,18 +29,18 @@ export function ShareButtons({ url }: { url?: string }) {
         <FaXTwitter className="w-5 h-5" />
       </a>
       <a
-        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+        href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Share on Facebook"
+        aria-label="Share on WhatsApp"
         className="hover:text-primary transition-colors text-inherit"
       >
-        <FaFacebookF className="w-5 h-5" />
+        <FaWhatsapp className="w-6 h-6" />
       </a>
       <button
         type="button"
-        aria-label="Copy blog URL"
-        className="hover:text-primary transition-colors text-inherit"
+        aria-label={type === "event" ? "Copy event URL" : "Copy blog URL"}
+        className="hover:text-primary transition-colors text-inherit relative"
         onClick={async () => {
           await navigator.clipboard.writeText(shareUrl);
           setCopied(true);
@@ -47,7 +49,14 @@ export function ShareButtons({ url }: { url?: string }) {
       >
         <FaShare className="w-5 h-5" />
         <span className="sr-only">Copy URL</span>
-        {copied && <span className="ml-2 text-xs text-green-600">Copied!</span>}
+        {copied && (
+          <span
+            className="absolute -left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 rounded bg-green-600 text-white text-sm shadow z-10 whitespace-nowrap animate-fade-in"
+            style={{ pointerEvents: 'none' }}
+          >
+            Copied!
+          </span>
+        )}
       </button>
     </div>
   );
