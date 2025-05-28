@@ -62,21 +62,6 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   return (
     <div className="container max-w-4xl py-6 px-4">
       <h1 className="inline-block font-black text-4xl lg:text-5xl mb-1">Blog</h1>
-      {/* <hr className="mt-8 mb-4" /> */}
-      {/* 
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Blog</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {sortedTagNames.map((tag) => (
-              <Tag tag={tag} key={tag} count={tags[tag]} />
-            ))}
-          </div>
-        </CardContent>
-      </Card> 
-      */}
       <div className="grid grid-cols-12 gap-3 mt-4">
         <div className="col-span-12 col-start-1 sm:col-span-9 mt-2">
           <hr className="mt-0 mb-4" />
