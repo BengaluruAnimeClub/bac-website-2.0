@@ -6,7 +6,7 @@ export default async function AuthorsListPage() {
   const authors = await fetchAuthors();
   return (
     <div className="container max-w-3xl py-8 px-4 mx-auto">
-      <h1 className="text-3xl font-bold mb-6">All Authors</h1>
+      <center><h1 className="text-3xl font-bold mb-6">All Contributors</h1></center>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {authors.map((author: any) => {
           const { name, slug, avatar } = author.fields;

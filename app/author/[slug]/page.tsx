@@ -188,7 +188,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                 <li key={post.title + idx} className="mb-2">
                   {post.type === "blog" ? (
                     <>
-                      <Link href={`/blog/${post.slug}`} className="underline">
+                      <Link href={`/blog/${post.slug}`} className="underline transition-colors duration-100 hover:text-[#ea4167] focus:text-[#ea4167] active:text-[#ea4167]">
                         <span className="font-medium">{post.title}</span>
                       </Link>
                       {post.date && (
@@ -197,7 +197,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                     </>
                   ) : post.hasParent ? (
                     <>
-                      <Link href={`/blog/${post.slug}`} className="underline">
+                      <Link href={`/blog/${post.slug}`} className="underline transition-colors duration-100 hover:text-[#ea4167] focus:text-[#ea4167] active:text-[#ea4167]">
                         <span className="font-medium">{post.title}</span>
                       </Link>
                       {post.parentTitle && (
@@ -232,7 +232,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
             <ul className="text-left">
               {authoredEvents.map((post: any) => (
                 <li key={post.fields.slug} className="mb-2">
-                  <Link href={`/past-events/${post.fields.slug}`} className="underline">
+                  <Link href={`/past-events/${post.fields.slug}`} className="underline transition-colors duration-100 hover:text-[#ea4167] focus:text-[#ea4167] active:text-[#ea4167]">
                     {post.fields.title}
                   </Link>
                 </li>
@@ -241,6 +241,10 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           </div>
         </div>
       )}
+
+      <center>
+      For a list of all contributors to the site, check out <Link href="/author" className="underline transition-colors duration-100 hover:text-[#ea4167] focus:text-[#ea4167] active:text-[#ea4167]">this page</Link>.
+      </center>
     </div>
   );
 }
