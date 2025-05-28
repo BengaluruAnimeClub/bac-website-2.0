@@ -61,6 +61,9 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
   return (
     <div className="container max-w-4xl py-6 px-4">
+      <h1 className="inline-block font-black text-4xl lg:text-5xl mb-1">Blog</h1>
+      {/* <hr className="mt-8 mb-4" /> */}
+      {/* 
       <Card className="mb-6">
         <CardHeader>
           <CardTitle>Blog</CardTitle>
@@ -72,21 +75,37 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
             ))}
           </div>
         </CardContent>
-      </Card>
-      <div className="flex flex-col gap-6">
-        {paginatedPosts.map((post) => (
-          <PostItem
-            key={post.slug}
-            slug={post.slug}
-            title={post.title}
-            description={post.description}
-            date={post.date}
-            tags={post.tags}
-            basePath="/blog/"
-          />
-        ))}
-      </div>
-      <QueryPagination totalPages={totalPages} />
+      </Card> 
+      */}
+      <div className="grid grid-cols-12 gap-3 mt-4">
+        <div className="col-span-12 col-start-1 sm:col-span-9 mt-2">
+          <hr className="mt-0 mb-0" />
+          <div className="flex flex-col gap-6">
+            {paginatedPosts.map((post) => (
+              <PostItem
+                key={post.slug}
+                slug={post.slug}
+                title={post.title}
+                description={post.description}
+                date={post.date}
+                tags={post.tags}
+                basePath="/blog/"
+              />
+            ))}
+          </div>
+          <QueryPagination totalPages={totalPages} />
+        </div>
+        <Card className="col-span-12 row-start-0 sm:col-span-3 sm:col-start-10 sm:row-start-1 hidden sm:block border-lg shadow-none">
+          <CardHeader>
+            <CardTitle>Tags</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col items-start gap-2">
+            {[...sortedTagNames].sort((a, b) => a.localeCompare(b)).map((tag) => (
+              <Tag tag={tag} key={tag} count={tags[tag]} />
+            ))}
+          </CardContent>
+        </Card>
+        </div>
     </div>
   );
 }
