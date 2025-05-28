@@ -121,7 +121,7 @@ export default async function AboutPage() {
         <p className="text-muted-foreground text-lg py-4">
         <b>Bengaluru Anime Club (BAC)</b> is a community of anime and manga enthusiasts in Bengaluru. We welcome everyone from seasoned fans to newcomers. Join us for meetups, fan screenings, cosplay events, anime music quizzes, art groups, and to connect with fellow fans of anime and manga!
         <br/><br/>
-        For a list of all contributors to the site, check out <Link href="/author" className="underline">this page</Link>.
+        For a list of all contributors to the site, check out <Link href="/contributors" className="underline">this page</Link>.
         </p>
       </div>
       

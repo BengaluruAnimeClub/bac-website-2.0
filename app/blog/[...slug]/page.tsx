@@ -348,7 +348,7 @@ export default async function PostPage({ params }: PostPageProps) {
                   <b>Credits:</b>{' '}
                   {typeof entry.author === 'object' && entry.author !== null ? (
                     entry.author.slug ? (
-                      <a href={`/author/${entry.author.slug}`} className="underline hover:text-blue-700">{entry.author.name}</a>
+                      <a href={`/contributors/${entry.author.slug}`} className="underline hover:text-blue-700">{entry.author.name}</a>
                     ) : (
                       entry.author.name
                     )
@@ -374,7 +374,7 @@ export default async function PostPage({ params }: PostPageProps) {
           {post.authors.map((author: any, idx: number) => (
             <span key={author.slug || author.name}>
               {author.slug ? (
-                <a href={`/author/${author.slug}`} className="underline hover:text-blue-700">{author.name}</a>
+                <a href={`/contributors/${author.slug}`} className="underline hover:text-blue-700">{author.name}</a>
               ) : (
                 <span>{author.name}</span>
               )}
