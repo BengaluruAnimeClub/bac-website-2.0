@@ -55,6 +55,35 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
     return 0;
   });
 
+  // Combine blogs and spotlights for unified display
+  const combinedBlogs = [
+    ...authoredBlogs.map((post: any) => ({
+      type: "blog",
+      date: post.fields.date ? new Date(post.fields.date) : null,
+      title: post.fields.title,
+      slug: post.fields.slug,
+      parentTitle: "",
+      hasParent: false,
+    })),
+    ...authoredSpotlights.map((post: any) => {
+      const parent = post.fields.parentBlog;
+      const hasParent = parent && hasContentfulFields(parent) && parent.fields.slug;
+      return {
+        type: "spotlight",
+        date: hasParent && parent.fields.date ? new Date(parent.fields.date) : null,
+        title: post.fields.title,
+        slug: hasParent ? parent.fields.slug : undefined,
+        parentTitle: hasParent ? parent.fields.title || "" : "",
+        hasParent,
+      };
+    }),
+  ].sort((a, b) => {
+    if (a.date && b.date) return b.date.getTime() - a.date.getTime();
+    if (a.date) return -1;
+    if (b.date) return 1;
+    return 0;
+  });
+
   // Type guards for avatar, name, bio
   let avatarUrl: string | null = null;
   if (
@@ -102,38 +131,30 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
       </div>
       <hr className="my-6" />
       <h2 className="text-2xl font-semibold mb-3">Blog Posts</h2>
-      {authoredBlogs.length === 0 ? <p>No blog posts found.</p> : (
+      {combinedBlogs.length === 0 ? <p>No blog posts found.</p> : (
         <ul className="mb-6">
-          {authoredBlogs.map((post: any) => (
-            <li key={post.fields.slug} className="mb-2">
-              <Link href={`/blog/${post.fields.slug}`} className="underline">
-                {post.fields.title}
-              </Link>
+          {combinedBlogs.map((post, idx) => (
+            <li key={post.title + idx} className="mb-2">
+              {post.type === "blog" ? (
+                <Link href={`/blog/${post.slug}`} className="underline">
+                  {post.title}
+                </Link>
+              ) : post.hasParent ? (
+                <Link href={`/blog/${post.slug}`} className="underline">
+                  <span className="font-medium">{post.title}</span>
+                  {post.parentTitle && (
+                    <>
+                      <span className="text-muted-foreground"> in </span>
+                      <span>{post.parentTitle}</span>
+                    </>
+                  )}
+                </Link>
+              ) : (
+                <span className="font-medium">{post.title}</span>
+              )}
             </li>
           ))}
         </ul>
-      )}
-      {/* Only show Spotlight Posts section if there are any */}
-      {authoredSpotlights.length > 0 && (
-        <>
-          <h2 className="text-2xl font-semibold mb-3">Spotlight Posts</h2>
-          <ul className="mb-6">
-            {authoredSpotlights.map((post: any, idx: number) => (
-              <li key={post.sys.id || idx} className="mb-2">
-                <span className="font-medium">{post.fields.title}</span>
-                {post.fields.parentBlog && hasContentfulFields(post.fields.parentBlog) && post.fields.parentBlog.fields.slug && (
-                  <>
-                    {" "}
-                    <span className="text-muted-foreground">in</span>{" "}
-                    <Link href={`/blog/${post.fields.parentBlog.fields.slug}`} className="underline">
-                      {post.fields.parentBlog.fields.title}
-                    </Link>
-                  </>
-                )}
-              </li>
-            ))}
-          </ul>
-        </>
       )}
       {/* Only show Event Reports section if there are any */}
       {authoredEvents.length > 0 && (
