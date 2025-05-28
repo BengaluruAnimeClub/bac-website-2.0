@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Search, X } from "lucide-react";
+import { Search, X, ChevronDown } from "lucide-react";
 
 export function MainNav() {
   const pathname = usePathname();
@@ -74,33 +74,43 @@ export function MainNav() {
       >
         Upcoming
       </Link>
-      <Link
-        href="/art"
-        className={cn(
-          "text-sm font-medium transition-colors hover:text-primary hidden sm:inline-block",
-          pathname === "/art" ? "text-foreground" : "text-foreground/60"
-        )}
-      >
-        Art
-      </Link>
-      <Link
-        href="/gallery"
-        className={cn(
-          "text-sm font-medium transition-colors hover:text-primary hidden sm:inline-block",
-          pathname === "/gallery" ? "text-foreground" : "text-foreground/60"
-        )}
-      >
-        Cosplay
-      </Link>
-      <Link
-        href="/game"
-        className={cn(
-          "text-sm font-medium transition-colors hover:text-primary hidden sm:inline-block",
-          pathname === "/game" ? "text-foreground" : "text-foreground/60"
-        )}
-      >
-        Love Story
-      </Link>
+      {/* Gallery dropdown */}
+      <div className="relative group/gal hidden sm:inline-block focus-within:z-50 hover:z-50">
+        <button
+          className={cn(
+            "text-sm font-medium transition-colors hover:text-primary px-0 bg-transparent border-none outline-none cursor-pointer flex items-center gap-1",
+            (pathname === "/art" || pathname === "/gallery") ? "text-foreground" : "text-foreground/60"
+          )}
+          tabIndex={0}
+        >
+          Gallery
+          <ChevronDown className="w-4 h-4 ml-0.5 transition-transform group-hover/gal:rotate-180 group-focus-within/gal:rotate-180" />
+        </button>
+        <div className="absolute -left-8 mt-2 w-32 rounded-md shadow-lg bg-background border border-border
+          opacity-0 translate-y-2 invisible
+          group-hover/gal:opacity-100 group-hover/gal:translate-y-0 group-hover/gal:visible
+          group-focus-within/gal:opacity-100 group-focus-within/gal:translate-y-0 group-focus-within/gal:visible
+          transition-all duration-800 z-50 origin-top">
+          <Link
+            href="/art"
+            className={cn(
+              "block px-4 py-2 text-sm hover:bg-accent hover:text-primary transition-colors",
+              pathname === "/art" ? "text-foreground font-semibold" : "text-foreground/80"
+            )}
+          >
+            Art
+          </Link>
+          <Link
+            href="/gallery"
+            className={cn(
+              "block px-4 py-2 text-sm hover:bg-accent hover:text-primary transition-colors",
+              pathname === "/gallery" ? "text-foreground font-semibold" : "text-foreground/80"
+            )}
+          >
+            Cosplay
+          </Link>
+        </div>
+      </div>
       <Link
         href="/socials"
         className={cn(
