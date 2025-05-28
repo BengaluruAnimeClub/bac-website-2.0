@@ -3,8 +3,9 @@ import { fetchAuthorBySlug } from "@/lib/contentful-authors";
 import { fetchBlogPosts, fetchEventReportPosts, fetchSpotlightPosts } from "@/lib/contentful";
 import Image from "next/image";
 import Link from "next/link";
-import { FaTwitter, FaInstagram } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
 import { SiMyanimelist, SiAnilist } from "react-icons/si";
+import { PiXLogoBold } from "react-icons/pi";
 
 interface AuthorPageProps {
   params: { slug: string };
@@ -165,7 +166,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
               )}
               {links['Twitter'] && (
                 <a href={links['Twitter']} target="_blank" rel="noopener noreferrer" title="Twitter" className="text-xl text-blue-600 hover:text-blue-800">
-                  <FaTwitter />
+                  <PiXLogoBold />
                 </a>
               )}
               {links['Instagram'] && (
