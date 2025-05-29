@@ -69,6 +69,11 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
       hasParent: false,
     })),
     ...authoredSpotlights.map((spotlight: any) => {
+      // Use spotlight's own date field if available
+      let spotlightDate: Date | null = null;
+      if (spotlight.fields && spotlight.fields.date) {
+        spotlightDate = new Date(spotlight.fields.date);
+      }
       // Find the parent blogPost that references this spotlight in its entries
       const parentBlog = blogPosts.find((blog: any) => {
         const entries = blog.fields.entries;
@@ -79,22 +84,19 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         }
         return false;
       });
-      let parentDate: Date | null = null;
       let parentSlug: string | undefined = undefined;
       let parentTitle: string = "";
       let hasParent = false;
       if (parentBlog && parentBlog.fields) {
-        const dateVal = parentBlog.fields.date;
         const slugVal = parentBlog.fields.slug;
         const titleVal = parentBlog.fields.title;
-        if (typeof dateVal === 'string' || typeof dateVal === 'number') parentDate = new Date(dateVal);
         if (typeof slugVal === 'string') parentSlug = slugVal;
         if (typeof titleVal === 'string') parentTitle = titleVal;
         hasParent = !!parentSlug;
       }
       return {
         type: "spotlight",
-        date: parentDate,
+        date: spotlightDate, // use spotlight's own date
         title: typeof spotlight.fields.title === 'string' ? spotlight.fields.title : '',
         slug: parentSlug, // always use parent blog's slug
         parentTitle: parentTitle,
