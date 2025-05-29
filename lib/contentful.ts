@@ -122,3 +122,61 @@ export async function getAdjacentBlogPosts(currentSlug: string) {
     } : null
   };
 }
+
+export async function getAdjacentAnnouncementPosts(currentSlug: string) {
+  // Fetch all announcement posts ordered by date (newest first)
+  const allPosts = await fetchAnnouncementPosts();
+  
+  // Find the current post index
+  const currentIndex = allPosts.findIndex((post: any) => post.fields.slug === currentSlug);
+  
+  if (currentIndex === -1) {
+    return { previousPost: null, nextPost: null };
+  }
+  
+  // Previous post is the one before current (older)
+  const previousPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+  
+  // Next post is the one after current (newer)
+  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+  
+  return {
+    previousPost: previousPost && previousPost.fields.slug && previousPost.fields.title ? {
+      slug: String(previousPost.fields.slug),
+      title: String(previousPost.fields.title)
+    } : null,
+    nextPost: nextPost && nextPost.fields.slug && nextPost.fields.title ? {
+      slug: String(nextPost.fields.slug),
+      title: String(nextPost.fields.title)
+    } : null
+  };
+}
+
+export async function getAdjacentEventReportPosts(currentSlug: string) {
+  // Fetch all event report posts ordered by date (newest first)
+  const allPosts = await fetchEventReportPosts();
+  
+  // Find the current post index
+  const currentIndex = allPosts.findIndex((post: any) => post.fields.slug === currentSlug);
+  
+  if (currentIndex === -1) {
+    return { previousPost: null, nextPost: null };
+  }
+  
+  // Previous post is the one before current (older)
+  const previousPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+  
+  // Next post is the one after current (newer)
+  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+  
+  return {
+    previousPost: previousPost && previousPost.fields.slug && previousPost.fields.title ? {
+      slug: String(previousPost.fields.slug),
+      title: String(previousPost.fields.title)
+    } : null,
+    nextPost: nextPost && nextPost.fields.slug && nextPost.fields.title ? {
+      slug: String(nextPost.fields.slug),
+      title: String(nextPost.fields.title)
+    } : null
+  };
+}

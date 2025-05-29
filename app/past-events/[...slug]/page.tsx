@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
-import { fetchEventReportPostBySlugWithEntries, fetchEventReportPosts } from "@/lib/contentful";
+import { fetchEventReportPostBySlugWithEntries, fetchEventReportPosts, getAdjacentEventReportPosts } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 import { Metadata } from "next";
 import { CommentSection } from "@/components/comment-section";
+import { BlogNavigation } from "@/components/blog-navigation";
 import parse from "html-react-parser";
 import { ShareButtons } from "@/components/share-buttons";
 import { Calendar } from "lucide-react";
@@ -248,12 +249,22 @@ export default async function PostPage({ params }: PostPageProps) {
   if (!post || !post.published) {
     notFound();
   }
+
+  // Fetch adjacent posts for navigation
+  const slug = params.slug.join("/");
+  const adjacentPosts = await getAdjacentEventReportPosts(slug);
+
   return (
     <article className="container py-6 prose dark:prose-invert max-w-3xl px-4">
       <h1 className="mb-2 text-3xl lg:text-4xl">{post.title}</h1>
       {post.description ? (
         <p className="text-lg mt-0 mb-1 text-muted-foreground">{post.description}</p>
       ) : null}
+      <BlogNavigation 
+        previousPost={adjacentPosts.previousPost}
+        nextPost={adjacentPosts.nextPost}
+        basePath="/past-events"
+      />
       <hr className="my-4 mt-2 mb-4" />
       {post.source === "contentful" && post.date && (
         <div className="flex items-center justify-between text-base text-muted-foreground mb-4 mt-4">
