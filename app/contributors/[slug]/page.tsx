@@ -97,9 +97,6 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
     return 0;
   });
 
-  // Debug: print combinedBlogs to check date values
-  console.log('combinedBlogs', combinedBlogs);
-
   // Type guards for avatar, name, bio
   let avatarUrl: string | null = null;
   if (
