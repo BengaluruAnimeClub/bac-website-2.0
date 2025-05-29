@@ -14,7 +14,7 @@ interface BlogNavigationProps {
 
 export function BlogNavigation({ previousPost, nextPost }: BlogNavigationProps) {
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 my-2 not-prose">
+    <div className="flex flex-row justify-between items-center gap-4 my-2 not-prose">
       {/* Newer post (left side) */}
       <div className="flex-1 w-full">
         {nextPost ? (
@@ -25,8 +25,11 @@ export function BlogNavigation({ previousPost, nextPost }: BlogNavigationProps) 
             <ChevronLeft className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
             <div className="text-left">
               <div className="text-sm text-muted-foreground">Newer</div>
-              <div className="font-medium text-sm group-hover:text-foreground line-clamp-1">
-                {nextPost.title}
+              {/* Show title only on desktop */}
+              <div className="font-medium text-sm group-hover:text-foreground hidden sm:block">
+                <div className="line-clamp-1">
+                  {nextPost.title}
+                </div>
               </div>
             </div>
           </Link>
@@ -44,8 +47,11 @@ export function BlogNavigation({ previousPost, nextPost }: BlogNavigationProps) 
           >
             <div className="text-right">
               <div className="text-sm text-muted-foreground">Older</div>
-              <div className="font-medium text-sm group-hover:text-foreground line-clamp-1">
-                {previousPost.title}
+              {/* Show title only on desktop */}
+              <div className="font-medium text-sm group-hover:text-foreground hidden sm:block">
+                <div className="line-clamp-1">
+                  {previousPost.title}
+                </div>
               </div>
             </div>
             <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
