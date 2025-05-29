@@ -137,7 +137,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 
   return (
     <div className="container max-w-2xl py-8 px-4 mx-auto">
-      <div className="flex flex-col items-center mb-6">
+      <div className="flex flex-col items-center mb-4">
         {avatarUrl && (
           <Image
             src={avatarUrl}
@@ -148,13 +148,13 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
             style={{ objectFit: 'cover', width: 128, height: 128 }}
           />
         )}
-        <h1 className="text-3xl font-bold mb-1">{displayName}</h1>
-        {displayBio && <p className="text-center text-muted-foreground mb-2">{displayBio}</p>}
+        <h1 className="text-3xl font-bold mb-0">{displayName}</h1>
+        
         {/* Social Links Section */}
         {socialLinks && typeof socialLinks === 'object' && !Array.isArray(socialLinks) && (() => {
           const links = socialLinks as { [key: string]: string };
           return (
-            <div className="flex gap-4 mt-1">
+            <div className="flex gap-4 mt-2 mb-1">
               {links['MyAnimeList'] && (
                 <a href={links['MyAnimeList']} target="_blank" rel="noopener noreferrer" title="MyAnimeList" className="text-xl flex items-center text-[#ea4167] dark:text-[#ea4167]">
                   <span style={{ fontSize: '2.2rem', marginTop: '-4px', display: 'inline-flex', alignItems: 'center' }}>
@@ -185,6 +185,14 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
             </div>
           );
         })()}
+
+        {displayBio && 
+          <div className="flex flex-col items-center w-full">
+            <div className="inline-block bg-white dark:bg-zinc-900 rounded-xl p-1" style={{ border: 'none' }}>
+              <p className="text-justify text-muted-foreground">{displayBio}</p>
+            </div>
+          </div>
+        }
       </div>
       {/* <hr className="mb-2 mt-2" /> */}
       <div className="flex flex-col items-center w-full">
@@ -253,7 +261,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           </div>
         </div>
       )}
-      <div className="mt-2">
+      <div className="mt-1">
         <center>
           For a list of all contributors to the site, check out <Link href="/contributors" className="underline transition-colors duration-100 hover:text-[#ea4167] focus:text-[#ea4167] active:text-[#ea4167]">this page</Link>.
         </center>
