@@ -194,7 +194,9 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                         <span className="font-medium">{post.title}</span>
                       </Link>
                       {post.date && (
-                        <span className="ml-2 text-xs text-muted-foreground">{post.date.toLocaleDateString()}</span>
+                        <span className="ml-2 text-xs text-muted-foreground">{
+                          post.date ? `${post.date.getDate().toString().padStart(2, '0')}/${(post.date.getMonth()+1).toString().padStart(2, '0')}/${post.date.getFullYear()}` : ''
+                        }</span>
                       )}
                     </>
                   ) : post.hasParent ? (
@@ -209,14 +211,16 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                         </>
                       )}
                       <span className="ml-2 text-xs text-muted-foreground">
-                        {post.date ? post.date.toLocaleDateString() : 'No date'}
+                        {post.date ? `${post.date.getDate().toString().padStart(2, '0')}/${(post.date.getMonth()+1).toString().padStart(2, '0')}/${post.date.getFullYear()}` : 'No date'}
                       </span>
                     </>
                   ) : (
                     <>
                       <span className="font-medium">{post.title}</span>
                       {post.date && (
-                        <span className="ml-2 text-xs text-muted-foreground">{post.date.toLocaleDateString()}</span>
+                        <span className="ml-2 text-xs text-muted-foreground">{
+                          post.date ? `${post.date.getDate().toString().padStart(2, '0')}/${(post.date.getMonth()+1).toString().padStart(2, '0')}/${post.date.getFullYear()}` : ''
+                        }</span>
                       )}
                     </>
                   )}
