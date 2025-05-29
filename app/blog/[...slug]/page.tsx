@@ -3,7 +3,8 @@ import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import { Tag } from "@/components/tag";
 import { CommentSection } from "@/components/comment-section";
-import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts } from "@/lib/contentful";
+import { BlogNavigation } from "@/components/blog-navigation";
+import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts, getBlogPostWithNavigation } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 import { BLOCKS } from "./contentful-blocks-enum";
@@ -303,10 +304,15 @@ export async function generateStaticParams(): Promise<
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = await getPostFromParams(params);
-  if (!post || !post.published) {
+  const slug = params?.slug?.join("/");
+  const result = await getBlogPostWithNavigation(slug);
+  
+  if (!result || !result.post || !result.post.published) {
     notFound();
   }
+  
+  const { post, navigation } = result;
+  
   // Get the blog URL for sharing (on client only)
   let blogUrl = '';
   if (typeof window !== 'undefined') {
@@ -315,15 +321,22 @@ export default async function PostPage({ params }: PostPageProps) {
   return (
     <article className="container py-6 prose dark:prose-invert max-w-3xl px-4">
       <h1 className="mb-2 text-3xl lg:text-4xl">{String(post.title)}</h1>
-      <div className="flex gap-2 mb-2">
+      {/* <div className="flex gap-2 mb-2">
         {Array.isArray(post.tags) && post.tags.map((tag) =>
           typeof tag === "string" ? <Tag tag={tag} key={tag} /> : null
         )}
-      </div>
+      </div> */}
       {post.description ? (
         <p className="text-lg mt-0 mb-1 text-muted-foreground">{String(post.description)}</p>
       ) : null}
-      <hr className="my-4 mt-2 mb-4" />
+      
+      {/* Blog Navigation */}
+      <BlogNavigation 
+        previousPost={navigation.previousPost} 
+        nextPost={navigation.nextPost} 
+      />
+      
+      {/* <hr className="my-4 mt-2 mb-4" /> */}
       {post.source === "contentful" && post.date && (
         <div className="flex items-center justify-between text-base text-muted-foreground mb-4 mt-4">
           <div className="text-sm sm:text-base font-medium flex items-center gap-1">
@@ -389,7 +402,7 @@ export default async function PostPage({ params }: PostPageProps) {
       {/* Show authors at the end of the blog post */}
       {post.source === "contentful" && post.body && post.authors && Array.isArray(post.authors) && post.authors.length > 0 && (
         <div className="mt-4 mb-4">
-          <b>Article by{post.authors.length > 1 ? 's' : ''}:</b>{' '}
+          <b>Article by:</b>{' '}
           {post.authors.map((author: any, idx: number) => (
             <span key={author.slug || author.name}>
               {author.slug ? (

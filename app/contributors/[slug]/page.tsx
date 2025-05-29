@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
-import { fetchAuthorBySlug } from "@/lib/contentful-authors";
-import { fetchBlogPosts, fetchEventReportPosts, fetchSpotlightPosts } from "@/lib/contentful";
+import { getAuthorWithPosts } from "@/lib/contentful-authors";
+import { fetchBlogPosts } from "@/lib/contentful";
 import Image from "next/image";
 import Link from "next/link";
-import { FaInstagram } from "react-icons/fa";
+import { FaInstagram, FaGlobe } from "react-icons/fa";
 import { SiMyanimelist, SiAnilist } from "react-icons/si";
 import { PiXLogoBold } from "react-icons/pi";
 
@@ -17,35 +17,21 @@ function hasContentfulFields(obj: any): obj is { fields: any } {
 }
 
 export default async function AuthorPage({ params }: AuthorPageProps) {
-  const author = await fetchAuthorBySlug(params.slug);
-  if (!author || !author.fields) return notFound();
+  const result = await getAuthorWithPosts(params.slug);
+  if (!result || !result.author || !result.author.fields) return notFound();
+
+  const { author, blogPosts, eventPosts, spotlightPosts } = result;
 
   // Author fields
   const { name, avatar, bio, socialLinks } = author.fields;
 
-  // Find all posts by this author
-  const [blogPosts, eventPosts, spotlightPosts] = await Promise.all([
-    fetchBlogPosts(),
-    fetchEventReportPosts(),
-    fetchSpotlightPosts(),
-  ]);
-  // Blog posts
-  const authoredBlogs = blogPosts.filter((post: any) => {
-    const a = post.fields.author;
-    if (Array.isArray(a)) return a.some((x: any) => hasContentfulFields(x) && x.fields.slug === params.slug);
-    return hasContentfulFields(a) && a.fields.slug === params.slug;
-  });
-  // Event posts
-  const authoredEvents = eventPosts.filter((post: any) => {
-    const a = post.fields.author;
-    if (Array.isArray(a)) return a.some((x: any) => hasContentfulFields(x) && x.fields.slug === params.slug);
-    return hasContentfulFields(a) && a.fields.slug === params.slug;
-  });
-  // Spotlight posts
-  let authoredSpotlights = spotlightPosts.filter((post: any) => {
-    const a = post.fields.author;
-    return hasContentfulFields(a) && a.fields.slug === params.slug;
-  });
+  // We still need to fetch all blog posts to find parent blogs for spotlight posts
+  const allBlogPosts = await fetchBlogPosts();
+
+  // Filter posts by this author (already optimized from Contentful query)
+  const authoredBlogs = blogPosts;
+  const authoredEvents = eventPosts;
+  let authoredSpotlights = spotlightPosts;
   // Sort by parent blog date descending (if available)
   authoredSpotlights = authoredSpotlights.sort((a: any, b: any) => {
     const aParent = a.fields.parentBlog;
@@ -69,8 +55,13 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
       hasParent: false,
     })),
     ...authoredSpotlights.map((spotlight: any) => {
+      // Use spotlight's own date field if available
+      let spotlightDate: Date | null = null;
+      if (spotlight.fields && spotlight.fields.date) {
+        spotlightDate = new Date(spotlight.fields.date);
+      }
       // Find the parent blogPost that references this spotlight in its entries
-      const parentBlog = blogPosts.find((blog: any) => {
+      const parentBlog = allBlogPosts.find((blog: any) => {
         const entries = blog.fields.entries;
         if (Array.isArray(entries)) {
           return entries.some((entry: any) =>
@@ -79,22 +70,19 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         }
         return false;
       });
-      let parentDate: Date | null = null;
       let parentSlug: string | undefined = undefined;
       let parentTitle: string = "";
       let hasParent = false;
       if (parentBlog && parentBlog.fields) {
-        const dateVal = parentBlog.fields.date;
         const slugVal = parentBlog.fields.slug;
         const titleVal = parentBlog.fields.title;
-        if (typeof dateVal === 'string' || typeof dateVal === 'number') parentDate = new Date(dateVal);
         if (typeof slugVal === 'string') parentSlug = slugVal;
         if (typeof titleVal === 'string') parentTitle = titleVal;
         hasParent = !!parentSlug;
       }
       return {
         type: "spotlight",
-        date: parentDate,
+        date: spotlightDate, // use spotlight's own date
         title: typeof spotlight.fields.title === 'string' ? spotlight.fields.title : '',
         slug: parentSlug, // always use parent blog's slug
         parentTitle: parentTitle,
@@ -108,9 +96,6 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
     if (b.date) return 1;
     return 0;
   });
-
-  // Debug: print combinedBlogs to check date values
-  console.log('combinedBlogs', combinedBlogs);
 
   // Type guards for avatar, name, bio
   let avatarUrl: string | null = null;
@@ -135,7 +120,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 
   return (
     <div className="container max-w-2xl py-8 px-4 mx-auto">
-      <div className="flex flex-col items-center mb-6">
+      <div className="flex flex-col items-center mb-4">
         {avatarUrl && (
           <Image
             src={avatarUrl}
@@ -143,15 +128,16 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
             width={128}
             height={128}
             className="rounded-full mb-2"
+            style={{ objectFit: 'cover', width: 128, height: 128 }}
           />
         )}
-        <h1 className="text-3xl font-bold mb-1">{displayName}</h1>
-        {displayBio && <p className="text-center text-muted-foreground mb-2">{displayBio}</p>}
+        <h1 className="text-3xl font-bold mb-0">{displayName}</h1>
+        
         {/* Social Links Section */}
         {socialLinks && typeof socialLinks === 'object' && !Array.isArray(socialLinks) && (() => {
           const links = socialLinks as { [key: string]: string };
           return (
-            <div className="flex gap-4 mt-1">
+            <div className="flex gap-4 mt-2 mb-1">
               {links['MyAnimeList'] && (
                 <a href={links['MyAnimeList']} target="_blank" rel="noopener noreferrer" title="MyAnimeList" className="text-xl flex items-center text-[#ea4167] dark:text-[#ea4167]">
                   <span style={{ fontSize: '2.2rem', marginTop: '-4px', display: 'inline-flex', alignItems: 'center' }}>
@@ -174,9 +160,22 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                   <FaInstagram />
                 </a>
               )}
+              {links['Website'] && (
+                <a href={links['Website']} target="_blank" rel="noopener noreferrer" title="Website" className="text-2xl text-[#ea4167] dark:text-[#ea4167]">
+                  <FaGlobe />
+                </a>
+              )}
             </div>
           );
         })()}
+
+        {displayBio && 
+          <div className="flex flex-col items-center w-full">
+            <div className="inline-block bg-white dark:bg-zinc-900 rounded-xl p-1" style={{ border: 'none' }}>
+              <p className="text-justify text-muted-foreground">{displayBio}</p>
+            </div>
+          </div>
+        }
       </div>
       {/* <hr className="mb-2 mt-2" /> */}
       <div className="flex flex-col items-center w-full">
@@ -192,7 +191,9 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                         <span className="font-medium">{post.title}</span>
                       </Link>
                       {post.date && (
-                        <span className="ml-2 text-xs text-muted-foreground">{post.date.toLocaleDateString()}</span>
+                        <span className="ml-2 text-xs text-muted-foreground">{
+                          post.date ? `${post.date.getDate().toString().padStart(2, '0')}/${(post.date.getMonth()+1).toString().padStart(2, '0')}/${post.date.getFullYear()}` : ''
+                        }</span>
                       )}
                     </>
                   ) : post.hasParent ? (
@@ -207,14 +208,16 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                         </>
                       )}
                       <span className="ml-2 text-xs text-muted-foreground">
-                        {post.date ? post.date.toLocaleDateString() : 'No date'}
+                        {post.date ? `${post.date.getDate().toString().padStart(2, '0')}/${(post.date.getMonth()+1).toString().padStart(2, '0')}/${post.date.getFullYear()}` : 'No date'}
                       </span>
                     </>
                   ) : (
                     <>
                       <span className="font-medium">{post.title}</span>
                       {post.date && (
-                        <span className="ml-2 text-xs text-muted-foreground">{post.date.toLocaleDateString()}</span>
+                        <span className="ml-2 text-xs text-muted-foreground">{
+                          post.date ? `${post.date.getDate().toString().padStart(2, '0')}/${(post.date.getMonth()+1).toString().padStart(2, '0')}/${post.date.getFullYear()}` : ''
+                        }</span>
                       )}
                     </>
                   )}
@@ -241,7 +244,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           </div>
         </div>
       )}
-      <div className="mt-2">
+      <div className="mt-1">
         <center>
           For a list of all contributors to the site, check out <Link href="/contributors" className="underline transition-colors duration-100 hover:text-[#ea4167] focus:text-[#ea4167] active:text-[#ea4167]">this page</Link>.
         </center>

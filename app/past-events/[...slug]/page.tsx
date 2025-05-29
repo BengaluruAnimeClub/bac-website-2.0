@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
-import { fetchEventReportPostBySlugWithEntries, fetchEventReportPosts } from "@/lib/contentful";
+import { fetchEventReportPostBySlugWithEntries, fetchEventReportPosts, getEventReportPostWithNavigation } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { Document } from "@contentful/rich-text-types";
 import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 import { Metadata } from "next";
 import { CommentSection } from "@/components/comment-section";
+import { BlogNavigation } from "@/components/blog-navigation";
 import parse from "html-react-parser";
 import { ShareButtons } from "@/components/share-buttons";
 import { Calendar } from "lucide-react";
@@ -244,17 +246,27 @@ export async function generateStaticParams(): Promise<
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = await getPostFromParams(params);
-  if (!post || !post.published) {
+  const slug = params.slug.join("/");
+  const result = await getEventReportPostWithNavigation(slug);
+  
+  if (!result || !result.post || !result.post.published) {
     notFound();
   }
+  
+  const { post, navigation } = result;
+
   return (
     <article className="container py-6 prose dark:prose-invert max-w-3xl px-4">
       <h1 className="mb-2 text-3xl lg:text-4xl">{post.title}</h1>
       {post.description ? (
         <p className="text-lg mt-0 mb-1 text-muted-foreground">{post.description}</p>
       ) : null}
-      <hr className="my-4 mt-2 mb-4" />
+      <BlogNavigation 
+        previousPost={navigation.previousPost}
+        nextPost={navigation.nextPost}
+        basePath="/past-events"
+      />
+      {/* <hr className="my-4 mt-2 mb-4" /> */}
       {post.source === "contentful" && post.date && (
         <div className="flex items-center justify-between text-base text-muted-foreground mb-4 mt-4">
           <div className="text-sm sm:text-base font-medium flex items-center gap-1">
@@ -274,7 +286,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </div>
       )}
       {post.source === "contentful" && isContentfulDocument(post.body) ? (
-        <div>{documentToReactComponents(post.body, contentfulRenderOptions)}</div>
+        <div>{documentToReactComponents({ ...post.body, data: (post.body as any).data ?? {} } as Document, contentfulRenderOptions)}</div>
       ) : null}
       <CommentSection slug={post.slugAsParams} />
     </article>

@@ -44,8 +44,8 @@ const profiles = [
   {
     name: "Aravind",
     designation: "Web/Archival",
-    imageSrc: "/images/pfps/aravind.webp",
-    bio: "I'm not a bad slime", 
+    imageSrc: "/images/pfps/nazuna.jpg",
+    bio: "Hehe", 
   },
   {
     name: "Atharva",

@@ -19,14 +19,16 @@ export async function POST(req: NextRequest) {
       revalidatePath('/blog'),
       revalidatePath('/past-events'),
       revalidatePath('/upcoming-events'),
+      revalidatePath('/contributors'),
       revalidatePath('/search'),
       revalidatePath('/tags'),
       // Optionally, revalidate all blog, past-events, and upcoming-events dynamic routes
       revalidatePath('/blog', 'layout'),
       revalidatePath('/past-events', 'layout'),
       revalidatePath('/upcoming-events', 'layout'),
+      revalidatePath('/contributors', 'layout'),
     ]);
-    return NextResponse.json({ revalidated: true, now: Date.now(), paths: ['/', '/blog', '/past-events', '/upcoming-events', '/search', '/tags'] });
+    return NextResponse.json({ revalidated: true, now: Date.now(), paths: ['/', '/blog', '/past-events', '/upcoming-events', '/contributors', '/search', '/tags'] });
   } catch (err) {
     return NextResponse.json({ message: 'Error revalidating', error: String(err) }, { status: 500 });
   }
