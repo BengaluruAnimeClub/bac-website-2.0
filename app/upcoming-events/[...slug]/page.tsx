@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { fetchAnnouncementPostBySlugWithEntries, fetchAnnouncementPosts, getAdjacentAnnouncementPosts } from "@/lib/contentful";
+import { fetchAnnouncementPosts, getAnnouncementPostWithNavigation } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { Document } from "@contentful/rich-text-types";
 import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 import { Metadata } from "next";
 import { CommentSection } from "@/components/comment-section";
@@ -189,46 +190,19 @@ const contentfulRenderOptions = {
   },
 };
 
-async function getPostFromParams(params: PostPageProps["params"]) {
+async function getPostAndNavigationFromParams(params: PostPageProps["params"]) {
   const slug = params?.slug?.join("/");
-  const entry = await fetchAnnouncementPostBySlugWithEntries(slug);
-  if (entry && entry.fields) {
-    const fields = entry.fields;
-    let authorName = "";
-    if (
-      fields.author &&
-      typeof fields.author === "object" &&
-      'fields' in fields.author &&
-      fields.author.fields &&
-      typeof fields.author.fields === "object" &&
-      'name' in fields.author.fields &&
-      typeof fields.author.fields.name === "string"
-    ) {
-      authorName = fields.author.fields.name;
-    }
-    return {
-      slug: String(fields.slug ?? ""),
-      slugAsParams: String(fields.slug ?? ""),
-      date: String(fields.date ?? ""),
-      title: String(fields.title ?? ""),
-      description: typeof fields.description === "string" ? fields.description : "",
-      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
-      published: true,
-      body: fields.content ?? null,
-      author: authorName,
-      source: "contentful",
-    };
-  }
-  return null;
+  return await getAnnouncementPostWithNavigation(slug);
 }
 
 export async function generateMetadata({
   params,
 }: PostPageProps): Promise<Metadata> {
-  const post = await getPostFromParams(params);
-  if (!post) {
+  const result = await getPostAndNavigationFromParams(params);
+  if (!result) {
     return {};
   }
+  const { post } = result;
   let ogImage: string | undefined;
   if (!ogImage && post.source === "contentful") {
     ogImage = extractOgImageFromContentfulBodyWithFallback(post.body);
@@ -262,14 +236,15 @@ export async function generateStaticParams(): Promise<
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = await getPostFromParams(params);
-  if (!post || !post.published) {
+  const result = await getPostAndNavigationFromParams(params);
+  if (!result) {
     notFound();
   }
 
-  // Fetch adjacent posts for navigation
-  const slug = params.slug.join("/");
-  const adjacentPosts = await getAdjacentAnnouncementPosts(slug);
+  const { post, navigation } = result;
+  if (!post.published) {
+    notFound();
+  }
 
   return (
     <article className="container py-6 prose dark:prose-invert max-w-3xl px-4">
@@ -278,8 +253,8 @@ export default async function PostPage({ params }: PostPageProps) {
         <p className="text-lg mt-0 mb-1 text-muted-foreground">{post.description}</p>
       ) : null}
       <BlogNavigation 
-        previousPost={adjacentPosts.previousPost}
-        nextPost={adjacentPosts.nextPost}
+        previousPost={navigation.previousPost}
+        nextPost={navigation.nextPost}
         basePath="/upcoming-events"
       />
       {/* <hr className="my-4 mt-2 mb-4" /> */}
@@ -302,7 +277,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </div>
       )}
       {post.source === "contentful" && isContentfulDocument(post.body) ? (
-        <div>{documentToReactComponents(post.body, contentfulRenderOptions)}</div>
+        <div>{documentToReactComponents({ ...post.body, data: (post.body as any).data ?? {} } as Document, contentfulRenderOptions)}</div>
       ) : null}
       <CommentSection slug={post.slugAsParams} />
     </article>

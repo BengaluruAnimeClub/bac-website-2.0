@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { fetchEventReportPostBySlugWithEntries, fetchEventReportPosts, getAdjacentEventReportPosts } from "@/lib/contentful";
+import { fetchEventReportPostBySlugWithEntries, fetchEventReportPosts, getEventReportPostWithNavigation } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { Document } from "@contentful/rich-text-types";
 import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 import { Metadata } from "next";
 import { CommentSection } from "@/components/comment-section";
@@ -245,14 +246,14 @@ export async function generateStaticParams(): Promise<
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = await getPostFromParams(params);
-  if (!post || !post.published) {
+  const slug = params.slug.join("/");
+  const result = await getEventReportPostWithNavigation(slug);
+  
+  if (!result || !result.post || !result.post.published) {
     notFound();
   }
-
-  // Fetch adjacent posts for navigation
-  const slug = params.slug.join("/");
-  const adjacentPosts = await getAdjacentEventReportPosts(slug);
+  
+  const { post, navigation } = result;
 
   return (
     <article className="container py-6 prose dark:prose-invert max-w-3xl px-4">
@@ -261,8 +262,8 @@ export default async function PostPage({ params }: PostPageProps) {
         <p className="text-lg mt-0 mb-1 text-muted-foreground">{post.description}</p>
       ) : null}
       <BlogNavigation 
-        previousPost={adjacentPosts.previousPost}
-        nextPost={adjacentPosts.nextPost}
+        previousPost={navigation.previousPost}
+        nextPost={navigation.nextPost}
         basePath="/past-events"
       />
       {/* <hr className="my-4 mt-2 mb-4" /> */}
@@ -285,7 +286,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </div>
       )}
       {post.source === "contentful" && isContentfulDocument(post.body) ? (
-        <div>{documentToReactComponents(post.body, contentfulRenderOptions)}</div>
+        <div>{documentToReactComponents({ ...post.body, data: (post.body as any).data ?? {} } as Document, contentfulRenderOptions)}</div>
       ) : null}
       <CommentSection slug={post.slugAsParams} />
     </article>

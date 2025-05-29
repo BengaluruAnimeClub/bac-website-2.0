@@ -4,7 +4,7 @@ import { siteConfig } from "@/config/site";
 import { Tag } from "@/components/tag";
 import { CommentSection } from "@/components/comment-section";
 import { BlogNavigation } from "@/components/blog-navigation";
-import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts, getAdjacentBlogPosts } from "@/lib/contentful";
+import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts, getBlogPostWithNavigation } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 import { BLOCKS } from "./contentful-blocks-enum";
@@ -304,14 +304,14 @@ export async function generateStaticParams(): Promise<
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = await getPostFromParams(params);
-  if (!post || !post.published) {
+  const slug = params?.slug?.join("/");
+  const result = await getBlogPostWithNavigation(slug);
+  
+  if (!result || !result.post || !result.post.published) {
     notFound();
   }
   
-  // Get adjacent posts for navigation
-  const slug = params?.slug?.join("/");
-  const adjacentPosts = await getAdjacentBlogPosts(slug);
+  const { post, navigation } = result;
   
   // Get the blog URL for sharing (on client only)
   let blogUrl = '';
@@ -332,8 +332,8 @@ export default async function PostPage({ params }: PostPageProps) {
       
       {/* Blog Navigation */}
       <BlogNavigation 
-        previousPost={adjacentPosts.previousPost} 
-        nextPost={adjacentPosts.nextPost} 
+        previousPost={navigation.previousPost} 
+        nextPost={navigation.nextPost} 
       />
       
       {/* <hr className="my-4 mt-2 mb-4" /> */}

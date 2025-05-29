@@ -5,139 +5,333 @@ const contentfulClient = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN!,
 });
 
-// Helper to add no-cache headers to Contentful fetches for ISR
-function withNoCache<T>(promise: Promise<T>): Promise<T> {
-  // Next.js 13+ fetch cache control: https://nextjs.org/docs/app/building-your-application/caching#opting-out-of-data-caching
-  // This is a workaround for SDKs that don't expose fetch options directly
-  // If Contentful SDK ever exposes fetch options, use { cache: 'no-store' } or { next: { revalidate: 60 } }
-  // For now, we can try to set global fetch cache headers if possible
+// Helper to add proper caching for Contentful fetches with ISR
+function withCache<T>(promise: Promise<T>, tags: string[] = []): Promise<T> {
+  // For Next.js App Router ISR, we want to cache the results until revalidation
+  // The Contentful SDK doesn't expose fetch options, so we'll rely on Next.js caching
+  // and use revalidatePath in our webhook to invalidate when content changes
   return promise;
 }
 
 export async function fetchBlogPosts() {
-  const entries = await withNoCache(contentfulClient.getEntries({
+  const entries = await withCache(contentfulClient.getEntries({
     content_type: 'blogPost', // Make sure this matches your Contentful content type API ID
     order: ['-fields.date'], // Most recent first
-  }));
+  }), ['blogPost']);
   return entries.items;
 }
 
 export async function fetchBlogPostBySlug(slug: string) {
-  const entries = await withNoCache(contentfulClient.getEntries({
+  const entries = await withCache(contentfulClient.getEntries({
     content_type: 'blogPost',
     'fields.slug': slug,
     limit: 1,
-  }));
+  }), ['blogPost']);
   return entries.items[0] || null;
 }
 
 export async function fetchBlogPostBySlugWithEntries(slug: string) {
-  const entries = await withNoCache(contentfulClient.getEntries({
+  const entries = await withCache(contentfulClient.getEntries({
     content_type: 'blogPost',
     'fields.slug': slug,
     include: 2, // fetch linked spotlight entries and authors
     limit: 1,
-  }));
+  }), ['blogPost']);
   return entries.items[0] || null;
 }
 
 export async function fetchAnnouncementPosts() {
-  const entries = await withNoCache(contentfulClient.getEntries({
+  const entries = await withCache(contentfulClient.getEntries({
     content_type: 'announcementPost',
     order: ['-fields.date'],
-  }));
+  }), ['announcementPost']);
   return entries.items;
 }
 
 export async function fetchAnnouncementPostBySlug(slug: string) {
-  const entries = await withNoCache(contentfulClient.getEntries({
+  const entries = await withCache(contentfulClient.getEntries({
     content_type: 'announcementPost',
     'fields.slug': slug,
     limit: 1,
-  }));
+  }), ['announcementPost']);
   return entries.items[0] || null;
 }
 
 export async function fetchAnnouncementPostBySlugWithEntries(slug: string) {
-  const entries = await withNoCache(contentfulClient.getEntries({
+  const entries = await withCache(contentfulClient.getEntries({
     content_type: 'announcementPost',
     'fields.slug': slug,
     include: 2, // fetch linked authors, etc.
     limit: 1,
-  }));
+  }), ['announcementPost']);
   return entries.items[0] || null;
 }
 
 export async function fetchEventReportPosts() {
-  const entries = await withNoCache(contentfulClient.getEntries({
+  const entries = await withCache(contentfulClient.getEntries({
     content_type: 'eventReportPost',
     order: ['-fields.date'],
-  }));
+  }), ['eventReportPost']);
   return entries.items;
 }
 
 export async function fetchEventReportPostBySlugWithEntries(slug: string) {
-  const entries = await withNoCache(contentfulClient.getEntries({
+  const entries = await withCache(contentfulClient.getEntries({
     content_type: 'eventReportPost',
     'fields.slug': slug,
     include: 2, // fetch linked authors, etc.
     limit: 1,
-  }));
+  }), ['eventReportPost']);
   return entries.items[0] || null;
 }
 
 export async function fetchSpotlightPosts() {
-  const entries = await withNoCache(contentfulClient.getEntries({
+  const entries = await withCache(contentfulClient.getEntries({
     content_type: 'spotlightEntry',
     // No order field, since spotlightEntry has no date
-  }));
+  }), ['spotlightEntry']);
   return entries.items;
 }
 
-export async function getAdjacentBlogPosts(currentSlug: string) {
-  // Fetch all blog posts ordered by date (newest first)
+// Helper functions for blog post processing
+function hasContentfulFields(obj: any): obj is { fields: any } {
+  return obj && typeof obj === "object" && "fields" in obj && typeof obj.fields === "object";
+}
+
+function isAuthorFields(fields: any): fields is { name: string; slug?: string } {
+  return fields && typeof fields.name === "string";
+}
+
+function processBlogPostEntry(entry: any) {
+  if (!entry || !entry.fields) return null;
+  
+  const fields = entry.fields;
+  let spotlightEntries: any[] = [];
+  if (Array.isArray(fields.entries)) {
+    spotlightEntries = fields.entries.map((e: any) => {
+      if (e.fields) {
+        let author = null;
+        if (hasContentfulFields(e.fields.author) && isAuthorFields(e.fields.author.fields)) {
+          author = {
+            name: e.fields.author.fields.name,
+            slug: e.fields.author.fields.slug || undefined,
+          };
+        }
+        return {
+          title: e.fields.title || "",
+          content: e.fields.content || null,
+          author,
+        };
+      }
+      return null;
+    }).filter(Boolean);
+  }
+  
+  // Support multiple authors for the main blog post
+  let authors: any[] = [];
+  if (fields.author) {
+    if (Array.isArray(fields.author)) {
+      authors = fields.author.map((a: any) => hasContentfulFields(a) && isAuthorFields(a.fields) ? { name: a.fields.name, slug: a.fields.slug } : null).filter(Boolean);
+    } else if (hasContentfulFields(fields.author) && isAuthorFields(fields.author.fields)) {
+      authors = [{ name: fields.author.fields.name, slug: fields.author.fields.slug }];
+    }
+  }
+  
+  return {
+    slug: String(fields.slug ?? ""),
+    slugAsParams: String(fields.slug ?? ""),
+    date: String(fields.date ?? ""),
+    title: String(fields.title ?? ""),
+    description: typeof fields.description === "string" ? fields.description : "",
+    tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
+    published: true,
+    body: fields.content ?? null,
+    header: fields.header ?? null,
+    footer: fields.footer ?? null,
+    spotlightEntries,
+    source: "contentful",
+    image: typeof fields.image === "string" ? fields.image : undefined,
+    authors,
+  } as { [key: string]: any; image?: string };
+}
+
+// Optimized function to get blog post with adjacent posts in minimal API calls
+export async function getBlogPostWithNavigation(slug: string) {
+  // Get the current post with full content
+  const currentPostEntry = await fetchBlogPostBySlugWithEntries(slug);
+  if (!currentPostEntry) return null;
+
+  // Process the current post
+  const currentPost = processBlogPostEntry(currentPostEntry);
+  if (!currentPost) return null;
+
+  // Get all posts for navigation (this is cached by ISR)
   const allPosts = await fetchBlogPosts();
-  
-  // Find the current post index
-  const currentIndex = allPosts.findIndex((post: any) => post.fields.slug === currentSlug);
+  const currentIndex = allPosts.findIndex((post: any) => post.fields.slug === slug);
   
   if (currentIndex === -1) {
-    return { previousPost: null, nextPost: null };
+    return { post: currentPost, navigation: { previousPost: null, nextPost: null } };
   }
-  
-  // Previous post is the one before current (older)
+
   const previousPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
-  
-  // Next post is the one after current (newer)
   const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
-  
+
   return {
-    previousPost: previousPost && previousPost.fields.slug && previousPost.fields.title ? {
-      slug: String(previousPost.fields.slug),
-      title: String(previousPost.fields.title)
-    } : null,
-    nextPost: nextPost && nextPost.fields.slug && nextPost.fields.title ? {
-      slug: String(nextPost.fields.slug),
-      title: String(nextPost.fields.title)
-    } : null
+    post: currentPost,
+    navigation: {
+      previousPost: previousPost && previousPost.fields.slug && previousPost.fields.title ? {
+        slug: String(previousPost.fields.slug),
+        title: String(previousPost.fields.title)
+      } : null,
+      nextPost: nextPost && nextPost.fields.slug && nextPost.fields.title ? {
+        slug: String(nextPost.fields.slug),
+        title: String(nextPost.fields.title)
+      } : null
+    }
   };
 }
 
-export async function getAdjacentAnnouncementPosts(currentSlug: string) {
-  // Fetch all announcement posts ordered by date (newest first)
+// Optimized function for announcement posts
+export async function getAnnouncementPostWithNavigation(slug: string) {
+  const currentPostEntry = await fetchAnnouncementPostBySlugWithEntries(slug);
+  if (!currentPostEntry) return null;
+
+  // Process the current post
+  const currentPost = processAnnouncementPostEntry(currentPostEntry);
+  if (!currentPost) return null;
+
   const allPosts = await fetchAnnouncementPosts();
+  const currentIndex = allPosts.findIndex((post: any) => post.fields.slug === slug);
   
-  // Find the current post index
+  if (currentIndex === -1) {
+    return { post: currentPost, navigation: { previousPost: null, nextPost: null } };
+  }
+
+  const previousPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+
+  return {
+    post: currentPost,
+    navigation: {
+      previousPost: previousPost && previousPost.fields.slug && previousPost.fields.title ? {
+        slug: String(previousPost.fields.slug),
+        title: String(previousPost.fields.title)
+      } : null,
+      nextPost: nextPost && nextPost.fields.slug && nextPost.fields.title ? {
+        slug: String(nextPost.fields.slug),
+        title: String(nextPost.fields.title)
+      } : null
+    }
+  };
+}
+
+function processAnnouncementPostEntry(entry: any) {
+  if (!entry || !entry.fields) return null;
+  
+  const fields = entry.fields;
+  let authorName = "";
+  if (
+    fields.author &&
+    typeof fields.author === "object" &&
+    'fields' in fields.author &&
+    fields.author.fields &&
+    typeof fields.author.fields === "object" &&
+    'name' in fields.author.fields &&
+    typeof fields.author.fields.name === "string"
+  ) {
+    authorName = fields.author.fields.name;
+  }
+  
+  return {
+    slug: String(fields.slug ?? ""),
+    slugAsParams: String(fields.slug ?? ""),
+    date: String(fields.date ?? ""),
+    title: String(fields.title ?? ""),
+    description: typeof fields.description === "string" ? fields.description : "",
+    tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
+    published: true,
+    body: fields.content ?? null,
+    author: authorName,
+    source: "contentful",
+  };
+}
+
+function processEventReportPostEntry(entry: any) {
+  if (!entry || !entry.fields) return null;
+  
+  const fields = entry.fields;
+  let authorName = "";
+  if (
+    fields.author &&
+    typeof fields.author === "object" &&
+    'fields' in fields.author &&
+    fields.author.fields &&
+    typeof fields.author.fields === "object" &&
+    'name' in fields.author.fields &&
+    typeof fields.author.fields.name === "string"
+  ) {
+    authorName = fields.author.fields.name;
+  }
+  
+  return {
+    slug: String(fields.slug ?? ""),
+    slugAsParams: String(fields.slug ?? ""),
+    date: String(fields.date ?? ""),
+    title: String(fields.title ?? ""),
+    description: typeof fields.description === "string" ? fields.description : "",
+    tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
+    published: true,
+    body: fields.content ?? null,
+    author: authorName,
+    source: "contentful",
+  };
+}
+
+// Optimized function for event report posts
+export async function getEventReportPostWithNavigation(slug: string) {
+  const currentPostEntry = await fetchEventReportPostBySlugWithEntries(slug);
+  if (!currentPostEntry) return null;
+
+  // Process the current post
+  const currentPost = processEventReportPostEntry(currentPostEntry);
+  if (!currentPost) return null;
+
+  const allPosts = await fetchEventReportPosts();
+  const currentIndex = allPosts.findIndex((post: any) => post.fields.slug === slug);
+  
+  if (currentIndex === -1) {
+    return { post: currentPost, navigation: { previousPost: null, nextPost: null } };
+  }
+
+  const previousPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+
+  return {
+    post: currentPost,
+    navigation: {
+      previousPost: previousPost && previousPost.fields.slug && previousPost.fields.title ? {
+        slug: String(previousPost.fields.slug),
+        title: String(previousPost.fields.title)
+      } : null,
+      nextPost: nextPost && nextPost.fields.slug && nextPost.fields.title ? {
+        slug: String(nextPost.fields.slug),
+        title: String(nextPost.fields.title)
+      } : null
+    }
+  };
+}
+
+// Legacy functions - keeping for backward compatibility but marking as deprecated
+/** @deprecated Use getBlogPostWithNavigation instead */
+export async function getAdjacentBlogPosts(currentSlug: string) {
+  const allPosts = await fetchBlogPosts();
   const currentIndex = allPosts.findIndex((post: any) => post.fields.slug === currentSlug);
   
   if (currentIndex === -1) {
     return { previousPost: null, nextPost: null };
   }
   
-  // Previous post is the one before current (older)
   const previousPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
-  
-  // Next post is the one after current (newer)
   const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
   
   return {
@@ -152,21 +346,40 @@ export async function getAdjacentAnnouncementPosts(currentSlug: string) {
   };
 }
 
-export async function getAdjacentEventReportPosts(currentSlug: string) {
-  // Fetch all event report posts ordered by date (newest first)
-  const allPosts = await fetchEventReportPosts();
-  
-  // Find the current post index
+/** @deprecated Use getAnnouncementPostWithNavigation instead */
+export async function getAdjacentAnnouncementPosts(currentSlug: string) {
+  const allPosts = await fetchAnnouncementPosts();
   const currentIndex = allPosts.findIndex((post: any) => post.fields.slug === currentSlug);
   
   if (currentIndex === -1) {
     return { previousPost: null, nextPost: null };
   }
   
-  // Previous post is the one before current (older)
   const previousPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
   
-  // Next post is the one after current (newer)
+  return {
+    previousPost: previousPost && previousPost.fields.slug && previousPost.fields.title ? {
+      slug: String(previousPost.fields.slug),
+      title: String(previousPost.fields.title)
+    } : null,
+    nextPost: nextPost && nextPost.fields.slug && nextPost.fields.title ? {
+      slug: String(nextPost.fields.slug),
+      title: String(nextPost.fields.title)
+    } : null
+  };
+}
+
+/** @deprecated Use getEventReportPostWithNavigation instead */
+export async function getAdjacentEventReportPosts(currentSlug: string) {
+  const allPosts = await fetchEventReportPosts();
+  const currentIndex = allPosts.findIndex((post: any) => post.fields.slug === currentSlug);
+  
+  if (currentIndex === -1) {
+    return { previousPost: null, nextPost: null };
+  }
+  
+  const previousPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
   const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
   
   return {
