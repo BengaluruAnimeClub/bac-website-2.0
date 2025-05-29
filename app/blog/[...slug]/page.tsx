@@ -389,7 +389,7 @@ export default async function PostPage({ params }: PostPageProps) {
       {/* Show authors at the end of the blog post */}
       {post.source === "contentful" && post.body && post.authors && Array.isArray(post.authors) && post.authors.length > 0 && (
         <div className="mt-4 mb-4">
-          <b>Article by{post.authors.length > 1 ? 's' : ''}:</b>{' '}
+          <b>Article by:</b>{' '}
           {post.authors.map((author: any, idx: number) => (
             <span key={author.slug || author.name}>
               {author.slug ? (
