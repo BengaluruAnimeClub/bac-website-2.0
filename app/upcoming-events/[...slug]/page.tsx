@@ -282,7 +282,7 @@ export default async function PostPage({ params }: PostPageProps) {
         nextPost={adjacentPosts.nextPost}
         basePath="/upcoming-events"
       />
-      <hr className="my-4 mt-2 mb-4" />
+      {/* <hr className="my-4 mt-2 mb-4" /> */}
       {post.source === "contentful" && post.date && (
         <div className="flex items-center justify-between text-base text-muted-foreground mb-4 mt-4">
           <div className="text-sm sm:text-base font-medium flex items-center gap-1">
