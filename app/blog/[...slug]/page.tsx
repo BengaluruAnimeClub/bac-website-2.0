@@ -3,7 +3,8 @@ import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import { Tag } from "@/components/tag";
 import { CommentSection } from "@/components/comment-section";
-import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts } from "@/lib/contentful";
+import { BlogNavigation } from "@/components/blog-navigation";
+import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts, getAdjacentBlogPosts } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 import { BLOCKS } from "./contentful-blocks-enum";
@@ -307,6 +308,11 @@ export default async function PostPage({ params }: PostPageProps) {
   if (!post || !post.published) {
     notFound();
   }
+  
+  // Get adjacent posts for navigation
+  const slug = params?.slug?.join("/");
+  const adjacentPosts = await getAdjacentBlogPosts(slug);
+  
   // Get the blog URL for sharing (on client only)
   let blogUrl = '';
   if (typeof window !== 'undefined') {
@@ -323,6 +329,13 @@ export default async function PostPage({ params }: PostPageProps) {
       {post.description ? (
         <p className="text-lg mt-0 mb-1 text-muted-foreground">{String(post.description)}</p>
       ) : null}
+      
+      {/* Blog Navigation */}
+      <BlogNavigation 
+        previousPost={adjacentPosts.previousPost} 
+        nextPost={adjacentPosts.nextPost} 
+      />
+      
       <hr className="my-4 mt-2 mb-4" />
       {post.source === "contentful" && post.date && (
         <div className="flex items-center justify-between text-base text-muted-foreground mb-4 mt-4">
