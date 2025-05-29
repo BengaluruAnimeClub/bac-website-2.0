@@ -3,7 +3,7 @@ import { fetchAuthorBySlug } from "@/lib/contentful-authors";
 import { fetchBlogPosts, fetchEventReportPosts, fetchSpotlightPosts } from "@/lib/contentful";
 import Image from "next/image";
 import Link from "next/link";
-import { FaInstagram } from "react-icons/fa";
+import { FaInstagram, FaGlobe } from "react-icons/fa";
 import { SiMyanimelist, SiAnilist } from "react-icons/si";
 import { PiXLogoBold } from "react-icons/pi";
 
@@ -174,6 +174,11 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
               {links['Instagram'] && (
                 <a href={links['Instagram']} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-2xl text-[#ea4167] dark:text-[#ea4167]">
                   <FaInstagram />
+                </a>
+              )}
+              {links['Website'] && (
+                <a href={links['Website']} target="_blank" rel="noopener noreferrer" title="Website" className="text-2xl text-[#ea4167] dark:text-[#ea4167]">
+                  <FaGlobe />
                 </a>
               )}
             </div>
