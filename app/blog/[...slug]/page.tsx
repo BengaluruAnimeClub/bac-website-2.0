@@ -321,11 +321,11 @@ export default async function PostPage({ params }: PostPageProps) {
   return (
     <article className="container py-6 prose dark:prose-invert max-w-3xl px-4">
       <h1 className="mb-2 text-3xl lg:text-4xl">{String(post.title)}</h1>
-      <div className="flex gap-2 mb-2">
+      {/* <div className="flex gap-2 mb-2">
         {Array.isArray(post.tags) && post.tags.map((tag) =>
           typeof tag === "string" ? <Tag tag={tag} key={tag} /> : null
         )}
-      </div>
+      </div> */}
       {post.description ? (
         <p className="text-lg mt-0 mb-1 text-muted-foreground">{String(post.description)}</p>
       ) : null}
@@ -336,7 +336,7 @@ export default async function PostPage({ params }: PostPageProps) {
         nextPost={adjacentPosts.nextPost} 
       />
       
-      <hr className="my-4 mt-2 mb-4" />
+      {/* <hr className="my-4 mt-2 mb-4" /> */}
       {post.source === "contentful" && post.date && (
         <div className="flex items-center justify-between text-base text-muted-foreground mb-4 mt-4">
           <div className="text-sm sm:text-base font-medium flex items-center gap-1">

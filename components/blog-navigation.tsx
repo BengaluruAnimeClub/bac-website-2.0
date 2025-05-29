@@ -14,7 +14,7 @@ interface BlogNavigationProps {
 
 export function BlogNavigation({ previousPost, nextPost }: BlogNavigationProps) {
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 my-8 not-prose">
+    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 my-2 not-prose">
       {/* Newer post (left side) */}
       <div className="flex-1 w-full">
         {nextPost ? (
