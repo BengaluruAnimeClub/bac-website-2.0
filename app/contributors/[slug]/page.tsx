@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { fetchAuthorBySlug } from "@/lib/contentful-authors";
-import { fetchBlogPosts, fetchEventReportPosts, fetchSpotlightPosts } from "@/lib/contentful";
+import { getAuthorWithPosts } from "@/lib/contentful-authors";
+import { fetchBlogPosts } from "@/lib/contentful";
 import Image from "next/image";
 import Link from "next/link";
 import { FaInstagram, FaGlobe } from "react-icons/fa";
@@ -17,35 +17,21 @@ function hasContentfulFields(obj: any): obj is { fields: any } {
 }
 
 export default async function AuthorPage({ params }: AuthorPageProps) {
-  const author = await fetchAuthorBySlug(params.slug);
-  if (!author || !author.fields) return notFound();
+  const result = await getAuthorWithPosts(params.slug);
+  if (!result || !result.author || !result.author.fields) return notFound();
+
+  const { author, blogPosts, eventPosts, spotlightPosts } = result;
 
   // Author fields
   const { name, avatar, bio, socialLinks } = author.fields;
 
-  // Find all posts by this author
-  const [blogPosts, eventPosts, spotlightPosts] = await Promise.all([
-    fetchBlogPosts(),
-    fetchEventReportPosts(),
-    fetchSpotlightPosts(),
-  ]);
-  // Blog posts
-  const authoredBlogs = blogPosts.filter((post: any) => {
-    const a = post.fields.author;
-    if (Array.isArray(a)) return a.some((x: any) => hasContentfulFields(x) && x.fields.slug === params.slug);
-    return hasContentfulFields(a) && a.fields.slug === params.slug;
-  });
-  // Event posts
-  const authoredEvents = eventPosts.filter((post: any) => {
-    const a = post.fields.author;
-    if (Array.isArray(a)) return a.some((x: any) => hasContentfulFields(x) && x.fields.slug === params.slug);
-    return hasContentfulFields(a) && a.fields.slug === params.slug;
-  });
-  // Spotlight posts
-  let authoredSpotlights = spotlightPosts.filter((post: any) => {
-    const a = post.fields.author;
-    return hasContentfulFields(a) && a.fields.slug === params.slug;
-  });
+  // We still need to fetch all blog posts to find parent blogs for spotlight posts
+  const allBlogPosts = await fetchBlogPosts();
+
+  // Filter posts by this author (already optimized from Contentful query)
+  const authoredBlogs = blogPosts;
+  const authoredEvents = eventPosts;
+  let authoredSpotlights = spotlightPosts;
   // Sort by parent blog date descending (if available)
   authoredSpotlights = authoredSpotlights.sort((a: any, b: any) => {
     const aParent = a.fields.parentBlog;
@@ -75,7 +61,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         spotlightDate = new Date(spotlight.fields.date);
       }
       // Find the parent blogPost that references this spotlight in its entries
-      const parentBlog = blogPosts.find((blog: any) => {
+      const parentBlog = allBlogPosts.find((blog: any) => {
         const entries = blog.fields.entries;
         if (Array.isArray(entries)) {
           return entries.some((entry: any) =>
