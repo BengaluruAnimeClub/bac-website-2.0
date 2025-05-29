@@ -145,6 +145,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
             width={128}
             height={128}
             className="rounded-full mb-2"
+            style={{ objectFit: 'cover', width: 128, height: 128 }}
           />
         )}
         <h1 className="text-3xl font-bold mb-1">{displayName}</h1>
