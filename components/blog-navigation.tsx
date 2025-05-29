@@ -27,7 +27,7 @@ export function BlogNavigation({ previousPost, nextPost, basePath = "/blog" }: B
             <div className="text-left">
               <div className="text-sm text-muted-foreground">Newer</div>
               {/* Show title only on desktop */}
-              <div className="font-medium text-sm group-hover:text-foreground hidden sm:block">
+              <div className="font-medium text-sm hidden sm:block">
                 <div className="line-clamp-1">
                   {nextPost.title}
                 </div>
@@ -49,7 +49,7 @@ export function BlogNavigation({ previousPost, nextPost, basePath = "/blog" }: B
             <div className="text-right">
               <div className="text-sm text-muted-foreground">Older</div>
               {/* Show title only on desktop */}
-              <div className="font-medium text-sm group-hover:text-foreground hidden sm:block">
+              <div className="font-medium text-sm hidden sm:block">
                 <div className="line-clamp-1">
                   {previousPost.title}
                 </div>
