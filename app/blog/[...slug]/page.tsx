@@ -422,9 +422,16 @@ export default async function PostPage({ params }: PostPageProps) {
         </div>
       )}
       {/* <hr className="my-4 mt-2 mb-4" /> */}
-      <p className="text-md mt-2 mb-0 text-muted-foreground text-justify">
+      <p className="text-md mt-2 mb-2 text-muted-foreground text-justify">
         <i>All content on this website is protected by copyright and may not be copied, distributed, or reproduced in any form without the express written consent from <span className="font-semibold">team@bac.moe</span>.</i>
       </p>
+      
+      {/* Blog Navigation at bottom */}
+      <BlogNavigation 
+        previousPost={navigation.previousPost} 
+        nextPost={navigation.nextPost} 
+      />
+      
       <CommentSection slug={String(post.slug)} />
     </article>
   );

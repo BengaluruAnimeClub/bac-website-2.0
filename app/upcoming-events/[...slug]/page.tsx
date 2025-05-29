@@ -279,6 +279,14 @@ export default async function PostPage({ params }: PostPageProps) {
       {post.source === "contentful" && isContentfulDocument(post.body) ? (
         <div>{documentToReactComponents({ ...post.body, data: (post.body as any).data ?? {} } as Document, contentfulRenderOptions)}</div>
       ) : null}
+      
+      {/* Blog Navigation at bottom */}
+      <BlogNavigation 
+        previousPost={navigation.previousPost}
+        nextPost={navigation.nextPost}
+        basePath="/upcoming-events"
+      />
+      
       <CommentSection slug={post.slugAsParams} />
     </article>
   );
