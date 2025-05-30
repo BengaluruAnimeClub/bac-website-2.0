@@ -101,9 +101,9 @@ export default async function Home() {
               Join BAC
             </Link>
             <Link
-                href="/game"
-                className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-fit")}
-              >
+              href="/game"
+              className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-fit") + " !text-white hover:!text-white focus:!text-white active:!text-white"}
+            >
               Love Story
             </Link>
           </div>
@@ -127,9 +127,9 @@ export default async function Home() {
 
           <div className="flex flex-row gap-4 justify-center">
             <Link
-                href="/game"
-                className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-fit")}
-              >
+              href="/game"
+              className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-fit") + " !text-white hover:!text-white focus:!text-white active:!text-white"}
+            >
               Love Story
             </Link>
           </div>
