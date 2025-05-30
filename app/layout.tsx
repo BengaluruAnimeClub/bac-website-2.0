@@ -12,7 +12,10 @@ import LoginModal from "@/components/login-modal"; // Import LoginModal
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: siteConfig.title,
+  title: {
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.title}`,
+  },
   description: siteConfig.description,
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? siteConfig.url),
   keywords: ['Bengaluru Anime Club', 'Bangalore Anime Club', 'BAC', 'Bengaluru', 'Bangalore', 'Anime', 'Manga', 'Light Novel', 'Cosplay', 'Club', 'bac moe', 'bac.moe', 'bac website', 'bac whatsapp', 'bac community', 'bac events', 'bac screening'],
