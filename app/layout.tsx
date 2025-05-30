@@ -12,7 +12,10 @@ import LoginModal from "@/components/login-modal"; // Import LoginModal
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: siteConfig.title,
+  title: {
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.title}`,
+  },
   description: siteConfig.description,
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? siteConfig.url),
   keywords: ['Bengaluru Anime Club', 'Bangalore Anime Club', 'BAC', 'Bengaluru', 'Bangalore', 'Anime', 'Manga', 'Light Novel', 'Cosplay', 'Club', 'bac moe', 'bac.moe', 'bac website', 'bac whatsapp', 'bac community', 'bac events', 'bac screening'],
@@ -50,9 +53,22 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const websiteStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": siteConfig.title, // Should be "Bengaluru Anime Club (BAC)"
+    "url": siteConfig.url,   // Should be "https://bac.moe"
+    "alternateName": siteConfig.name // Should be "BAC"
+  };
 
   return (
     <html lang="en" className="scroll-pt-[3.5rem]">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteStructuredData) }}
+        />
+      </head>
       <GoogleAnalytics gaId="G-L2DW4HE25G" />
       <body
         className={cn(
