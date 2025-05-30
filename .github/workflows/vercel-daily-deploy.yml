@@ -1,0 +1,14 @@
+name: Daily Vercel Deploy
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Every day at midnight UTC
+  workflow_dispatch:
+
+jobs:
+  trigger-vercel-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel Deploy Hook
+        run: |
+          curl -X POST "https://api.vercel.com/v1/integrations/deploy/prj_iJMbNP4Hf1uuPv1rFMuCtW3Hs1xN/OJpkJ7Fdfn"
