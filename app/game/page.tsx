@@ -24,6 +24,11 @@ const endingMusicPaths = [
   "/music/game/104.mp3",
 ];
 
+export const metadata: Metadata = {
+  title: "BAC Love Story (Game)",
+  description: "A text-based RPG created with ❤️ by members of the Bengaluru Anime Club (BAC), on the occasion of Valentine's Day 2025. Play through a romantic adventure with multiple endings, featuring original artwork and story paths.",
+};
+
 export default function Game() {
   // Single variable for fade duration in ms
   const fadeDuration = 700;
