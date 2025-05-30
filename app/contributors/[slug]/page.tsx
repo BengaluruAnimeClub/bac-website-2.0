@@ -6,6 +6,7 @@ import Link from "next/link";
 import { FaInstagram, FaGlobe } from "react-icons/fa";
 import { SiMyanimelist, SiAnilist } from "react-icons/si";
 import { PiXLogoBold } from "react-icons/pi";
+import { Metadata } from 'next';
 
 interface AuthorPageProps {
   params: { slug: string };
@@ -14,6 +15,22 @@ interface AuthorPageProps {
 // Helper to check if an object is a Contentful Entry with fields
 function hasContentfulFields(obj: any): obj is { fields: any } {
   return obj && typeof obj === "object" && "fields" in obj && typeof obj.fields === "object";
+}
+
+// Add dynamic metadata for browser tab title
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const result = await getAuthorWithPosts(params.slug);
+  if (!result || !result.author || !result.author.fields || typeof result.author.fields.name !== 'string') {
+    return { title: 'Contributor' };
+  }
+  const name = result.author.fields.name;
+  const bio = typeof result.author.fields.bio === 'string' ? result.author.fields.bio : '';
+  // Only use bio for description
+  let description = bio && bio.length > 0 ? bio : undefined;
+  return {
+    title: name,
+    description,
+  };
 }
 
 export default async function AuthorPage({ params }: AuthorPageProps) {
