@@ -30,7 +30,7 @@ export default async function Home() {
 
   return (
     <>
-      <section className="space-y-6 pb-8 pt-6 md:pb-12 md:mt-10 lg:py-10">
+      <section className="space-y-6 pb-8 pt-6 md:pb-12 md:mt-10 lg:py-6">
 
         <div style= {{'display': 'flex', 'justifyContent': 'center'}}>
           <img src="/images/logo-full-2.svg" alt="BAC Logo" className="w-3/4 md:w-1/2 lg:w-2/5 block dark:hidden"/>
