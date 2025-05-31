@@ -33,6 +33,18 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
+// Helper to format date in IST (Indian Standard Time)
+function formatDateIST(date: Date | null): string {
+  if (!date) return '';
+  // Convert to IST by adding 5 hours 30 minutes (19800000 ms)
+  const istOffsetMs = 5.5 * 60 * 60 * 1000;
+  const istDate = new Date(date.getTime() + istOffsetMs);
+  const day = istDate.getUTCDate().toString().padStart(2, '0');
+  const month = (istDate.getUTCMonth() + 1).toString().padStart(2, '0');
+  const year = istDate.getUTCFullYear();
+  return `${day}/${month}/${year}`;
+}
+
 export default async function AuthorPage({ params }: AuthorPageProps) {
   const result = await getAuthorWithPosts(params.slug);
   if (!result || !result.author || !result.author.fields) return notFound();
@@ -209,7 +221,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                       </Link>
                       {post.date && (
                         <span className="ml-2 text-xs text-muted-foreground">{
-                          post.date ? `${post.date.getDate().toString().padStart(2, '0')}/${(post.date.getMonth()+1).toString().padStart(2, '0')}/${post.date.getFullYear()}` : ''
+                          formatDateIST(post.date)
                         }</span>
                       )}
                     </>
@@ -225,7 +237,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                         </>
                       )}
                       <span className="ml-2 text-xs text-muted-foreground">
-                        {post.date ? `${post.date.getDate().toString().padStart(2, '0')}/${(post.date.getMonth()+1).toString().padStart(2, '0')}/${post.date.getFullYear()}` : 'No date'}
+                        {formatDateIST(post.date) || 'No date'}
                       </span>
                     </>
                   ) : (
@@ -233,7 +245,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                       <span className="font-medium">{post.title}</span>
                       {post.date && (
                         <span className="ml-2 text-xs text-muted-foreground">{
-                          post.date ? `${post.date.getDate().toString().padStart(2, '0')}/${(post.date.getMonth()+1).toString().padStart(2, '0')}/${post.date.getFullYear()}` : ''
+                          formatDateIST(post.date)
                         }</span>
                       )}
                     </>
