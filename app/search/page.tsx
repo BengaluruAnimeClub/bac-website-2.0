@@ -7,8 +7,6 @@ export const metadata: Metadata = {
   description: "Search within blogs, events, and archives from BAC.",
 };
 
-export const revalidate = false;
-
 interface SearchPageProps {
   searchParams: {
     search?: string;

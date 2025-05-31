@@ -7,8 +7,6 @@ import Link from "next/link";
 import { PostItem } from "@/components/post-item";
 import { fetchBlogPosts, fetchAnnouncementPosts, fetchEventReportPosts } from "@/lib/contentful";
 
-export const revalidate = false;
-
 export default async function Home() {
   // Fetch Contentful posts
   const [contentfulBlogs, contentfulAnnouncements, contentfulEventReports] = await Promise.all([
