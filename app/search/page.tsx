@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Search within blogs, events, and archives from BAC.",
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = false;
 
 interface SearchPageProps {
   searchParams: {

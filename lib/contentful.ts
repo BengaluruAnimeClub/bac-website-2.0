@@ -1,4 +1,5 @@
 import { createClient } from 'contentful';
+import { unstable_cache } from 'next/cache';
 
 const contentfulClient = createClient({
   space: process.env.CONTENTFUL_SPACE_ID!,
@@ -6,90 +7,92 @@ const contentfulClient = createClient({
 });
 
 // Helper to add proper caching for Contentful fetches with ISR
-function withCache<T>(promise: Promise<T>, tags: string[] = []): Promise<T> {
-  // For Next.js App Router ISR, we want to cache the results until revalidation
-  // The Contentful SDK doesn't expose fetch options, so we'll rely on Next.js caching
-  // and use revalidatePath in our webhook to invalidate when content changes
-  return promise;
+function withCache<T>(promiseFactory: () => Promise<T>, cacheKey: string, tags: string[] = []): Promise<T> {
+  // Use Next.js unstable_cache to properly cache Contentful requests
+  const cachedFunction = unstable_cache(promiseFactory, [cacheKey], {
+    tags: tags.length > 0 ? tags : ['contentful'],
+    revalidate: false, // Only revalidate via webhook
+  });
+  return cachedFunction();
 }
 
 export async function fetchBlogPosts() {
-  const entries = await withCache(contentfulClient.getEntries({
+  const entries = await withCache(() => contentfulClient.getEntries({
     content_type: 'blogPost', // Make sure this matches your Contentful content type API ID
     order: ['-fields.date'], // Most recent first
-  }), ['blogPost']);
+  }), 'blogPosts', ['blogPost']);
   return entries.items;
 }
 
 export async function fetchBlogPostBySlug(slug: string) {
-  const entries = await withCache(contentfulClient.getEntries({
+  const entries = await withCache(() => contentfulClient.getEntries({
     content_type: 'blogPost',
     'fields.slug': slug,
     limit: 1,
-  }), ['blogPost']);
+  }), `blogPost-${slug}`, ['blogPost']);
   return entries.items[0] || null;
 }
 
 export async function fetchBlogPostBySlugWithEntries(slug: string) {
-  const entries = await withCache(contentfulClient.getEntries({
+  const entries = await withCache(() => contentfulClient.getEntries({
     content_type: 'blogPost',
     'fields.slug': slug,
     include: 2, // fetch linked spotlight entries and authors
     limit: 1,
-  }), ['blogPost']);
+  }), `blogPostWithEntries-${slug}`, ['blogPost']);
   return entries.items[0] || null;
 }
 
 export async function fetchAnnouncementPosts() {
-  const entries = await withCache(contentfulClient.getEntries({
+  const entries = await withCache(() => contentfulClient.getEntries({
     content_type: 'announcementPost',
     order: ['-fields.date'],
-  }), ['announcementPost']);
+  }), 'announcementPosts', ['announcementPost']);
   return entries.items;
 }
 
 export async function fetchAnnouncementPostBySlug(slug: string) {
-  const entries = await withCache(contentfulClient.getEntries({
+  const entries = await withCache(() => contentfulClient.getEntries({
     content_type: 'announcementPost',
     'fields.slug': slug,
     limit: 1,
-  }), ['announcementPost']);
+  }), `announcementPost-${slug}`, ['announcementPost']);
   return entries.items[0] || null;
 }
 
 export async function fetchAnnouncementPostBySlugWithEntries(slug: string) {
-  const entries = await withCache(contentfulClient.getEntries({
+  const entries = await withCache(() => contentfulClient.getEntries({
     content_type: 'announcementPost',
     'fields.slug': slug,
     include: 2, // fetch linked authors, etc.
     limit: 1,
-  }), ['announcementPost']);
+  }), `announcementPostWithEntries-${slug}`, ['announcementPost']);
   return entries.items[0] || null;
 }
 
 export async function fetchEventReportPosts() {
-  const entries = await withCache(contentfulClient.getEntries({
+  const entries = await withCache(() => contentfulClient.getEntries({
     content_type: 'eventReportPost',
     order: ['-fields.date'],
-  }), ['eventReportPost']);
+  }), 'eventReportPosts', ['eventReportPost']);
   return entries.items;
 }
 
 export async function fetchEventReportPostBySlugWithEntries(slug: string) {
-  const entries = await withCache(contentfulClient.getEntries({
+  const entries = await withCache(() => contentfulClient.getEntries({
     content_type: 'eventReportPost',
     'fields.slug': slug,
     include: 2, // fetch linked authors, etc.
     limit: 1,
-  }), ['eventReportPost']);
+  }), `eventReportPostWithEntries-${slug}`, ['eventReportPost']);
   return entries.items[0] || null;
 }
 
 export async function fetchSpotlightPosts() {
-  const entries = await withCache(contentfulClient.getEntries({
+  const entries = await withCache(() => contentfulClient.getEntries({
     content_type: 'spotlightEntry',
     // No order field, since spotlightEntry has no date
-  }), ['spotlightEntry']);
+  }), 'spotlightPosts', ['spotlightEntry']);
   return entries.items;
 }
 

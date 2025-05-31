@@ -7,7 +7,7 @@ import Link from "next/link";
 import { PostItem } from "@/components/post-item";
 import { fetchBlogPosts, fetchAnnouncementPosts, fetchEventReportPosts } from "@/lib/contentful";
 
-export const dynamic = "force-dynamic";
+export const revalidate = false;
 
 export default async function Home() {
   // Fetch Contentful posts
