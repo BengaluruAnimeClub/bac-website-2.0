@@ -5,59 +5,16 @@ import { posts, upcomingEventsPosts } from "#site/content";
 import { pastEventsPosts } from "#site/content";
 import Link from "next/link";
 import { PostItem } from "@/components/post-item";
-import { fetchBlogPosts, fetchAnnouncementPosts, fetchEventReportPosts } from "@/lib/contentful";
+import { fetchHomepageContent } from "@/lib/contentful-homepage";
 
 export default async function Home() {
-  // Fetch Contentful posts
-  const [contentfulBlogs, contentfulAnnouncements, contentfulEventReports] = await Promise.all([
-    fetchBlogPosts(),
-    fetchAnnouncementPosts(),
-    fetchEventReportPosts(),
-  ]);
+  // Fetch optimized homepage content in a single cached call
+  const { blogPosts: contentfulBlogs, announcementPosts: contentfulAnnouncements, eventReportPosts: contentfulEventReports } = await fetchHomepageContent();
 
-  // Normalize Contentful posts
-  const normalizedBlogs = contentfulBlogs.map((entry: any) => {
-    const fields = entry.fields;
-    return {
-      slug: String(fields.slug ?? ""),
-      slugAsParams: String(fields.slug ?? ""),
-      date: String(fields.date ?? ""),
-      title: String(fields.title ?? ""),
-      description: typeof fields.description === "string" ? fields.description : "",
-      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
-      published: true,
-      body: fields.content ?? "",
-      _type: "blog",
-    };
-  });
-  const normalizedAnnouncements = contentfulAnnouncements.map((entry: any) => {
-    const fields = entry.fields;
-    return {
-      slug: String(fields.slug ?? ""),
-      slugAsParams: String(fields.slug ?? ""),
-      date: String(fields.date ?? ""),
-      title: String(fields.title ?? ""),
-      description: typeof fields.description === "string" ? fields.description : "",
-      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
-      published: true,
-      body: fields.content ?? "",
-      _type: "upcoming-event",
-    };
-  });
-  const normalizedEventReports = contentfulEventReports.map((entry: any) => {
-    const fields = entry.fields;
-    return {
-      slug: String(fields.slug ?? ""),
-      slugAsParams: String(fields.slug ?? ""),
-      date: String(fields.date ?? ""),
-      title: String(fields.title ?? ""),
-      description: typeof fields.description === "string" ? fields.description : "",
-      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
-      published: true,
-      body: fields.content ?? "",
-      _type: "past-event",
-    };
-  });
+  // Add type information for merging with local posts
+  const normalizedBlogs = contentfulBlogs.map(post => ({ ...post, _type: "blog", body: "" }));
+  const normalizedAnnouncements = contentfulAnnouncements.map(post => ({ ...post, _type: "upcoming-event", body: "" }));
+  const normalizedEventReports = contentfulEventReports.map(post => ({ ...post, _type: "past-event", body: "" }));
 
   // Merge all posts for latestPosts (blogs, announcements, event reports, both local and Contentful)
   const allBlogPosts = posts.map((p) => ({ ...p, _type: "blog" })).concat(normalizedBlogs);
