@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 // Set this secret in your Contentful webhook and as an env var
 const REVALIDATE_SECRET = process.env.REVALIDATE_SECRET;
@@ -13,6 +13,14 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    // Revalidate cache tags (for unstable_cache)
+    revalidateTag('contentful');
+    revalidateTag('blogPost');
+    revalidateTag('announcementPost');
+    revalidateTag('eventReportPost');
+    revalidateTag('spotlightEntry');
+    revalidateTag('author');
+
     // Revalidate the homepage and all main dynamic sections
     await Promise.all([
       revalidatePath('/'),
