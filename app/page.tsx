@@ -76,8 +76,8 @@ export default async function Home() {
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:mt-10 lg:py-10">
 
         <div style= {{'display': 'flex', 'justifyContent': 'center'}}>
-          <img src="/images/logo-full-2.svg" alt="BAC Logo" className="w-3/4 md:w-1/2 lg:w-1/2 block dark:hidden"/>
-          <img src="/images/logo-light-full.svg" alt="BAC Logo" className="w-3/4 md:w-1/2 lg:w-1/2 hidden dark:block"/>
+          <img src="/images/logo-full-2.svg" alt="BAC Logo" className="w-3/4 md:w-1/2 lg:w-2/5 block dark:hidden"/>
+          <img src="/images/logo-light-full.svg" alt="BAC Logo" className="w-3/4 md:w-1/2 lg:w-2/5 hidden dark:block"/>
         </div>
 
         <div className="container flex flex-col gap-4 text-center">
