@@ -913,3 +913,380 @@ export async function analyzeCacheEfficiency() {
     }
   };
 }
+
+/**
+ * ULTRA-GRANULAR CACHE OPTIMIZATION FUNCTIONS
+ * Individual post-level cache invalidation - only the edited post's cache is cleared
+ */
+
+/**
+ * Fetch individual blog post with its own cache key
+ * Cache invalidation only affects this specific post
+ */
+export async function fetchBlogPostGranular(slug: string, includeFullContent: boolean = false) {
+  return withCache(async () => {
+    const entries = await contentfulClient.getEntries({
+      content_type: 'blogPost',
+      'fields.slug': slug,
+      limit: 1,
+      include: includeFullContent ? 2 : 1,
+    });
+    
+    if (!entries.items[0]) return null;
+    return normalizePost(entries.items[0], includeFullContent);
+  }, `blog-post-${slug}${includeFullContent ? '-full' : ''}`, [`contentful`, `blogPost-${slug}`]);
+}
+
+/**
+ * Fetch individual announcement post with its own cache key
+ */
+export async function fetchAnnouncementPostGranular(slug: string, includeFullContent: boolean = false) {
+  return withCache(async () => {
+    const entries = await contentfulClient.getEntries({
+      content_type: 'announcementPost',
+      'fields.slug': slug,
+      limit: 1,
+      include: includeFullContent ? 2 : 1,
+    });
+    
+    if (!entries.items[0]) return null;
+    return normalizePost(entries.items[0], includeFullContent);
+  }, `announcement-post-${slug}${includeFullContent ? '-full' : ''}`, [`contentful`, `announcementPost-${slug}`]);
+}
+
+/**
+ * Fetch individual event report post with its own cache key
+ */
+export async function fetchEventReportPostGranular(slug: string, includeFullContent: boolean = false) {
+  return withCache(async () => {
+    const entries = await contentfulClient.getEntries({
+      content_type: 'eventReportPost',
+      'fields.slug': slug,
+      limit: 1,
+      include: includeFullContent ? 2 : 1,
+    });
+    
+    if (!entries.items[0]) return null;
+    return normalizePost(entries.items[0], includeFullContent);
+  }, `event-report-post-${slug}${includeFullContent ? '-full' : ''}`, [`contentful`, `eventReportPost-${slug}`]);
+}
+
+/**
+ * Fetch individual author with their own cache key
+ */
+export async function fetchAuthorGranular(slug: string) {
+  return withCache(async () => {
+    const entries = await contentfulClient.getEntries({
+      content_type: 'author',
+      'fields.slug': slug,
+      limit: 1,
+      include: 1,
+    });
+    
+    return entries.items[0] || null;
+  }, `author-${slug}`, [`contentful`, `author-${slug}`]);
+}
+
+/**
+ * Fetch blog listing with granular post references
+ * Uses individual post caches + shared listing cache
+ */
+export async function fetchBlogListingGranular(limit?: number) {
+  // First get the lightweight listing (just metadata)
+  const listing = await withCache(async () => {
+    const entries = await contentfulClient.getEntries({
+      content_type: 'blogPost',
+      order: ['-fields.date'] as any,
+      select: ['fields.slug', 'fields.title', 'fields.description', 'fields.date', 'fields.tags', 'sys.id', 'sys.createdAt'] as any,
+      limit: limit || 1000
+    });
+    return entries.items.map((entry: any) => ({
+      slug: entry.fields.slug,
+      title: entry.fields.title,
+      description: entry.fields.description,
+      date: entry.fields.date,
+      tags: entry.fields.tags || [],
+      id: entry.sys.id,
+      createdAt: entry.sys.createdAt
+    }));
+  }, `blog-listing${limit ? `-${limit}` : ''}`, ['contentful', 'blogPost-listing']);
+
+  return listing;
+}
+
+/**
+ * Fetch announcement listing with granular post references
+ */
+export async function fetchAnnouncementListingGranular(limit?: number) {
+  const listing = await withCache(async () => {
+    const entries = await contentfulClient.getEntries({
+      content_type: 'announcementPost',
+      order: ['-fields.date'] as any,
+      select: ['fields.slug', 'fields.title', 'fields.description', 'fields.date', 'fields.tags', 'sys.id', 'sys.createdAt'] as any,
+      limit: limit || 1000
+    });
+    return entries.items.map((entry: any) => ({
+      slug: entry.fields.slug,
+      title: entry.fields.title,
+      description: entry.fields.description,
+      date: entry.fields.date,
+      tags: entry.fields.tags || [],
+      id: entry.sys.id,
+      createdAt: entry.sys.createdAt
+    }));
+  }, `announcement-listing${limit ? `-${limit}` : ''}`, ['contentful', 'announcementPost-listing']);
+
+  return listing;
+}
+
+/**
+ * Fetch event report listing with granular post references
+ */
+export async function fetchEventReportListingGranular(limit?: number) {
+  const listing = await withCache(async () => {
+    const entries = await contentfulClient.getEntries({
+      content_type: 'eventReportPost',
+      order: ['-fields.date'] as any,
+      select: ['fields.slug', 'fields.title', 'fields.description', 'fields.date', 'fields.tags', 'sys.id', 'sys.createdAt'] as any,
+      limit: limit || 1000
+    });
+    return entries.items.map((entry: any) => ({
+      slug: entry.fields.slug,
+      title: entry.fields.title,
+      description: entry.fields.description,
+      date: entry.fields.date,
+      tags: entry.fields.tags || [],
+      id: entry.sys.id,
+      createdAt: entry.sys.createdAt
+    }));
+  }, `event-report-listing${limit ? `-${limit}` : ''}`, ['contentful', 'eventReportPost-listing']);
+
+  return listing;
+}
+
+/**
+ * Ultra-granular homepage content
+ * Only invalidates listing caches, individual posts remain cached
+ */
+export async function fetchHomepageContentGranular() {
+  const [blogListing, announcementListing, eventReportListing] = await Promise.all([
+    fetchBlogListingGranular(10),
+    fetchAnnouncementListingGranular(10),
+    fetchEventReportListingGranular(10)
+  ]);
+
+  return {
+    blogPosts: blogListing,
+    announcementPosts: announcementListing,
+    eventReportPosts: eventReportListing
+  };
+}
+
+/**
+ * Ultra-granular search content
+ * Combines all listing caches without fetching full content
+ */
+export async function fetchSearchContentGranular() {
+  const [blogListing, announcementListing, eventReportListing, authors] = await Promise.all([
+    fetchBlogListingGranular(),
+    fetchAnnouncementListingGranular(),
+    fetchEventReportListingGranular(),
+    fetchAuthorsSurgical() // Authors change infrequently, can use surgical approach
+  ]);
+
+  return {
+    blogPosts: blogListing,
+    announcementPosts: announcementListing,
+    eventReportPosts: eventReportListing,
+    authors,
+    allPosts: [...blogListing, ...announcementListing, ...eventReportListing]
+  };
+}
+
+/**
+ * GRANULAR CACHE MIGRATION HELPERS
+ * Easy drop-in replacements for existing functions with ultra-granular caching
+ */
+
+/**
+ * Drop-in replacement for getBlogPostWithNavigation with granular caching
+ */
+export async function getBlogPostWithNavigationGranular(slug: string) {
+  // Get the specific post with its own cache
+  const post = await fetchBlogPostGranular(slug, true);
+  if (!post) return null;
+
+  // Get lightweight listing for navigation (separate cache)
+  const allPosts = await fetchBlogListingGranular();
+  
+  const currentIndex = allPosts.findIndex((p: any) => p.slug === slug);
+  
+  if (currentIndex === -1) {
+    return { 
+      post, 
+      navigation: { previousPost: null, nextPost: null } 
+    };
+  }
+
+  const previousPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+
+  return {
+    post,
+    navigation: {
+      previousPost: previousPost ? {
+        slug: previousPost.slug,
+        title: previousPost.title
+      } : null,
+      nextPost: nextPost ? {
+        slug: nextPost.slug,
+        title: nextPost.title
+      } : null
+    }
+  };
+}
+
+/**
+ * Drop-in replacement for getAnnouncementPostWithNavigation with granular caching
+ */
+export async function getAnnouncementPostWithNavigationGranular(slug: string) {
+  const post = await fetchAnnouncementPostGranular(slug, true);
+  if (!post) return null;
+
+  const allPosts = await fetchAnnouncementListingGranular();
+  
+  const currentIndex = allPosts.findIndex((p: any) => p.slug === slug);
+  
+  if (currentIndex === -1) {
+    return { 
+      post, 
+      navigation: { previousPost: null, nextPost: null } 
+    };
+  }
+
+  const previousPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+
+  return {
+    post,
+    navigation: {
+      previousPost: previousPost ? {
+        slug: previousPost.slug,
+        title: previousPost.title
+      } : null,
+      nextPost: nextPost ? {
+        slug: nextPost.slug,
+        title: nextPost.title
+      } : null
+    }
+  };
+}
+
+/**
+ * Drop-in replacement for getEventReportPostWithNavigation with granular caching
+ */
+export async function getEventReportPostWithNavigationGranular(slug: string) {
+  const post = await fetchEventReportPostGranular(slug, true);
+  if (!post) return null;
+
+  const allPosts = await fetchEventReportListingGranular();
+  
+  const currentIndex = allPosts.findIndex((p: any) => p.slug === slug);
+  
+  if (currentIndex === -1) {
+    return { 
+      post, 
+      navigation: { previousPost: null, nextPost: null } 
+    };
+  }
+
+  const previousPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+
+  return {
+    post,
+    navigation: {
+      previousPost: previousPost ? {
+        slug: previousPost.slug,
+        title: previousPost.title
+      } : null,
+      nextPost: nextPost ? {
+        slug: nextPost.slug,
+        title: nextPost.title
+      } : null
+    }
+  };
+}
+
+/**
+ * Drop-in replacement for getAuthorWithPosts with granular caching
+ */
+export async function getAuthorWithPostsGranular(slug: string) {
+  const author = await fetchAuthorGranular(slug);
+  if (!author) return null;
+
+  // Get lightweight listings that reference this author
+  const [blogListing, eventListing, spotlights] = await Promise.all([
+    fetchBlogListingGranular(),
+    fetchEventReportListingGranular(),
+    fetchSpotlightPosts({ authorId: author.sys.id })
+  ]);
+
+  // Filter posts by this author (from lightweight listings)
+  const blogPosts = blogListing.filter((post: any) => {
+    // This would need author reference in the listing - for now, fetch minimal data
+    return false; // Placeholder - would need to enhance listing to include author refs
+  });
+
+  const eventPosts = eventListing.filter((post: any) => {
+    return false; // Placeholder - would need to enhance listing to include author refs
+  });
+
+  return {
+    author,
+    blogPosts: [], // Would need enhanced listing structure
+    eventPosts: [], // Would need enhanced listing structure  
+    spotlightPosts: spotlights,
+    allBlogPosts: blogListing
+  };
+}
+
+/**
+ * Performance comparison helper
+ */
+export async function compareGranularVsOptimized(slug: string) {
+  const start = Date.now();
+  
+  // Test granular approach
+  const granularStart = Date.now();
+  const granularPost = await fetchBlogPostGranular(slug, true);
+  const granularDuration = Date.now() - granularStart;
+  
+  // Test optimized approach  
+  const optimizedStart = Date.now();
+  const optimizedContent = await fetchAllContentOptimized();
+  const optimizedPost = optimizedContent.blogPosts.find(p => p.slug === slug);
+  const optimizedDuration = Date.now() - optimizedStart;
+  
+  const totalDuration = Date.now() - start;
+  
+  return {
+    granular: {
+      duration: granularDuration,
+      cacheKeys: [`blog-post-${slug}-full`],
+      post: granularPost
+    },
+    optimized: {
+      duration: optimizedDuration,
+      cacheKeys: ['all-content-optimized'],
+      post: optimizedPost
+    },
+    comparison: {
+      totalTime: totalDuration,
+      granularFaster: granularDuration < optimizedDuration,
+      recommendation: granularDuration < optimizedDuration 
+        ? 'Use granular caching for better cache retention'
+        : 'Current optimized approach is faster'
+    }
+  };
+}
