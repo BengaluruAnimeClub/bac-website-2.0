@@ -117,7 +117,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         parentTitle: parentTitle,
         hasParent,
       };
-    }).filter((spotlight) => spotlight.hasParent).filter((spotlight) => spotlight.hasParent) // Only include spotlights with valid parent blogs
+    }).filter((spotlight) => spotlight.hasParent) // Only include spotlights with valid parent blogs
   ].sort((a, b) => {
     // Sort strictly by date descending, regardless of type
     if (a.date && b.date) return b.date.getTime() - a.date.getTime();
