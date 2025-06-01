@@ -5,11 +5,12 @@ import { posts, upcomingEventsPosts } from "#site/content";
 import { pastEventsPosts } from "#site/content";
 import Link from "next/link";
 import { PostItem } from "@/components/post-item";
-import { fetchHomepageContent } from "@/lib/contentful-api";
+import { fetchHomepageContentOptimized } from "@/lib/contentful-api";
 
 export default async function Home() {
-  // Fetch optimized homepage content in a single cached call
-  const { blogPosts: contentfulBlogs, announcementPosts: contentfulAnnouncements, eventReportPosts: contentfulEventReports } = await fetchHomepageContent();
+  // Fetch optimized homepage content using shared cache (single API call for all content)
+  // OPTIMIZATION: Uses shared cache instead of separate API calls
+  const { blogPosts: contentfulBlogs, announcementPosts: contentfulAnnouncements, eventReportPosts: contentfulEventReports } = await fetchHomepageContentOptimized();
 
   // Add type information for merging with local posts
   const normalizedBlogs = contentfulBlogs.map(post => ({ ...post, _type: "blog", body: "" }));

@@ -4,7 +4,7 @@ import { Tag } from "@/components/tag";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllTags, sortPosts, sortTagsByCount } from "@/lib/utils";
 import { Metadata } from "next";
-import { fetchBlogPosts as fetchContentfulPosts } from "@/lib/contentful-api";
+import { fetchBlogPostsOptimized } from "@/lib/contentful-api";
 
 export const metadata: Metadata = {
   title: "BAC · Blog",
@@ -24,32 +24,31 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const currentPage = Number(searchParams?.page) || 1;
   const search = searchParams?.search?.toLowerCase() || "";
 
-  // Fetch Contentful posts
-  const contentfulRaw = await fetchContentfulPosts();
-  // Normalize Contentful posts to match local post structure
-  const contentfulPosts = contentfulRaw.map((entry: any) => ({
-    slug: entry.fields.slug,
-    slugAsParams: entry.fields.slug, // for search index compatibility
-    date: entry.fields.date,
-    title: entry.fields.title,
-    description: entry.fields.description || "",
-    tags: Array.isArray(entry.fields.tags) ? entry.fields.tags : [],
-    published: true, // assume all Contentful posts are published
-    body: "", // Add dummy body for type compatibility
+  // Fetch Contentful posts using optimized cache-shared approach
+  // OPTIMIZATION: Uses shared cache instead of separate API call
+  const contentfulPosts = await fetchBlogPostsOptimized();
+  
+  // Posts are already normalized from the optimized function
+  let allPosts = contentfulPosts.map((post: any) => ({
+    slug: post.slug,
+    slugAsParams: post.slug,
+    date: post.date,
+    title: post.title,
+    description: post.description || "",
+    tags: Array.isArray(post.tags) ? post.tags : [],
+    published: true,
+    body: "",
   }));
-
-  // Only use Contentful posts
-  let allPosts = contentfulPosts;
 
   // Filter by search
   if (search) {
-    allPosts = allPosts.filter((post) =>
+    allPosts = allPosts.filter((post: any) =>
       post.title.toLowerCase().includes(search) ||
       (post.description && post.description.toLowerCase().includes(search))
     );
   }
 
-  const sortedPosts = sortPosts(allPosts.filter((post) => post.published));
+  const sortedPosts = sortPosts(allPosts.filter((post: any) => post.published));
   const paginatedPosts = sortedPosts.slice(
     (currentPage - 1) * POSTS_PER_PAGE,
     currentPage * POSTS_PER_PAGE

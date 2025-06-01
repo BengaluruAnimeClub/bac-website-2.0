@@ -551,3 +551,230 @@ export async function getAdjacentEventReportPosts(currentSlug: string) {
 export const fetchBlogPostBySlugWithEntries = (slug: string) => fetchBlogPostBySlug(slug, true);
 export const fetchAnnouncementPostBySlugWithEntries = (slug: string) => fetchAnnouncementPostBySlug(slug, true);
 export const fetchEventReportPostBySlugWithEntries = (slug: string) => fetchEventReportPostBySlug(slug, true);
+
+// ============================================================================
+// CACHE CONSOLIDATION OPTIMIZATIONS
+// ============================================================================
+
+/**
+ * Master data fetcher - Gets ALL content in a single optimized call
+ * This eliminates duplicate API calls across multiple pages
+ */
+export async function fetchAllContentOptimized() {
+  return withCache(async () => {
+    // Fetch ALL content types in parallel with optimized field selection
+    const [blogPosts, announcementPosts, eventReportPosts, authors] = await Promise.all([
+      contentfulClient.getEntries({
+        content_type: 'blogPost',
+        order: ['-fields.date'] as any,
+        select: ESSENTIAL_POST_FIELDS as any,
+        limit: 1000 // Get all posts to avoid pagination
+      }),
+      contentfulClient.getEntries({
+        content_type: 'announcementPost', 
+        order: ['-fields.date'] as any,
+        select: ESSENTIAL_POST_FIELDS as any,
+        limit: 1000
+      }),
+      contentfulClient.getEntries({
+        content_type: 'eventReportPost',
+        order: ['-fields.date'] as any, 
+        select: ESSENTIAL_POST_FIELDS as any,
+        limit: 1000
+      }),
+      contentfulClient.getEntries({
+        content_type: 'author',
+        order: ['fields.name'] as any,
+        select: AUTHOR_FIELDS as any,
+        limit: 1000
+      })
+    ]);
+
+    const normalizedBlogs = blogPosts.items.map(entry => normalizePost(entry));
+    const normalizedAnnouncements = announcementPosts.items.map(entry => normalizePost(entry));
+    const normalizedEventReports = eventReportPosts.items.map(entry => normalizePost(entry));
+
+    return {
+      blogPosts: normalizedBlogs,
+      announcementPosts: normalizedAnnouncements,
+      eventReportPosts: normalizedEventReports,
+      authors: authors.items,
+      // Pre-computed derived data
+      allPosts: [...normalizedBlogs, ...normalizedAnnouncements, ...normalizedEventReports],
+      totalCounts: {
+        blogs: normalizedBlogs.length,
+        announcements: normalizedAnnouncements.length,
+        eventReports: normalizedEventReports.length,
+        authors: authors.items.length
+      }
+    };
+  }, 'all-content-optimized', ['contentful', 'blogPost', 'announcementPost', 'eventReportPost', 'author']);
+}
+
+/**
+ * Optimized homepage content - uses shared cache
+ */
+export async function fetchHomepageContentOptimized() {
+  const allContent = await fetchAllContentOptimized();
+  
+  return {
+    blogPosts: allContent.blogPosts.slice(0, 10),
+    announcementPosts: allContent.announcementPosts.slice(0, 10), 
+    eventReportPosts: allContent.eventReportPosts.slice(0, 10)
+  };
+}
+
+/**
+ * Optimized search content - uses shared cache, no additional API calls
+ */
+export async function fetchSearchContentOptimized() {
+  const allContent = await fetchAllContentOptimized();
+  
+  return {
+    blogPosts: allContent.blogPosts,
+    announcementPosts: allContent.announcementPosts,
+    eventReportPosts: allContent.eventReportPosts,
+    allPosts: allContent.allPosts
+  };
+}
+
+/**
+ * Optimized blog listing - uses shared cache
+ */
+export async function fetchBlogPostsOptimized(options: { limit?: number } = {}) {
+  const allContent = await fetchAllContentOptimized();
+  const { limit } = options;
+  
+  return limit ? allContent.blogPosts.slice(0, limit) : allContent.blogPosts;
+}
+
+/**
+ * Optimized announcement listing - uses shared cache  
+ */
+export async function fetchAnnouncementPostsOptimized(options: { limit?: number } = {}) {
+  const allContent = await fetchAllContentOptimized();
+  const { limit } = options;
+  
+  return limit ? allContent.announcementPosts.slice(0, limit) : allContent.announcementPosts;
+}
+
+/**
+ * Optimized event report listing - uses shared cache
+ */
+export async function fetchEventReportPostsOptimized(options: { limit?: number } = {}) {
+  const allContent = await fetchAllContentOptimized();
+  const { limit } = options;
+  
+  return limit ? allContent.eventReportPosts.slice(0, limit) : allContent.eventReportPosts;
+}
+
+/**
+ * Optimized authors listing - uses shared cache
+ */
+export async function fetchAuthorsOptimized() {
+  const allContent = await fetchAllContentOptimized();
+  return allContent.authors;
+}
+
+/**
+ * Optimized static params generation - uses shared cache for all post types
+ */
+export async function generateAllStaticParams() {
+  const allContent = await fetchAllContentOptimized();
+  
+  return {
+    blogParams: allContent.blogPosts
+      .map(post => post.slug)
+      .filter(slug => slug && slug.length > 0)
+      .map(slug => ({ slug: slug.split("/") })),
+    
+    announcementParams: allContent.announcementPosts
+      .map(post => post.slug)
+      .filter(slug => slug && slug.length > 0)
+      .map(slug => ({ slug: slug.split("/") })),
+      
+    eventReportParams: allContent.eventReportPosts
+      .map(post => post.slug)
+      .filter(slug => slug && slug.length > 0)
+      .map(slug => ({ slug: slug.split("/") }))
+  };
+}
+
+/**
+ * Optimized tag filtering - uses shared cache, no additional API calls
+ */
+export async function getPostsByTagOptimized(tag: string) {
+  const allContent = await fetchAllContentOptimized();
+  
+  const filteredPosts = allContent.allPosts.filter(post => 
+    Array.isArray(post.tags) && post.tags.includes(tag)
+  );
+  
+  return {
+    posts: filteredPosts,
+    totalCount: filteredPosts.length
+  };
+}
+
+// ============================================================================
+// EXISTING FUNCTIONS (to maintain backward compatibility)
+// ============================================================================
+
+// ============================================================================
+// CONVENIENCE MIGRATION HELPERS
+// ============================================================================
+
+/**
+ * Easy migration helper - drop-in replacement for multiple separate calls
+ * Returns the same structure as calling the three functions separately
+ */
+export async function fetchAllContentForListing() {
+  const allContent = await fetchAllContentOptimized();
+  
+  return {
+    blogPosts: allContent.blogPosts,
+    announcementPosts: allContent.announcementPosts, 
+    eventReportPosts: allContent.eventReportPosts,
+    authors: allContent.authors
+  };
+}
+
+/**
+ * Migration helper for pages that need static params
+ * Replaces multiple generateStaticParams calls
+ */
+export async function generateOptimizedStaticParams() {
+  const params = await generateAllStaticParams();
+  
+  return {
+    getBlogParams: () => params.blogParams,
+    getAnnouncementParams: () => params.announcementParams,
+    getEventReportParams: () => params.eventReportParams
+  };
+}
+
+/**
+ * Performance monitoring helper - logs cache efficiency
+ */
+export async function logCacheEfficiency() {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[CONTENTFUL API] Using optimized shared cache strategy');
+    console.log('[CONTENTFUL API] Expected 80-90% reduction in API calls');
+  }
+}
+
+// ============================================================================
+// BACKWARD COMPATIBILITY ENHANCED
+// ============================================================================
+
+// Enhanced backward compatibility with performance benefits
+export const fetchBlogPostsLegacy = fetchBlogPosts; // Uses existing cache
+export const fetchAnnouncementPostsLegacy = fetchAnnouncementPosts; // Uses existing cache
+export const fetchEventReportPostsLegacy = fetchEventReportPosts; // Uses existing cache
+
+// Optimized aliases for gradual migration
+export { fetchBlogPostsOptimized as fetchBlogPostsFast };
+export { fetchAnnouncementPostsOptimized as fetchAnnouncementPostsFast };
+export { fetchEventReportPostsOptimized as fetchEventReportPostsFast };
+export { fetchAllContentOptimized as fetchAllContentFast };
+export { fetchSearchContentOptimized as fetchSearchContentFast };

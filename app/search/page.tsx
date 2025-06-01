@@ -1,6 +1,6 @@
 import { PostItem } from "@/components/post-item";
 import { Metadata } from "next";
-import { fetchBlogPosts, fetchAnnouncementPosts, fetchEventReportPosts } from "@/lib/contentful-api";
+import { fetchSearchContentOptimized } from "@/lib/contentful-api";
 
 export const metadata: Metadata = {
   title: "Search | BAC",
@@ -15,12 +15,9 @@ interface SearchPageProps {
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const search = searchParams?.search?.toLowerCase() || "";
-  // Fetch Contentful posts
-  const [contentfulBlogs, contentfulAnnouncements, contentfulEventReports] = await Promise.all([
-    fetchBlogPosts(),
-    fetchAnnouncementPosts(),
-    fetchEventReportPosts(),
-  ]);
+  // Fetch Contentful posts using optimized cache-shared approach
+  // OPTIMIZATION: Single cache lookup instead of 3 separate API calls
+  const { blogPosts: contentfulBlogs, announcementPosts: contentfulAnnouncements, eventReportPosts: contentfulEventReports } = await fetchSearchContentOptimized();
   // Normalize Contentful posts
   type PostWithSection = {
     slug: string;
