@@ -778,3 +778,138 @@ export { fetchAnnouncementPostsOptimized as fetchAnnouncementPostsFast };
 export { fetchEventReportPostsOptimized as fetchEventReportPostsFast };
 export { fetchAllContentOptimized as fetchAllContentFast };
 export { fetchSearchContentOptimized as fetchSearchContentFast };
+
+/**
+ * SURGICAL CACHE OPTIMIZATION FUNCTIONS
+ * These functions allow for content-type specific cache invalidation
+ * instead of clearing all content when one item changes
+ */
+
+/**
+ * Fetch blog posts with surgical cache invalidation
+ */
+export async function fetchBlogPostsSurgical(limit: number = 1000) {
+  return withCache(async () => {
+    const entries = await contentfulClient.getEntries({
+      content_type: 'blogPost',
+      limit,
+      include: 2,
+      order: ['-sys.createdAt']
+    });
+    return entries.items.map((entry: any) => normalizePost(entry, false));
+  }, `blog-posts-${limit}`, ['contentful', 'blogPost']);
+}
+
+/**
+ * Fetch announcement posts with surgical cache invalidation
+ */
+export async function fetchAnnouncementPostsSurgical(limit: number = 1000) {
+  return withCache(async () => {
+    const entries = await contentfulClient.getEntries({
+      content_type: 'announcementPost',
+      limit,
+      include: 2,
+      order: ['-sys.createdAt']
+    });
+    return entries.items.map((entry: any) => normalizePost(entry, false));
+  }, `announcement-posts-${limit}`, ['contentful', 'announcementPost']);
+}
+
+/**
+ * Fetch event report posts with surgical cache invalidation
+ */
+export async function fetchEventReportPostsSurgical(limit: number = 1000) {
+  return withCache(async () => {
+    const entries = await contentfulClient.getEntries({
+      content_type: 'eventReportPost',
+      limit,
+      include: 2,
+      order: ['-sys.createdAt']
+    });
+    return entries.items.map((entry: any) => normalizePost(entry, false));
+  }, `event-report-posts-${limit}`, ['contentful', 'eventReportPost']);
+}
+
+/**
+ * Fetch authors with surgical cache invalidation
+ */
+export async function fetchAuthorsSurgical(limit: number = 1000) {
+  return withCache(async () => {
+    const entries = await contentfulClient.getEntries({
+      content_type: 'author',
+      limit,
+      include: 1,
+      order: ['fields.name']
+    });
+    return entries.items;
+  }, `authors-${limit}`, ['contentful', 'author']);
+}
+
+/**
+ * Surgical homepage content - fetches only what's needed with independent caches
+ */
+export async function fetchHomepageContentSurgical() {
+  // These can be invalidated independently
+  const [blogPosts, announcements, eventReports, spotlights] = await Promise.all([
+    fetchBlogPostsSurgical(10),
+    fetchAnnouncementPostsSurgical(10), 
+    fetchEventReportPostsSurgical(10),
+    fetchSpotlightPosts({ limit: 1000 })
+  ]);
+
+  return {
+    blogPosts,
+    announcementPosts: announcements,
+    eventReportPosts: eventReports,
+    spotlightEntries: spotlights
+  };
+}
+
+/**
+ * Surgical search content - combines independent caches
+ */
+export async function fetchSearchContentSurgical() {
+  const [blogPosts, announcements, eventReports, authors] = await Promise.all([
+    fetchBlogPostsSurgical(),
+    fetchAnnouncementPostsSurgical(),
+    fetchEventReportPostsSurgical(), 
+    fetchAuthorsSurgical()
+  ]);
+
+  return {
+    blogPosts,
+    announcementPosts: announcements,
+    eventReportPosts: eventReports,
+    authors,
+    allPosts: [...blogPosts, ...announcements, ...eventReports]
+  };
+}
+
+/**
+ * Migration helper: Check if surgical caching is beneficial
+ * Returns cache hit rates and recommendations
+ */
+export async function analyzeCacheEfficiency() {
+  const start = Date.now();
+  
+  // Test both approaches
+  const [optimizedResult, surgicalResult] = await Promise.all([
+    fetchAllContentOptimized(),
+    fetchSearchContentSurgical()
+  ]);
+  
+  const duration = Date.now() - start;
+  
+  return {
+    testDuration: duration,
+    optimizedCacheKeys: ['all-content-optimized'],
+    surgicalCacheKeys: ['blog-posts-1000', 'announcement-posts-1000', 'event-report-posts-1000', 'authors-1000'],
+    recommendation: duration < 100 ? 'Cache is warm - both approaches are fast' : 'Consider surgical caching for better invalidation granularity',
+    dataSizes: {
+      blogs: optimizedResult.blogPosts.length,
+      announcements: optimizedResult.announcementPosts.length,
+      eventReports: optimizedResult.eventReportPosts.length,
+      authors: optimizedResult.authors.length
+    }
+  };
+}

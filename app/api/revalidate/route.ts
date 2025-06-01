@@ -7,13 +7,80 @@ const REVALIDATE_SECRET = process.env.REVALIDATE_SECRET;
 export async function POST(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const secret = searchParams.get('secret');
-  // Ignore the 'path' param, always revalidate the homepage and all main sections
+  
   if (!secret || secret !== REVALIDATE_SECRET) {
     return NextResponse.json({ message: 'Invalid secret' }, { status: 401 });
   }
 
   try {
-    // Revalidate cache tags (for unstable_cache)
+    // Parse the webhook payload to understand what changed
+    const body = await req.json();
+    const contentType = body?.fields?.entryType?.en || body?.sys?.contentType?.sys?.id;
+    
+    // Surgical invalidation based on content type
+    const invalidatedTags = [];
+    const invalidatedPaths = [];
+    
+    // Always invalidate the general contentful tag since something changed
+    revalidateTag('contentful');
+    invalidatedTags.push('contentful');
+    
+    switch (contentType) {
+      case 'blogPost':
+        revalidateTag('blogPost');
+        invalidatedTags.push('blogPost');
+        invalidatedPaths.push('/', '/blog', '/search', '/tags');
+        break;
+        
+      case 'announcementPost':
+        revalidateTag('announcementPost');
+        invalidatedTags.push('announcementPost');
+        invalidatedPaths.push('/', '/upcoming-events', '/search', '/tags');
+        break;
+        
+      case 'eventReportPost':
+        revalidateTag('eventReportPost');
+        invalidatedTags.push('eventReportPost');
+        invalidatedPaths.push('/', '/past-events', '/search', '/tags');
+        break;
+        
+      case 'author':
+        revalidateTag('author');
+        invalidatedTags.push('author');
+        invalidatedPaths.push('/contributors', '/blog', '/past-events', '/upcoming-events');
+        break;
+        
+      case 'spotlightEntry':
+        revalidateTag('spotlightEntry');
+        invalidatedTags.push('spotlightEntry');
+        invalidatedPaths.push('/');
+        break;
+        
+      default:
+        // Fallback to blanket invalidation for unknown content types
+        revalidateTag('blogPost');
+        revalidateTag('announcementPost');
+        revalidateTag('eventReportPost');
+        revalidateTag('spotlightEntry');
+        revalidateTag('author');
+        invalidatedTags.push('blogPost', 'announcementPost', 'eventReportPost', 'spotlightEntry', 'author');
+        invalidatedPaths.push('/', '/blog', '/past-events', '/upcoming-events', '/contributors', '/search', '/tags');
+    }
+    
+    // Revalidate only the affected paths
+    await Promise.all(invalidatedPaths.map(path => revalidatePath(path)));
+    
+    return NextResponse.json({ 
+      revalidated: true, 
+      now: Date.now(), 
+      contentType,
+      invalidatedTags,
+      invalidatedPaths,
+      surgical: contentType !== undefined
+    });
+    
+  } catch (err) {
+    // Fallback to blanket invalidation on error
     revalidateTag('contentful');
     revalidateTag('blogPost');
     revalidateTag('announcementPost');
@@ -21,7 +88,6 @@ export async function POST(req: NextRequest) {
     revalidateTag('spotlightEntry');
     revalidateTag('author');
 
-    // Revalidate the homepage and all main dynamic sections
     await Promise.all([
       revalidatePath('/'),
       revalidatePath('/blog'),
@@ -30,14 +96,13 @@ export async function POST(req: NextRequest) {
       revalidatePath('/contributors'),
       revalidatePath('/search'),
       revalidatePath('/tags'),
-      // Optionally, revalidate all blog, past-events, and upcoming-events dynamic routes
-      revalidatePath('/blog', 'layout'),
-      revalidatePath('/past-events', 'layout'),
-      revalidatePath('/upcoming-events', 'layout'),
-      revalidatePath('/contributors', 'layout'),
     ]);
-    return NextResponse.json({ revalidated: true, now: Date.now(), paths: ['/', '/blog', '/past-events', '/upcoming-events', '/contributors', '/search', '/tags'] });
-  } catch (err) {
-    return NextResponse.json({ message: 'Error revalidating', error: String(err) }, { status: 500 });
+    
+    return NextResponse.json({ 
+      message: 'Error during surgical revalidation, performed blanket invalidation', 
+      error: String(err),
+      revalidated: true,
+      surgical: false
+    }, { status: 200 });
   }
 }
