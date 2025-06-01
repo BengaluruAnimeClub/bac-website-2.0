@@ -1,6 +1,6 @@
 import { PostItem } from "@/components/post-item";
 import { Metadata } from "next";
-import { fetchBlogPosts, fetchAnnouncementPosts, fetchEventReportPosts } from "@/lib/contentful";
+import { fetchBlogPosts, fetchAnnouncementPosts, fetchEventReportPosts } from "@/lib/contentful-api";
 
 export const metadata: Metadata = {
   title: "Search | BAC",

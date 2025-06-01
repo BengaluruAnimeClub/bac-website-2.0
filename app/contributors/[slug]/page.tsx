@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getAuthorWithPosts } from "@/lib/contentful-authors";
+import { getAuthorWithPosts } from "@/lib/contentful-api";
 import Image from "next/image";
 import Link from "next/link";
 import { FaInstagram, FaGlobe } from "react-icons/fa";

@@ -5,7 +5,7 @@ import { posts, upcomingEventsPosts } from "#site/content";
 import { pastEventsPosts } from "#site/content";
 import Link from "next/link";
 import { PostItem } from "@/components/post-item";
-import { fetchHomepageContent } from "@/lib/contentful-homepage";
+import { fetchHomepageContent } from "@/lib/contentful-api";
 
 export default async function Home() {
   // Fetch optimized homepage content in a single cached call

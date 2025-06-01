@@ -1,4 +1,4 @@
-import { fetchAuthors } from "@/lib/contentful-authors";
+import { fetchAuthors } from "@/lib/contentful-api";
 import Link from "next/link";
 import Image from "next/image";
 

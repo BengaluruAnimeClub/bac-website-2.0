@@ -4,7 +4,7 @@ import { Tag } from "@/components/tag";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllTags, sortPosts, sortTagsByCount } from "@/lib/utils";
 import { Metadata } from "next";
-import { fetchEventReportPosts } from "@/lib/contentful";
+import { fetchEventReportPosts } from "@/lib/contentful-api";
 
 export const metadata: Metadata = {
   title: "BAC · Archives",
