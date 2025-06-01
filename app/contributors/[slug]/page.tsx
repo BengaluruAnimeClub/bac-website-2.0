@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import { getAuthorWithPosts } from "@/lib/contentful-authors";
-import { fetchBlogPosts } from "@/lib/contentful";
 import Image from "next/image";
 import Link from "next/link";
 import { FaInstagram, FaGlobe } from "react-icons/fa";
@@ -49,13 +48,13 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
   const result = await getAuthorWithPosts(params.slug);
   if (!result || !result.author || !result.author.fields) return notFound();
 
-  const { author, blogPosts, eventPosts, spotlightPosts } = result;
+  const { author, blogPosts, eventPosts, spotlightPosts, allBlogPosts } = result;
 
   // Author fields
   const { name, avatar, bio, socialLinks } = author.fields;
 
-  // We still need to fetch all blog posts to find parent blogs for spotlight posts
-  const allBlogPosts = await fetchBlogPosts();
+  // Use cached blog posts data instead of making another API call
+  // const allBlogPosts = await fetchBlogPosts(); // REMOVED - now using cached data
 
   // Filter posts by this author (already optimized from Contentful query)
   const authoredBlogs = blogPosts;

@@ -35,6 +35,15 @@ export async function fetchAuthorBySlug(slug: string) {
   return entries.items[0] || null;
 }
 
+// Cached function to get minimal blog post data for spotlight parent lookup
+async function getBlogPostsForSpotlightLookup() {
+  return withCache(() => contentfulClient.getEntries({
+    content_type: 'blogPost',
+    select: ['fields.slug', 'fields.title', 'fields.entries', 'sys.id'], // Only essential fields
+    order: ['-fields.date'] as any,
+  }), 'blogPostsMinimal', ['blogPost']);
+}
+
 // Optimized function to get author with their posts in minimal API calls
 export async function getAuthorWithPosts(slug: string) {
   // Get the author first
@@ -42,7 +51,7 @@ export async function getAuthorWithPosts(slug: string) {
   if (!author) return null;
 
   // Fetch posts by this author directly from Contentful (much more efficient than fetching all posts)
-  const [blogPosts, eventPosts, spotlightPosts] = await Promise.all([
+  const [blogPosts, eventPosts, spotlightPosts, minimalBlogPosts] = await Promise.all([
     // Blog posts by author
     withCache(() => contentfulClient.getEntries({
       content_type: 'blogPost',
@@ -63,13 +72,17 @@ export async function getAuthorWithPosts(slug: string) {
       'fields.author.sys.id': author.sys.id,
       order: ['-fields.date'] as any,
       include: 1 // Include parent blog for spotlight posts
-    }), `authorSpotlightPosts-${author.sys.id}`, ['spotlightEntry'])
+    }), `authorSpotlightPosts-${author.sys.id}`, ['spotlightEntry']),
+
+    // Get minimal blog post data for spotlight parent lookup
+    getBlogPostsForSpotlightLookup()
   ]);
 
   return {
     author,
     blogPosts: blogPosts.items,
     eventPosts: eventPosts.items,
-    spotlightPosts: spotlightPosts.items
+    spotlightPosts: spotlightPosts.items,
+    allBlogPosts: minimalBlogPosts.items // Cached minimal blog posts for parent lookup
   };
 }
