@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllTags, getPostsByTagSlug, sortTagsByCount } from "@/lib/utils";
 import { slug } from "github-slugger";
 import { Metadata } from "next";
-import { fetchBlogPosts as fetchContentfulPosts } from "@/lib/contentful";
+import { fetchBlogPosts as fetchContentfulPosts } from "@/lib/contentful-api";
 
 interface TagPageProps {
   params: {

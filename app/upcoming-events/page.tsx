@@ -4,7 +4,7 @@ import { Tag } from "@/components/tag";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllTags, sortPosts, sortTagsByCount } from "@/lib/utils";
 import { Metadata } from "next";
-import { fetchAnnouncementPosts } from "@/lib/contentful";
+import { fetchAnnouncementPostsOptimized } from "@/lib/contentful-api";
 
 export const metadata: Metadata = {
   title: "BAC · Events",
@@ -22,24 +22,23 @@ interface BlogPageProps {
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   const currentPage = Number(searchParams?.page) || 1;
 
-  // Fetch Contentful announcement posts
-  const contentfulAnnouncementPosts = await fetchAnnouncementPosts();
-  // Normalize Contentful posts
-  const normalizedContentful = contentfulAnnouncementPosts.map((entry: any) => {
-    const fields = entry.fields;
-    return {
-      slug: String(fields.slug ?? ""),
-      slugAsParams: String(fields.slug ?? ""),
-      date: String(fields.date ?? ""),
-      title: String(fields.title ?? ""),
-      description: typeof fields.description === "string" ? fields.description : "",
-      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
-      published: true,
-      body: fields.content ?? null,
-      author: fields.author?.fields?.name || "",
-      source: "contentful",
-    };
-  });
+  // Fetch Contentful announcement posts using optimized cache-shared approach
+  // OPTIMIZATION: Uses shared cache instead of separate API call
+  const contentfulAnnouncementPosts = await fetchAnnouncementPostsOptimized();
+  
+  // Normalize Contentful posts (posts are already normalized from optimized function)
+  const normalizedContentful = contentfulAnnouncementPosts.map((post: any) => ({
+    slug: String(post.slug ?? ""),
+    slugAsParams: String(post.slug ?? ""),
+    date: String(post.date ?? ""),
+    title: String(post.title ?? ""),
+    description: typeof post.description === "string" ? post.description : "",
+    tags: Array.isArray(post.tags) ? post.tags.filter((t: any) => typeof t === "string") : [],
+    published: true,
+    body: post.content ?? null,
+    author: post.author || "",
+    source: "contentful",
+  }));
 
   // Only use Contentful posts
   const allPosts = normalizedContentful;

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { fetchAnnouncementPosts, getAnnouncementPostWithNavigation } from "@/lib/contentful";
+import { fetchAnnouncementPosts, getAnnouncementPostWithNavigation } from "@/lib/contentful-api";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { Document } from "@contentful/rich-text-types";
 import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";

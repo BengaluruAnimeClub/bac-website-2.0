@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { fetchEventReportPostBySlugWithEntries, fetchEventReportPosts, getEventReportPostWithNavigation } from "@/lib/contentful";
+import { fetchEventReportPostBySlugWithEntries, fetchEventReportPosts, getEventReportPostWithNavigation } from "@/lib/contentful-api";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { Document } from "@contentful/rich-text-types";
 import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";

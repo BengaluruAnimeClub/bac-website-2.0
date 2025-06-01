@@ -4,7 +4,7 @@ import { siteConfig } from "@/config/site";
 import { Tag } from "@/components/tag";
 import { CommentSection } from "@/components/comment-section";
 import { BlogNavigation } from "@/components/blog-navigation";
-import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts, getBlogPostWithNavigation } from "@/lib/contentful";
+import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts, getBlogPostWithNavigation } from "@/lib/contentful-api";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
 import { BLOCKS } from "./contentful-blocks-enum";
@@ -410,7 +410,7 @@ export default async function PostPage({ params }: PostPageProps) {
               ) : (
                 <span>{author.name}</span>
               )}
-              {idx < post.authors.length - 1 && ', '}
+              {idx < (post.authors?.length ?? 0) - 1 && ', '}
             </span>
           ))}
         </div>
