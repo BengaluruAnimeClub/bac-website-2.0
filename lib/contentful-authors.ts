@@ -52,25 +52,28 @@ export async function getAuthorWithPosts(slug: string) {
 
   // Fetch posts by this author directly from Contentful (much more efficient than fetching all posts)
   const [blogPosts, eventPosts, spotlightPosts, minimalBlogPosts] = await Promise.all([
-    // Blog posts by author
+    // Blog posts by author - only fetch essential fields for contributor page
     withCache(() => contentfulClient.getEntries({
       content_type: 'blogPost',
       'fields.author.sys.id': author.sys.id,
       order: ['-fields.date'] as any,
+      select: ['fields.slug', 'fields.title', 'fields.description', 'fields.date', 'fields.tags', 'sys.id'] // Only essential fields
     }), `authorBlogPosts-${author.sys.id}`, ['blogPost']),
     
-    // Event report posts by author  
+    // Event report posts by author - only fetch essential fields
     withCache(() => contentfulClient.getEntries({
       content_type: 'eventReportPost',
       'fields.author.sys.id': author.sys.id,
       order: ['-fields.date'] as any,
+      select: ['fields.slug', 'fields.title', 'fields.description', 'fields.date', 'fields.tags', 'sys.id'] // Only essential fields
     }), `authorEventPosts-${author.sys.id}`, ['eventReportPost']),
     
-    // Spotlight posts by author
+    // Spotlight posts by author - only fetch essential fields
     withCache(() => contentfulClient.getEntries({
       content_type: 'spotlightEntry',
       'fields.author.sys.id': author.sys.id,
       order: ['-fields.date'] as any,
+      select: ['fields.title', 'fields.content', 'fields.date', 'sys.id'], // Essential fields for spotlight
       include: 1 // Include parent blog for spotlight posts
     }), `authorSpotlightPosts-${author.sys.id}`, ['spotlightEntry']),
 
