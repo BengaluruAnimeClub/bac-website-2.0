@@ -94,6 +94,8 @@ export default async function ContactUsPage() {
       </ul>
 
     </div>
+
+    For promotional collaborations, please check out our <a href="/contact-us/collaboration-guidelines">&nbsp;<u>collaboration guidelines page</u></a>.
   </div>
   );
 }
