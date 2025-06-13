@@ -55,7 +55,7 @@ export default async function ContactUsPage() {
         <br/>
         
         <li style = {purposeStyle}>
-          Collaborations & Marketing Inquiries
+          Collaborations & Marketing
         </li>
 
         <li style = {buttonStyle}>
@@ -94,6 +94,10 @@ export default async function ContactUsPage() {
       </ul>
 
     </div>
+
+    <center>
+      For promotional collaborations, please check out our <a href="/contact-us/collaboration-guidelines">&nbsp;<u>collaboration guidelines page</u></a>.
+    </center>
   </div>
   );
 }
