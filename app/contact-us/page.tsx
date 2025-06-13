@@ -55,7 +55,7 @@ export default async function ContactUsPage() {
         <br/>
         
         <li style = {purposeStyle}>
-          Collaborations & Marketing Inquiries
+          Collaborations & Marketing
         </li>
 
         <li style = {buttonStyle}>
