@@ -15,11 +15,11 @@ export default async function GuidelinesPage() {
 
   return (
     <div className="container max-w-4xl py-6 lg:py-10">
-      <h1 className="block font-bold text-2xl lg:text-4xl text-center mb-4">
+      <h1 className="block font-bold text-2xl lg:text-4xl text-center mb-2">
         Collaboration Guidelines
       </h1>
 
-      <div className="text-medium text-lg py-4">
+      <div className="text-medium text-md py-4">
 
         <p>
           BAC welcomes collaborations with other communities, organizations, and events that align with our values and interests as an anime club. 
