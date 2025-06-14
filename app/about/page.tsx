@@ -94,7 +94,7 @@ const affiliated = [
   {
     name: "Bengaluru Foodie Community",
     imageSrc: "/images/affiliated/bfc.jpeg",
-    url: "https://chat.whatsapp.com/FJLaNpIeu2aAtD1ZWERNV4",
+    url: "https://chat.whatsapp.com/IctnGQfw4OkFlawMl0qmBS",
   },
   {
     name: "Minna Shuugou",
