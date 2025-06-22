@@ -628,13 +628,39 @@ export async function fetchHomepageContentOptimized() {
  * Optimized search content - uses shared cache, no additional API calls
  */
 export async function fetchSearchContentOptimized() {
-  const allContent = await fetchAllContentOptimized();
-  
+  // Fetch all content, but include 'fields.content' for search page
+  const SEARCH_POST_FIELDS = [
+    ...ESSENTIAL_POST_FIELDS,
+    'fields.content',
+  ];
+  const [blogPosts, announcementPosts, eventReportPosts] = await Promise.all([
+    contentfulClient.getEntries({
+      content_type: 'blogPost',
+      order: ['-fields.date'] as any,
+      select: SEARCH_POST_FIELDS as any,
+      limit: 1000
+    }),
+    contentfulClient.getEntries({
+      content_type: 'announcementPost',
+      order: ['-fields.date'] as any,
+      select: SEARCH_POST_FIELDS as any,
+      limit: 1000
+    }),
+    contentfulClient.getEntries({
+      content_type: 'eventReportPost',
+      order: ['-fields.date'] as any,
+      select: SEARCH_POST_FIELDS as any,
+      limit: 1000
+    })
+  ]);
+  const normalizedBlogs = blogPosts.items.map(entry => normalizePost(entry, true));
+  const normalizedAnnouncements = announcementPosts.items.map(entry => normalizePost(entry, true));
+  const normalizedEventReports = eventReportPosts.items.map(entry => normalizePost(entry, true));
   return {
-    blogPosts: allContent.blogPosts,
-    announcementPosts: allContent.announcementPosts,
-    eventReportPosts: allContent.eventReportPosts,
-    allPosts: allContent.allPosts
+    blogPosts: normalizedBlogs,
+    announcementPosts: normalizedAnnouncements,
+    eventReportPosts: normalizedEventReports,
+    allPosts: [...normalizedBlogs, ...normalizedAnnouncements, ...normalizedEventReports],
   };
 }
 
