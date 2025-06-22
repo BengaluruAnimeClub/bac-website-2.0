@@ -31,44 +31,41 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     _section: string;
   };
   const normalizedBlogs: PostWithSection[] = contentfulBlogs.map((entry: any) => {
-    const fields = entry.fields;
     return {
-      slug: String(fields.slug ?? ""),
-      slugAsParams: String(fields.slug ?? ""),
-      date: String(fields.date ?? ""),
-      title: String(fields.title ?? ""),
-      description: typeof fields.description === "string" ? fields.description : "",
-      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
+      slug: String(entry.slug ?? ""),
+      slugAsParams: String(entry.slugAsParams ?? ""),
+      date: String(entry.date ?? ""),
+      title: String(entry.title ?? ""),
+      description: typeof entry.description === "string" ? entry.description : "",
+      tags: Array.isArray(entry.tags) ? entry.tags.filter((t: any) => typeof t === "string") : [],
       published: true,
-      body: fields.content ?? null,
+      body: entry.body ?? null,
       _section: "Blog",
     };
   });
   const normalizedAnnouncements: PostWithSection[] = contentfulAnnouncements.map((entry: any) => {
-    const fields = entry.fields;
     return {
-      slug: String(fields.slug ?? ""),
-      slugAsParams: String(fields.slug ?? ""),
-      date: String(fields.date ?? ""),
-      title: String(fields.title ?? ""),
-      description: typeof fields.description === "string" ? fields.description : "",
-      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
+      slug: String(entry.slug ?? ""),
+      slugAsParams: String(entry.slugAsParams ?? ""),
+      date: String(entry.date ?? ""),
+      title: String(entry.title ?? ""),
+      description: typeof entry.description === "string" ? entry.description : "",
+      tags: Array.isArray(entry.tags) ? entry.tags.filter((t: any) => typeof t === "string") : [],
       published: true,
-      body: fields.content ?? null,
+      body: entry.body ?? null,
       _section: "Events",
     };
   });
   const normalizedEventReports: PostWithSection[] = contentfulEventReports.map((entry: any) => {
-    const fields = entry.fields;
     return {
-      slug: String(fields.slug ?? ""),
-      slugAsParams: String(fields.slug ?? ""),
-      date: String(fields.date ?? ""),
-      title: String(fields.title ?? ""),
-      description: typeof fields.description === "string" ? fields.description : "",
-      tags: Array.isArray(fields.tags) ? fields.tags.filter((t: any) => typeof t === "string") : [],
+      slug: String(entry.slug ?? ""),
+      slugAsParams: String(entry.slugAsParams ?? ""),
+      date: String(entry.date ?? ""),
+      title: String(entry.title ?? ""),
+      description: typeof entry.description === "string" ? entry.description : "",
+      tags: Array.isArray(entry.tags) ? entry.tags.filter((t: any) => typeof t === "string") : [],
       published: true,
-      body: fields.content ?? null,
+      body: entry.body ?? null,
       _section: "Looking BAC",
     };
   });
