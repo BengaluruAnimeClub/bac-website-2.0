@@ -9,6 +9,7 @@ export const redirectTable: Record<string, string> = {
   whatsapp: 'https://chat.whatsapp.com/LK11ZuLjXJN0v6zRvew71W',
   wa: 'https://chat.whatsapp.com/LK11ZuLjXJN0v6zRvew71W',
   'whatsapp-channel': 'https://whatsapp.com/channel/0029Va4WaK1I1rcnkEFOnV35',
+  'clubhouse': 'https://chat.whatsapp.com/LsAeB6NjzNA995fiYk5DRd',
   'whatsapp-clubhouse': 'https://chat.whatsapp.com/LsAeB6NjzNA995fiYk5DRd',
   x: 'https://x.com/bengaluwu',
   twitter: 'https://x.com/bengaluwu',
