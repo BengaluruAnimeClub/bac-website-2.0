@@ -16,6 +16,7 @@ const profiles = [
     designation: "Advisor/Yapologist",
     imageSrc: "/images/pfps/hks.webp",
     bio: "Washed up admin and quizzer/quizmaster. Used to conduct Reikai with Sakaido. I like to yap about Idols and visual novels.",
+    href: "/contributors/hks",
   },
   {
     name: "Dx",
@@ -40,12 +41,14 @@ const profiles = [
     designation: "Web/Archival",
     imageSrc: "/images/pfps/arisu.jpg",
     bio: "Best known for yapping about Oreimo and Domekano in BAC groups. I maintain bac.moe.",
+    href: "/contributors/aravind",
   },
   {
     name: "Sakaido",
     designation: "Admin/Sensei",
     imageSrc: "/images/pfps/sakaido.webp",
     bio: "Former admin, now an advisor from afar. Probably best known for organising BAC Reikai and conducting quizzes. May or may not have designed the test for new admins. If I could only choose five essential works, they would be: Mushishi, Yuru Camp, Shinsekai Yori, Maiko-san chi no Makanai-san, and Hanshin: Half God. If you're reading this, check one of these out. You will thank me later.",
+    href: "/contributors/sakaido",
   },
   {
     name: "Atharva",
@@ -70,6 +73,7 @@ const profiles = [
     designation: "Moderation/Meetups",
     imageSrc: "/images/pfps/debarka.webp",
     bio: "Long time BAC member here! Avid figurine and manga collector. Ocassionally active, generally lurking in the anime, manga, cinema and collectibles groups. Hit me up if you wanna talk about anything anime.",
+    href: "/contributors/debarka",
   },
   {
     name: "Christy",
@@ -138,6 +142,7 @@ export default async function AboutPage() {
             designation={profile.designation}
             imageSrc={profile.imageSrc}
             bio={profile.bio}
+            href={profile.href}
           />
         ))}
       </div>
