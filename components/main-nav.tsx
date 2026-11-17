@@ -65,7 +65,7 @@ export function MainNav() {
       >
         Archive
       </Link>
-      <Link
+      {/* <Link
         href="/upcoming-events"
         className={cn(
           "text-sm font-medium transition-colors hover:text-primary hidden sm:inline-block",
@@ -73,7 +73,7 @@ export function MainNav() {
         )}
       >
         Upcoming
-      </Link>
+      </Link> */}
       {/* Gallery dropdown */}
       <div className="relative group/gal hidden sm:inline-block focus-within:z-50 hover:z-50">
         <button

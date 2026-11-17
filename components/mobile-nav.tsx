@@ -84,9 +84,9 @@ export function MobileNav() {
             <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpenSheet} href="/past-events">
               Archive
             </MobileLink>
-            <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpenSheet} href="/upcoming-events">
+            {/* <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpenSheet} href="/upcoming-events">
               Upcoming
-            </MobileLink>
+            </MobileLink> */}
             {/* Gallery Dropdown */}
             <button
               type="button"
