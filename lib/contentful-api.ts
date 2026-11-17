@@ -87,9 +87,7 @@ const FULL_POST_FIELDS = [
 
 const SPOTLIGHT_FIELDS = [
   'fields.title',
-  'fields.header',
   'fields.content', 
-  'fields.footer',
   'fields.date',
   'sys.id'
 ];
@@ -165,9 +163,7 @@ function normalizePost(entry: any, includeFullContent: boolean = false): Normali
         }
         return {
           title: e.fields.title || "",
-          header: e.fields.header || null,
           content: e.fields.content || null,
-          footer: e.fields.footer || null,
           authors,
         };
       }

@@ -223,9 +223,7 @@ async function getPostFromParams(params: PostPageProps["params"]) {
           }
           return {
             title: e.fields.title || "",
-            header: e.fields.header || null,
             content: e.fields.content || null,
-            footer: e.fields.footer || null,
             authors,
           };
         }
@@ -396,19 +394,9 @@ export default async function PostPage({ params }: PostPageProps) {
                     )}
                   </h1>
                 </div>
-                {entry.header && isContentfulDocument(entry.header) && (
-                  <div className="mb-2">
-                    {documentToReactComponents(entry.header, contentfulRenderOptions)}
-                  </div>
-                )}
                 {entry.content && isContentfulDocument(entry.content) && (
                   <div className="mb-2">
                     {documentToReactComponents(entry.content, contentfulRenderOptions)}
-                  </div>
-                )}
-                {entry.footer && isContentfulDocument(entry.footer) && (
-                  <div className="mb-2">
-                    {documentToReactComponents(entry.footer, contentfulRenderOptions)}
                   </div>
                 )}
                 {entry.authors && entry.authors.length > 0 && (
