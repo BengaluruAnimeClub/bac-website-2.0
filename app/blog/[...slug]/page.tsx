@@ -414,7 +414,7 @@ export default async function PostPage({ params }: PostPageProps) {
                     ))}
                   </div>
                 )}
-                <hr className="my-4 mt-8 mb-8 border-t-2" />
+                <hr style={{ marginTop: '2rem', marginBottom: '2rem', width: '50%', marginLeft: 'auto', marginRight: 'auto', borderTop: '4px solid #f05a78' }} />
               </div>
             );
           })}
