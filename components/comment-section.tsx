@@ -56,7 +56,8 @@ export function CommentSection({ slug }: { slug: string }) {
     });
     setLoading(false);
     if (!res.ok) {
-      setError("Failed to post comment. Please try again.");
+      const data = await res.json().catch(() => null);
+      setError(data?.error || "Failed to post comment. Please try again.");
       return;
     }
     setMessage("");
