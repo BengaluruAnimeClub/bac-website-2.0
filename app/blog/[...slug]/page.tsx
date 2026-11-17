@@ -20,6 +20,14 @@ interface PostPageProps {
   };
 }
 
+/** Converts a spotlight entry title to a URL-safe anchor id. */
+function slugifyTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 function isContentfulDocument(doc: any): doc is { nodeType: typeof BLOCKS.DOCUMENT; content: any[]; data: any } {
   return (
     doc &&
@@ -375,34 +383,48 @@ export default async function PostPage({ params }: PostPageProps) {
       {/* Render spotlight entries if present */}
       {post.source === "contentful" && Array.isArray(post.spotlightEntries) && post.spotlightEntries.length > 0 ? (
         <div>
-          {post.spotlightEntries.map((entry, idx) => (
-            <div key={idx} style={{marginBottom: '32px'}}>
-              <div style={{marginBottom: '-10px', marginTop: '0px'}}>
-                <h1 className="text-3xl font-extrabold">{entry.title}</h1>
+          {post.spotlightEntries.map((entry, idx) => {
+            const anchorId = slugifyTitle(entry.title || '');
+            return (
+              <div key={idx} style={{marginBottom: '32px'}}>
+                <div style={{marginBottom: '-10px', marginTop: '0px'}}>
+                  <h1 id={anchorId} className="text-3xl font-extrabold group flex items-center gap-2 scroll-mt-20">
+                    {entry.title}
+                    {anchorId && (
+                      <a
+                        href={`#${anchorId}`}
+                        className="opacity-0 group-hover:opacity-60 transition-opacity text-muted-foreground no-underline hover:text-foreground"
+                        aria-label={`Link to "${entry.title}"`}
+                      >
+                        #
+                      </a>
+                    )}
+                  </h1>
+                </div>
+                {entry.content && isContentfulDocument(entry.content) && (
+                  <div className="mb-2">
+                    {documentToReactComponents(entry.content, contentfulRenderOptions)}
+                  </div>
+                )}
+                {entry.authors && entry.authors.length > 0 && (
+                  <div className="text-base text-muted-foreground mb-2">
+                    <b>Article by:</b>{' '}
+                    {entry.authors.map((author: any, idx: number) => (
+                      <span key={author.slug || author.name}>
+                        {author.slug ? (
+                          <a href={`/contributors/${author.slug}`} className="underline hover:text-blue-700">{author.name}</a>
+                        ) : (
+                          <span>{author.name}</span>
+                        )}
+                        {idx < entry.authors.length - 1 && ', '}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <hr className="my-4 mt-8 mb-8 border-t-2" />
               </div>
-              {entry.content && isContentfulDocument(entry.content) && (
-                <div className="mb-2">
-                  {documentToReactComponents(entry.content, contentfulRenderOptions)}
-                </div>
-              )}
-              {entry.authors && entry.authors.length > 0 && (
-                <div className="text-base text-muted-foreground mb-2">
-                  <b>Article by:</b>{' '}
-                  {entry.authors.map((author: any, idx: number) => (
-                    <span key={author.slug || author.name}>
-                      {author.slug ? (
-                        <a href={`/contributors/${author.slug}`} className="underline hover:text-blue-700">{author.name}</a>
-                      ) : (
-                        <span>{author.name}</span>
-                      )}
-                      {idx < entry.authors.length - 1 && ', '}
-                    </span>
-                  ))}
-                </div>
-              )}
-              <hr className="my-4 mt-8 mb-8 border-t-2" />
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : null}
       {/* Render blog content if present */}
