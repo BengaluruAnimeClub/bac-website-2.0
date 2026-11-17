@@ -7,12 +7,11 @@ import { BlogNavigation } from "@/components/blog-navigation";
 import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts, getBlogPostWithNavigation } from "@/lib/contentful-api";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { extractOgImageFromContentfulBodyWithFallback, slugify } from "@/lib/utils";
-import parse from "html-react-parser";
 import { BLOCKS, type Document } from "@contentful/rich-text-types";
 import { ShareButtons } from "@/components/share-buttons";
 import "@/styles/mdx.css";
 import { Calendar } from "lucide-react";
-import { headingRenderNodes } from "@/components/rich-text-heading";
+import { headingRenderNodes, parseHtmlWithHeadings } from "@/components/rich-text-heading";
 
 interface PostPageProps {
   params: {
@@ -162,13 +161,18 @@ const contentfulRenderOptions = {
     },
     'hr': () => <hr className="my-4 mt-8 mb-8 border-t-2" />,
     'paragraph': (node: any, children: any) => {
+      const firstVal = node.content?.[0]?.value;
       if (
+        typeof firstVal === "string" &&
         node.content.length === 1 &&
-        typeof node.content[0].value === "string" &&
-        node.content[0].value.trim().startsWith("<") &&
-        node.content[0].value.trim().endsWith(">")
+        firstVal.trim().startsWith("<") &&
+        firstVal.trim().endsWith(">")
       ) {
-        return <>{parse(node.content[0].value)}</>;
+        return <>{parseHtmlWithHeadings(firstVal)}</>;
+      }
+      const fullText = Array.isArray(node.content) ? node.content.map((c: any) => c.value || '').join('') : '';
+      if (fullText.trim().startsWith("<") && fullText.trim().endsWith(">")) {
+        return <>{parseHtmlWithHeadings(fullText)}</>;
       }
       if (node.content.length === 1 && node.content[0].value === '\n') {
         return <br />;
@@ -176,14 +180,15 @@ const contentfulRenderOptions = {
       return <p>{children}</p>;
     },
     'code': (node: any) => {
+      const val = node.content?.[0]?.value;
       if (
-        typeof node.content[0]?.value === "string" &&
-        node.content[0].value.trim().startsWith("<") &&
-        node.content[0].value.trim().endsWith(">")
+        typeof val === "string" &&
+        val.trim().startsWith("<") &&
+        val.trim().endsWith(">")
       ) {
-        return <>{parse(node.content[0].value)}</>;
+        return <>{parseHtmlWithHeadings(val)}</>;
       }
-      return <pre><code>{node.content[0]?.value}</code></pre>;
+      return <pre><code>{val}</code></pre>;
     },
   },
   renderText: (text: string) => {
