@@ -33,13 +33,13 @@ export default async function Home() {
     <>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:mt-10 lg:py-6">
 
-        <div style= {{'display': 'flex', 'justifyContent': 'center'}}>
-          <img src="/images/logo-full-2.svg" alt="BAC Logo" className="w-3/4 md:w-1/2 lg:w-2/5 block dark:hidden"/>
-          <img src="/images/logo-light-full.svg" alt="BAC Logo" className="w-3/4 md:w-1/2 lg:w-2/5 hidden dark:block"/>
+        <div style={{ 'display': 'flex', 'justifyContent': 'center' }}>
+          <img src="/images/logo-full-2.svg" alt="BAC Logo" className="w-3/4 md:w-1/2 lg:w-2/5 block dark:hidden" />
+          <img src="/images/logo-light-full.svg" alt="BAC Logo" className="w-3/4 md:w-1/2 lg:w-2/5 hidden dark:block" />
         </div>
 
         <div className="container flex flex-col gap-4 text-center">
-          
+
           <p className="max-w-[42rem] mx-auto text-muted-foreground sm:text-xl text-balance">
             <span style={{ color: '#ea4167' }}>Nyamaskara!</span> Welcome to the anime and manga headquarters of Nyamma Bengaluru. Looking for events, contests, cosplay, fanart, recommendations, or just a space for discourse and connecting with fellow fans? <span style={{ color: '#ea4167' }}>We&#39;ve got you covered.</span>
           </p>
@@ -52,15 +52,9 @@ export default async function Home() {
             </Link>
             <Link
               href={siteConfig.links.linktree}
-              className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "w-full sm:w-fit")}
-            >
-              Join BAC
-            </Link>
-            <Link
-              href="/game"
               className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-fit") + " !text-white hover:!text-white focus:!text-white active:!text-white"}
             >
-              Love Story
+              Join BAC
             </Link>
           </div>
         </div>
@@ -75,18 +69,9 @@ export default async function Home() {
             </Link>
             <Link
               href={siteConfig.links.linktree}
-              className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "w-full sm:w-fit")}
-            >
-              Join BAC
-            </Link>
-          </div>
-
-          <div className="flex flex-row gap-4 justify-center">
-            <Link
-              href="/game"
               className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-fit") + " !text-white hover:!text-white focus:!text-white active:!text-white"}
             >
-              Love Story
+              Join BAC
             </Link>
           </div>
         </div>
@@ -99,7 +84,7 @@ export default async function Home() {
           </h2>
           <ul className="flex flex-col">
             {allUpcomingEventsPosts.map((post) => (
-              post.published && 
+              post.published &&
               post.date >= today && (
                 <li key={post.slug} className="first:border-t first:pt-3 mt-3">
                   <PostItem

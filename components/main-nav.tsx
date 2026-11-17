@@ -75,7 +75,7 @@ export function MainNav() {
         Upcoming
       </Link> */}
       {/* Gallery dropdown */}
-      <div className="relative group/gal hidden sm:inline-block focus-within:z-50 hover:z-50">
+      <div className="relative group/gallery hidden sm:inline-block focus-within:z-50 hover:z-50">
         <button
           className={cn(
             "text-sm font-medium transition-colors hover:text-primary px-0 bg-transparent border-none outline-none cursor-pointer flex items-center gap-1",
@@ -84,42 +84,68 @@ export function MainNav() {
           tabIndex={0}
         >
           Gallery
-          <ChevronDown className="w-4 h-4 ml-0.5 transition-transform group-hover/gal:rotate-180 group-focus-within/gal:rotate-180" />
+          <ChevronDown className="w-4 h-4 ml-0.5 transition-transform group-hover/gallery:rotate-180 group-focus-within/gallery:rotate-180" />
         </button>
-        <div className="absolute -left-8 mt-2 w-32 rounded-md shadow-lg bg-background border border-border
-          opacity-0 translate-y-2 invisible
-          group-hover/gal:opacity-100 group-hover/gal:translate-y-0 group-hover/gal:visible
-          group-focus-within/gal:opacity-100 group-focus-within/gal:translate-y-0 group-focus-within/gal:visible
-          transition-all duration-800 z-50 origin-top">
-          <Link
-            href="/art"
-            className={cn(
-              "block px-4 py-2 text-sm hover:bg-accent hover:text-primary transition-colors",
-              pathname === "/art" ? "text-foreground font-semibold" : "text-foreground/80"
-            )}
-          >
-            Art
-          </Link>
-          <Link
-            href="/gallery"
-            className={cn(
-              "block px-4 py-2 text-sm hover:bg-accent hover:text-primary transition-colors",
-              pathname === "/gallery" ? "text-foreground font-semibold" : "text-foreground/80"
-            )}
-          >
-            Cosplay
-          </Link>
+        {/* pt-2 extends the hover area over the gap so the menu doesn't flicker shut */}
+        <div className="absolute -left-8 top-full pt-2 w-32 z-50
+          opacity-0 translate-y-2 invisible pointer-events-none
+          group-hover/gallery:opacity-100 group-hover/gallery:translate-y-0 group-hover/gallery:visible group-hover/gallery:pointer-events-auto
+          group-focus-within/gallery:opacity-100 group-focus-within/gallery:translate-y-0 group-focus-within/gallery:visible group-focus-within/gallery:pointer-events-auto
+          transition-all duration-150">
+          <div className="rounded-md shadow-lg bg-background border border-border origin-top">
+            <Link
+              href="/art"
+              className={cn(
+                "block px-4 py-2 text-sm hover:bg-accent hover:text-primary transition-colors rounded-t-md",
+                pathname === "/art" ? "text-foreground font-semibold" : "text-foreground/80"
+              )}
+            >
+              Art
+            </Link>
+            <Link
+              href="/gallery"
+              className={cn(
+                "block px-4 py-2 text-sm hover:bg-accent hover:text-primary transition-colors rounded-b-md",
+                pathname === "/gallery" ? "text-foreground font-semibold" : "text-foreground/80"
+              )}
+            >
+              Cosplay
+            </Link>
+          </div>
         </div>
       </div>
-      <Link
-        href="/game"
-        className={cn(
-          "text-sm font-medium transition-colors hover:text-primary hidden sm:inline-block",
-          pathname === "/game" ? "text-foreground" : "text-foreground/60"
-        )}
-      >
-        Love Story
-      </Link>
+
+      {/* Games dropdown */}
+      <div className="relative group/games hidden sm:inline-block focus-within:z-50 hover:z-50">
+        <button
+          className={cn(
+            "text-sm font-medium transition-colors hover:text-primary px-0 bg-transparent border-none outline-none cursor-pointer flex items-center gap-1",
+            pathname === "/game" ? "text-foreground" : "text-foreground/60"
+          )}
+          tabIndex={0}
+        >
+          Games
+          <ChevronDown className="w-4 h-4 ml-0.5 transition-transform group-hover/games:rotate-180 group-focus-within/games:rotate-180" />
+        </button>
+        {/* pt-2 extends the hover area over the gap so the menu doesn't flicker shut */}
+        <div className="absolute -left-8 top-full pt-2 w-36 z-50
+          opacity-0 translate-y-2 invisible pointer-events-none
+          group-hover/games:opacity-100 group-hover/games:translate-y-0 group-hover/games:visible group-hover/games:pointer-events-auto
+          group-focus-within/games:opacity-100 group-focus-within/games:translate-y-0 group-focus-within/games:visible group-focus-within/games:pointer-events-auto
+          transition-all duration-150">
+          <div className="rounded-md shadow-lg bg-background border border-border origin-top">
+            <Link
+              href="/game"
+              className={cn(
+                "block px-4 py-2 text-sm hover:bg-accent hover:text-primary transition-colors rounded-md",
+                pathname === "/game" ? "text-foreground font-semibold" : "text-foreground/80"
+              )}
+            >
+              Love Story
+            </Link>
+          </div>
+        </div>
+      </div>
       <Link
         href="/socials"
         className={cn(
