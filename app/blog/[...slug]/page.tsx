@@ -252,6 +252,11 @@ async function getPostFromParams(params: PostPageProps["params"]) {
       spotlightEntries,
       source: "contentful",
       image: typeof fields.image === "string" ? fields.image : undefined,
+      thumbnail: (() => {
+        const url = (fields.thumbnail as any)?.fields?.file?.url;
+        if (typeof url === 'string') return url.startsWith('//') ? `https:${url}` : url;
+        return undefined;
+      })(),
       authors,
     } as { [key: string]: any; image?: string };
   }
@@ -266,6 +271,10 @@ export async function generateMetadata({
     return {};
   }
   let ogImage: string | undefined;
+  // Prefer thumbnail field if present (takes priority for OG image)
+  if (post.source === "contentful" && post.thumbnail) {
+    ogImage = post.thumbnail;
+  }
   if (!ogImage && post.source === "contentful" && Array.isArray(post.spotlightEntries)) {
     for (const entry of post.spotlightEntries) {
       if (entry.content && typeof entry.content === "object") {

@@ -204,6 +204,10 @@ export async function generateMetadata({
   }
   const { post } = result;
   let ogImage: string | undefined;
+  // Prefer thumbnail field if present (takes priority for OG image)
+  if (post.source === "contentful" && post.thumbnail) {
+    ogImage = post.thumbnail;
+  }
   if (!ogImage && post.source === "contentful") {
     ogImage = extractOgImageFromContentfulBodyWithFallback(post.body);
   }

@@ -32,6 +32,7 @@ interface ContentfulPostFields {
   footer?: any;
   entries?: any[];
   image?: string;
+  thumbnail?: any;
 }
 
 interface NormalizedPost {
@@ -46,6 +47,7 @@ interface NormalizedPost {
   author?: string | any[];
   source: string;
   image?: string;
+  thumbnail?: string;
   spotlightEntries?: any[];
   header?: any;
   footer?: any;
@@ -79,6 +81,7 @@ const FULL_POST_FIELDS = [
   'fields.header',
   'fields.footer',
   'fields.image',
+  'fields.thumbnail',
   'fields.entries'
 ];
 
@@ -108,6 +111,14 @@ function hasContentfulFields(obj: any): obj is { fields: any } {
 
 function isAuthorFields(fields: any): fields is { name: string; slug?: string } {
   return fields && typeof fields.name === "string";
+}
+
+/** Extracts an absolute URL from a Contentful Asset reference (fields.file.url). */
+function extractAssetUrl(asset: any): string | undefined {
+  if (!hasContentfulFields(asset)) return undefined;
+  const url = asset.fields?.file?.url;
+  if (typeof url !== 'string') return undefined;
+  return url.startsWith('//') ? `https:${url}` : url;
 }
 
 // Unified post normalization function
@@ -174,12 +185,15 @@ function normalizePost(entry: any, includeFullContent: boolean = false): Normali
   
   // Add full content fields if requested
   if (includeFullContent) {
+    // Extract thumbnail URL from Contentful Asset reference (takes priority for OG images)
+    const thumbnailUrl = extractAssetUrl(fields.thumbnail);
     return {
       ...basePost,
       body: fields.content ?? null,
       header: fields.header ?? null,
       footer: fields.footer ?? null,
       image: typeof fields.image === "string" ? fields.image : undefined,
+      thumbnail: thumbnailUrl,
       spotlightEntries,
       authors,
     };

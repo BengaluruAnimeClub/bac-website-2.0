@@ -201,6 +201,11 @@ async function getPostFromParams(params: PostPageProps["params"]) {
       body: fields.content ?? null,
       author: authorName,
       source: "contentful",
+      thumbnail: (() => {
+        const url = (fields.thumbnail as any)?.fields?.file?.url;
+        if (typeof url === 'string') return url.startsWith('//') ? `https:${url}` : url;
+        return undefined;
+      })(),
     };
   }
   return null;
@@ -214,6 +219,10 @@ export async function generateMetadata({
     return {};
   }
   let ogImage: string | undefined;
+  // Prefer thumbnail field if present (takes priority for OG image)
+  if (post.source === "contentful" && post.thumbnail) {
+    ogImage = post.thumbnail;
+  }
   if (!ogImage && post.source === "contentful") {
     ogImage = extractOgImageFromContentfulBodyWithFallback(post.body);
   }
