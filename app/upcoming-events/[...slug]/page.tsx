@@ -9,6 +9,7 @@ import { BlogNavigation } from "@/components/blog-navigation";
 import parse from "html-react-parser";
 import { ShareButtons } from "@/components/share-buttons";
 import { Calendar } from "lucide-react";
+import { headingRenderNodes } from "@/components/rich-text-heading";
 
 interface PostPageProps {
   params: {
@@ -27,6 +28,7 @@ function isContentfulDocument(doc: any): doc is { nodeType: string; content: any
 
 const contentfulRenderOptions = {
   renderNode: {
+    ...headingRenderNodes,
     'embedded-asset-block': (node: any) => {
       const { file, title, description } = node.data.target.fields;
       const url = file?.url?.startsWith('http') ? file.url : `https:${file.url}`;
@@ -280,8 +282,14 @@ export default async function PostPage({ params }: PostPageProps) {
           </div>
         </div>
       )}
+      {post.source === "contentful" && post.header && isContentfulDocument(post.header) ? (
+        <div>{documentToReactComponents({ ...post.header, data: (post.header as any).data ?? {} } as Document, contentfulRenderOptions)}</div>
+      ) : null}
       {post.source === "contentful" && isContentfulDocument(post.body) ? (
         <div>{documentToReactComponents({ ...post.body, data: (post.body as any).data ?? {} } as Document, contentfulRenderOptions)}</div>
+      ) : null}
+      {post.source === "contentful" && post.footer && isContentfulDocument(post.footer) ? (
+        <div>{documentToReactComponents({ ...post.footer, data: (post.footer as any).data ?? {} } as Document, contentfulRenderOptions)}</div>
       ) : null}
       
       {/* Blog Navigation at bottom */}

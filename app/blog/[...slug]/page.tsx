@@ -6,26 +6,18 @@ import { CommentSection } from "@/components/comment-section";
 import { BlogNavigation } from "@/components/blog-navigation";
 import { fetchBlogPostBySlugWithEntries, fetchBlogPosts as fetchContentfulPosts, getBlogPostWithNavigation } from "@/lib/contentful-api";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { extractOgImageFromContentfulBodyWithFallback } from "@/lib/utils";
-import { BLOCKS } from "./contentful-blocks-enum";
+import { extractOgImageFromContentfulBodyWithFallback, slugify } from "@/lib/utils";
 import parse from "html-react-parser";
-import type { Document } from "@contentful/rich-text-types";
+import { BLOCKS, type Document } from "@contentful/rich-text-types";
 import { ShareButtons } from "@/components/share-buttons";
 import "@/styles/mdx.css";
 import { Calendar } from "lucide-react";
+import { headingRenderNodes } from "@/components/rich-text-heading";
 
 interface PostPageProps {
   params: {
     slug: string[];
   };
-}
-
-/** Converts a spotlight entry title to a URL-safe anchor id. */
-function slugifyTitle(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
 }
 
 function isContentfulDocument(doc: any): doc is { nodeType: typeof BLOCKS.DOCUMENT; content: any[]; data: any } {
@@ -40,6 +32,7 @@ function isContentfulDocument(doc: any): doc is { nodeType: typeof BLOCKS.DOCUME
 
 const contentfulRenderOptions = {
   renderNode: {
+    ...headingRenderNodes,
     'embedded-entry-block': (node: any) => {
       const entry = node.data.target;
       if (entry && entry.sys && entry.sys.contentType?.sys?.id === 'imageWithSettings') {
@@ -230,7 +223,9 @@ async function getPostFromParams(params: PostPageProps["params"]) {
           }
           return {
             title: e.fields.title || "",
+            header: e.fields.header || null,
             content: e.fields.content || null,
+            footer: e.fields.footer || null,
             authors,
           };
         }
@@ -384,16 +379,16 @@ export default async function PostPage({ params }: PostPageProps) {
       {post.source === "contentful" && Array.isArray(post.spotlightEntries) && post.spotlightEntries.length > 0 ? (
         <div>
           {post.spotlightEntries.map((entry, idx) => {
-            const anchorId = slugifyTitle(entry.title || '');
+            const anchorId = slugify(entry.title || '');
             return (
               <div key={idx} style={{marginBottom: '32px'}}>
                 <div style={{marginBottom: '-10px', marginTop: '0px'}}>
-                  <h1 id={anchorId} className="text-3xl font-extrabold group flex items-center gap-2 scroll-mt-20">
+                  <h1 id={anchorId || undefined} className="text-3xl font-extrabold group flex items-center gap-2 scroll-mt-20">
                     {entry.title}
                     {anchorId && (
                       <a
                         href={`#${anchorId}`}
-                        className="opacity-0 group-hover:opacity-60 transition-opacity text-muted-foreground no-underline hover:text-foreground"
+                        className="opacity-0 group-hover:opacity-60 transition-opacity text-muted-foreground no-underline hover:text-foreground select-none"
                         aria-label={`Link to "${entry.title}"`}
                       >
                         #
@@ -401,9 +396,19 @@ export default async function PostPage({ params }: PostPageProps) {
                     )}
                   </h1>
                 </div>
+                {entry.header && isContentfulDocument(entry.header) && (
+                  <div className="mb-2">
+                    {documentToReactComponents(entry.header, contentfulRenderOptions)}
+                  </div>
+                )}
                 {entry.content && isContentfulDocument(entry.content) && (
                   <div className="mb-2">
                     {documentToReactComponents(entry.content, contentfulRenderOptions)}
+                  </div>
+                )}
+                {entry.footer && isContentfulDocument(entry.footer) && (
+                  <div className="mb-2">
+                    {documentToReactComponents(entry.footer, contentfulRenderOptions)}
                   </div>
                 )}
                 {entry.authors && entry.authors.length > 0 && (

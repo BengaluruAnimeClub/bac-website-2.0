@@ -114,3 +114,22 @@ export function extractFirstImageSrc(content: string): string | undefined {
   }
   return undefined;
 }
+
+/**
+ * Extracts plain text recursively from a Contentful rich text node.
+ */
+export function getNodeText(node: any): string {
+  if (!node) return "";
+  if (typeof node.value === "string") return node.value;
+  if (Array.isArray(node.content)) {
+    return node.content.map(getNodeText).join("");
+  }
+  return "";
+}
+
+/**
+ * Converts a heading text or title to a URL-safe anchor slug.
+ */
+export function slugify(text: string): string {
+  return slug(text || "");
+}
