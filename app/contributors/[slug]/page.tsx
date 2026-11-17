@@ -6,6 +6,7 @@ import { FaInstagram, FaGlobe } from "react-icons/fa";
 import { SiMyanimelist, SiAnilist } from "react-icons/si";
 import { PiXLogoBold } from "react-icons/pi";
 import { Metadata } from 'next';
+import { slugify } from "@/lib/utils";
 
 interface AuthorPageProps {
   params: { slug: string };
@@ -108,11 +109,13 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         if (typeof titleVal === 'string') parentTitle = titleVal;
         hasParent = !!parentSlug;
       }
+      const title = typeof spotlight.fields.title === 'string' ? spotlight.fields.title : '';
+      const anchor = slugify(title);
       return {
         type: "spotlight",
         date: spotlightDate, // use spotlight's own date
-        title: typeof spotlight.fields.title === 'string' ? spotlight.fields.title : '',
-        slug: parentSlug, // always use parent blog's slug
+        title,
+        slug: parentSlug && anchor ? `${parentSlug}#${anchor}` : parentSlug, // points to specific spotlight
         parentTitle: parentTitle,
         hasParent,
       };
