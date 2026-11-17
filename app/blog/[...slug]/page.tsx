@@ -211,17 +211,19 @@ async function getPostFromParams(params: PostPageProps["params"]) {
     if (Array.isArray(fields.entries)) {
       spotlightEntries = fields.entries.map((e: any) => {
         if (e.fields) {
-          let author = null;
-          if (hasContentfulFields(e.fields.author) && isAuthorFields(e.fields.author.fields)) {
-            author = {
-              name: e.fields.author.fields.name,
-              slug: e.fields.author.fields.slug || undefined,
-            };
+          // Handle "authors" field (array of authors, new model) for spotlightEntry
+          let authors: any[] = [];
+          if (Array.isArray(e.fields.authors)) {
+            authors = e.fields.authors
+              .map((a: any) => hasContentfulFields(a) && isAuthorFields(a.fields)
+                ? { name: a.fields.name, slug: a.fields.slug || undefined }
+                : null)
+              .filter(Boolean);
           }
           return {
             title: e.fields.title || "",
             content: e.fields.content || null,
-            author,
+            authors,
           };
         }
         return null;
@@ -374,18 +376,19 @@ export default async function PostPage({ params }: PostPageProps) {
                   {documentToReactComponents(entry.content, contentfulRenderOptions)}
                 </div>
               )}
-              {entry.author && (
+              {entry.authors && entry.authors.length > 0 && (
                 <div className="text-base text-muted-foreground mb-2">
                   <b>Article by:</b>{' '}
-                  {typeof entry.author === 'object' && entry.author !== null ? (
-                    entry.author.slug ? (
-                      <a href={`/contributors/${entry.author.slug}`} className="underline hover:text-blue-700">{entry.author.name}</a>
-                    ) : (
-                      entry.author.name
-                    )
-                  ) : (
-                    String(entry.author)
-                  )}
+                  {entry.authors.map((author: any, idx: number) => (
+                    <span key={author.slug || author.name}>
+                      {author.slug ? (
+                        <a href={`/contributors/${author.slug}`} className="underline hover:text-blue-700">{author.name}</a>
+                      ) : (
+                        <span>{author.name}</span>
+                      )}
+                      {idx < entry.authors.length - 1 && ', '}
+                    </span>
+                  ))}
                 </div>
               )}
               <hr className="my-4 mt-8 mb-8 border-t-2" />

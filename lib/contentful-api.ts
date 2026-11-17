@@ -141,17 +141,19 @@ function normalizePost(entry: any, includeFullContent: boolean = false): Normali
   if (includeFullContent && Array.isArray(fields.entries)) {
     spotlightEntries = fields.entries.map((e: any) => {
       if (e.fields) {
-        let author = null;
-        if (hasContentfulFields(e.fields.author) && isAuthorFields(e.fields.author.fields)) {
-          author = {
-            name: e.fields.author.fields.name,
-            slug: e.fields.author.fields.slug || undefined,
-          };
+        // Handle "authors" field (array of authors, new model) for spotlightEntry
+        let authors: any[] = [];
+        if (Array.isArray(e.fields.authors)) {
+          authors = e.fields.authors
+            .map((a: any) => hasContentfulFields(a) && isAuthorFields(a.fields)
+              ? { name: a.fields.name, slug: a.fields.slug || undefined }
+              : null)
+            .filter(Boolean);
         }
         return {
           title: e.fields.title || "",
           content: e.fields.content || null,
-          author,
+          authors,
         };
       }
       return null;
@@ -288,7 +290,7 @@ export async function fetchSpotlightPosts(options: { limit?: number; authorId?: 
   };
   
   if (authorId) {
-    queryParams['fields.author.sys.id'] = authorId;
+    queryParams['fields.authors.sys.id'] = authorId;
     queryParams.order = ['-fields.date'] as any;
   }
   
@@ -384,7 +386,7 @@ export async function getAuthorWithPosts(slug: string) {
     // Spotlight posts by author with optimized fields
     withCache(() => contentfulClient.getEntries({
       content_type: 'spotlightEntry',
-      'fields.author.sys.id': author.sys.id,
+      'fields.authors.sys.id': author.sys.id,
       order: ['-fields.date'] as any,
       select: SPOTLIGHT_FIELDS as any,
       include: 1
