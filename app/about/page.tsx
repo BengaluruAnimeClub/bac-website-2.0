@@ -36,22 +36,22 @@ const profiles = [
     bio: "Joined BAC for the love of anime, stayed for the amazing community. I like all things tech and design.",
   },
   {
+    name: "Aravind",
+    designation: "Web/Archival",
+    imageSrc: "/images/pfps/arisu.jpg",
+    bio: "Best known for yapping about Oreimo and Domekano in BAC groups. I maintain bac.moe.",
+  },
+  {
     name: "Sakaido",
     designation: "Admin/Sensei",
     imageSrc: "/images/pfps/sakaido.webp",
-    bio: "Former admin, now an advisor from afar. Probably best known for organising BAC Reikai and conducting quizzes. May or may not have designed the test for new admins. If I could only choose five essential works, they would be: Mushishi, Yuru Camp, Shinsekai Yori, Maiko-san chi no Makanai-san, and Hanshin: Half God. If you're reading this, check one of these out. You will thank me later.", 
-  },
-  {
-    name: "Aravind",
-    designation: "Web/Archival",
-    imageSrc: "/images/pfps/nazuna.jpg",
-    bio: "Hehe", 
+    bio: "Former admin, now an advisor from afar. Probably best known for organising BAC Reikai and conducting quizzes. May or may not have designed the test for new admins. If I could only choose five essential works, they would be: Mushishi, Yuru Camp, Shinsekai Yori, Maiko-san chi no Makanai-san, and Hanshin: Half God. If you're reading this, check one of these out. You will thank me later.",
   },
   {
     name: "Atharva",
     designation: "Publicity (caped crusader)",
     imageSrc: "/images/pfps/arthava.webp",
-    bio: "I like my planet the same way like my cereal: with no aliens on it.", 
+    bio: "I like my planet the same way like my cereal: with no aliens on it.",
   },
   {
     name: "Futtaim",
@@ -119,41 +119,41 @@ export default async function AboutPage() {
     <div className="container max-w-5xl py-6 lg:py-10">
       <div className="flex flex-col md:flex-row gap-8 items-center md:items-start pb-5">
         <p className="text-muted-foreground text-lg py-4">
-        <b>Bengaluru Anime Club (BAC)</b> is a community of anime and manga enthusiasts in Bengaluru. We welcome everyone from seasoned fans to newcomers. Join us for meetups, fan screenings, cosplay events, anime music quizzes, art groups, and to connect with fellow fans of anime and manga!
-        <br/><br/>
-        For a list of all contributors to the site, check out <Link href="/contributors" className="underline">this page</Link>.
+          <b>Bengaluru Anime Club (BAC)</b> is a community of anime and manga enthusiasts in Bengaluru. We welcome everyone from seasoned fans to newcomers. Join us for meetups, fan screenings, cosplay events, anime music quizzes, art groups, and to connect with fellow fans of anime and manga!
+          <br /><br />
+          For a list of all contributors to the site, check out <Link href="/contributors" className="underline">this page</Link>.
         </p>
       </div>
-      
+
       <h2 className="block font-extrabold text-3xl lg:text-4xl mb-8 text-center">
-            Meet the Team
+        Meet the Team
       </h2>
       {/* <hr className="my-4" /> */}
       <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-3 gap-3 w-full max-w-[1200px] mx-auto space-y-3 pb-12">
-          
-          {profiles.map((profile, index) => (
-            <ProfileCard
-              key={index}
-              name={profile.name}
-              designation={profile.designation}
-              imageSrc={profile.imageSrc}
-              bio={profile.bio}
-            />
-          ))}
+
+        {profiles.map((profile, index) => (
+          <ProfileCard
+            key={index}
+            name={profile.name}
+            designation={profile.designation}
+            imageSrc={profile.imageSrc}
+            bio={profile.bio}
+          />
+        ))}
       </div>
       <h2 className="block font-extrabold text-3xl lg:text-4xl mb-8 text-center">
-            Affiliated Groups
+        Affiliated Groups
       </h2>
       <div className="columns-2 sm:columns-2 md:columns-2 lg:columns-3 gap-3 w-fit max-w-[1500px] mx-auto space-y-3 ">
 
-          {affiliated.map((group, index) => (
-            <AffiliatedCard
-              key={index}
-              name={group.name}
-              imageSrc={group.imageSrc}
-              url={group.url}
-            />
-          ))}
+        {affiliated.map((group, index) => (
+          <AffiliatedCard
+            key={index}
+            name={group.name}
+            imageSrc={group.imageSrc}
+            url={group.url}
+          />
+        ))}
       </div>
     </div>
   );
