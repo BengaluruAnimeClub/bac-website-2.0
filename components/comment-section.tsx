@@ -22,15 +22,16 @@ export function CommentSection({ slug }: { slug: string }) {
 
   useEffect(() => {
     fetch(`/api/comments?slug=${encodeURIComponent(slug)}`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`Comments API error: ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
         setComments(data.comments || []);
-        if (data.comments && data.comments.length > 0) {
-          // Debug: log the first comment's image field
-          // Remove this after debugging
-          // eslint-disable-next-line no-console
-          console.log('First comment image:', data.comments[0].image);
-        }
+      })
+      .catch(() => {
+        // Silently fail — comments are non-critical
+        setComments([]);
       });
   }, [slug]);
 

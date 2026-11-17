@@ -3,10 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
 const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-if (!redisUrl || !redisToken) {
-  throw new Error("Upstash Redis credentials are missing in environment variables.");
-}
-
 const COMMENTS_PREFIX = "comments:";
 
 async function fetchRedis(method: string, path: string, body?: any) {
@@ -26,6 +22,9 @@ async function fetchRedis(method: string, path: string, body?: any) {
 }
 
 export async function GET(req: NextRequest) {
+  if (!redisUrl || !redisToken) {
+    return NextResponse.json({ comments: [], error: "Redis not configured." }, { status: 503 });
+  }
   const { searchParams } = new URL(req.url);
   const slug = searchParams.get("slug");
   if (!slug) return NextResponse.json({ comments: [] });
@@ -63,6 +62,9 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  if (!redisUrl || !redisToken) {
+    return NextResponse.json({ error: "Redis not configured." }, { status: 503 });
+  }
   const { slug, name, message, image } = await req.json();
   if (!slug || !message || typeof message !== "string" || message.length > 500) {
     return NextResponse.json({ error: "Invalid input." }, { status: 400 });
