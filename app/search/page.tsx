@@ -4,7 +4,7 @@ import { fetchSearchContentOptimized } from "@/lib/contentful-api";
 
 export const metadata: Metadata = {
   title: "Search | BAC",
-  description: "Search within blogs, events, and archives from BAC.",
+  description: "Search within blogs and events from BAC.",
 };
 
 interface SearchPageProps {
@@ -144,11 +144,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 tags={post.tags}
                 basePath={
                   post._section === "Events" ? "/upcoming-events/" :
-                  post._section === "Looking BAC" ? "/past-events/" :
-                  post._section === "Blog" ? "/blog/" :
-                  post._section === "Game" ? "/game/" :
-                  post._section === "Info" ? "/" :
-                  "/blog/"
+                    post._section === "Looking BAC" ? "/past-events/" :
+                      post._section === "Blog" ? "/blog/" :
+                        post._section === "Game" ? "/game/" :
+                          post._section === "Info" ? "/" :
+                            "/blog/"
                 }
               />
             </li>

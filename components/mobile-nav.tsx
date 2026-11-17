@@ -82,7 +82,7 @@ export function MobileNav() {
               Blog
             </MobileLink>
             <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpenSheet} href="/past-events">
-              Archives
+              Archive
             </MobileLink>
             <MobileLink className={cn("text-xl font-normal")} onOpenChange={setOpenSheet} href="/upcoming-events">
               Upcoming
@@ -104,7 +104,7 @@ export function MobileNav() {
                   "ml-2 h-5 w-5 transition-transform duration-200",
                   galleryOpen ? "-rotate-180" : "rotate-0"
                 )}
-                // strokeWidth={1.5}
+              // strokeWidth={1.5}
               />
             </button>
             <div
